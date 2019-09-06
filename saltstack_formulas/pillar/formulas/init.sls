@@ -1,1 +1,1 @@
-FORMULAS: git pillar in branch BASE
+FORMULAS: git pillar in branch MASTER
