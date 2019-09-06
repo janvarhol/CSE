@@ -1,0 +1,5 @@
+{{ saltenv }}:
+  '*':
+    - formulas
+  'fake':
+    - formulas
