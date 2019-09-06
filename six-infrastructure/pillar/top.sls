@@ -1,0 +1,4 @@
+{{ saltenv }}:
+  '*':
+    - sse
+    - sse2

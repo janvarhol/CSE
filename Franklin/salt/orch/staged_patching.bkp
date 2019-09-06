@@ -1,0 +1,14 @@
+stages:
+  - stage1:
+    reboot_required: false
+    patches:
+      - franklin.patch-n1
+      - franklin.patch-n2
+  - stage2:
+    reboot_required: true
+    patches:
+      - franklin.patch-n3
+  - stage3:
+    reboot_required: false
+    patches:
+      - franklin.patch-n4

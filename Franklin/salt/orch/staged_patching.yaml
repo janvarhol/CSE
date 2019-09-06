@@ -1,0 +1,22 @@
+stages:
+  stage1-DB:
+    reboot_required: false
+    patches:
+      - patching.patch-n1
+      - patching.patch-n2
+  stage2-FrontEndApp1:
+    reboot_required: true
+    patches:
+      - patching.patch-n3
+  stage3-FrontEndApp2:
+    reboot_required: false
+    patches:
+      - patching.patch-n4
+  stage4-OS:
+    reboot_required: true
+    patches:
+      - patching.patch-n5
+  stage5-MonitoringTool:
+    reboot_required: false
+    patches:
+      - patching.patch-n6
