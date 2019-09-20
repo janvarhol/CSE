@@ -1,4 +1,3 @@
-# adrian_v20190826_mod3.py
 # -*- coding: utf-8 -*-
 '''
 Checking for LUKS encryption in all disks
