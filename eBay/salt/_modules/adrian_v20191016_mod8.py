@@ -366,15 +366,6 @@ def test_data():
             ],
             "dump": "0",
             "pass": "1"
-        },
-        "none": {
-            "device": "/dev/mapper/ubuntu--vg-swap_1",
-            "fstype": "swap",
-            "opts": [
-                "sw"
-            ],
-            "dump": "0",
-            "pass": "0"
         }
     }
     partitions = mount_points.keys()
