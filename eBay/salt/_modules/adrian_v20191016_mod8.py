@@ -197,18 +197,22 @@ def test_data():
     # TESTING DATA
     print("TESTING DATA ---- TEST BLOCK_DEVICES")
     block_devices = {
-        "/dev/mapper/sda3_crypt": {
-            "UUID": "iqx2uU-zvtb-thBP-Cj5W-cm7f-TYuY-gzC4PA",
+        "/dev/mapper/nvme0n1p3_crypt": {
+            "UUID": "9l6Kdr-ecpK-2q45-SRzl-IfUw-Rsfd-qA1EDm",
             "TYPE": "LVM2_member"
         },
         "/dev/mapper/ubuntu--vg-root": {
-            "UUID": "9f2aa3e3-5cf2-43bc-8ec4-449b48d669bf",
+            "UUID": "e87684aa-5df6-4996-9b20-88010df066b3",
             "TYPE": "ext4"
         },
-        "/dev/loop1": {
+        "/dev/mapper/ubuntu--vg-swap_1": {
+            "UUID": "7f009849-77ad-4581-8a02-6b35be060163",
+            "TYPE": "swap"
+        },
+        "/dev/loop0": {
             "TYPE": "squashfs"
         },
-        "/dev/loop2": {
+        "/dev/loop1": {
             "TYPE": "squashfs"
         },
         "/dev/loop3": {
@@ -226,62 +230,32 @@ def test_data():
         "/dev/loop7": {
             "TYPE": "squashfs"
         },
-        "/dev/sda1": {
-            "UUID": "35A5-46F3",
+        "/dev/nvme0n1p1": {
+            "UUID": "5AE6-7C22",
             "TYPE": "vfat",
             "PARTLABEL": "EFI System Partition",
-            "PARTUUID": "6361cd04-bca4-4b90-b52d-edf96e032233"
+            "PARTUUID": "a763a766-e560-4345-b342-b4e1698a3a81"
         },
-        "/dev/sda2": {
-            "UUID": "17db5c7a-f330-4a1d-85a6-b658bdf2a9fc",
+        "/dev/nvme0n1p2": {
+            "UUID": "1849d6be-54e2-4832-9d23-472f6606bee0",
             "TYPE": "ext4",
-            "PARTUUID": "f50f1bff-4e4d-44dd-b037-f55cf340e1f8"
+            "PARTUUID": "3e175f69-cb33-4bc0-92a2-231feff6d535"
         },
-        "/dev/sda3": {
-            "UUID": "829793e4-70d6-4577-864c-352e6461f40b",
+        "/dev/nvme0n1p3": {
+            "UUID": "8d7043e8-9c4e-4425-85eb-fa9b5a7720de",
             "TYPE": "crypto_LUKS",
-            "PARTUUID": "662e6850-17a7-4d07-87dc-85f31d2995d6"
-        },
-        "/dev/sdb1": {
-            "LABEL": "Windows RE Tools",
-            "UUID": "1EA62A93A62A6B89",
-            "TYPE": "ntfs",
-            "PARTLABEL": "Basic data partition",
-            "PARTUUID": "ced5ee38-10a3-4007-81b6-d8dc4fd1f2eb"
-        },
-        "/dev/sdb2": {
-            "UUID": "FE2D-3BAD",
-            "TYPE": "vfat",
-            "PARTLABEL": "EFI system partition",
-            "PARTUUID": "ad74bfd0-aa74-40ef-8c15-b943b444cc3e"
-        },
-        "/dev/sdc1": {
-            "LABEL": "SSD",
-            "UUID": "C89C3E479C3E2FF4",
-            "TYPE": "ntfs",
-            "PARTUUID": "149fdb39-01"
-        },
-        "/dev/sdc5": {
-            "UUID": "6b86f871-bcb4-4f27-a663-c2b1ab6936f8",
-            "TYPE": "ext4",
-            "PARTUUID": "149fdb39-05"
-        },
-        "/dev/sdc6": {
-            "UUID": "1aa62b05-80ae-4021-b63b-f50486d6d5e1",
-            "TYPE": "swap",
-            "PARTUUID": "149fdb39-06"
-        },
-        "/dev/mapper/ubuntu--vg-swap_1": {
-            "UUID": "50f8d4e4-fc97-4333-8baa-18a4a7e75429",
-            "TYPE": "swap"
+            "PARTUUID": "082e3714-0cef-4ae7-b468-3ed4b2cca0b8"
         },
         "/dev/loop8": {
             "TYPE": "squashfs"
         },
-        "/dev/loop9": {
+        "/dev/loop10": {
             "TYPE": "squashfs"
         },
         "/dev/loop11": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop12": {
             "TYPE": "squashfs"
         },
         "/dev/loop13": {
@@ -290,52 +264,30 @@ def test_data():
         "/dev/loop14": {
             "TYPE": "squashfs"
         },
-        "/dev/loop15": {
-            "TYPE": "squashfs"
-        },
         "/dev/loop16": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop17": {
             "TYPE": "squashfs"
         },
         "/dev/loop18": {
             "TYPE": "squashfs"
         },
-        "/dev/loop20": {
+        "/dev/loop23": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop17": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop15": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop9": {
             "TYPE": "squashfs"
         },
         "/dev/loop21": {
             "TYPE": "squashfs"
         },
-        "/dev/loop22": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop24": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop25": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop26": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop10": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop0": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop19": {
-            "TYPE": "squashfs"
-        },
-        "/dev/sdb3": {
-            "PARTLABEL": "Microsoft reserved partition",
-            "PARTUUID": "f7522d02-5960-4a24-a870-fb73baa4112c"
-        },
-        "/dev/sdb4": {
-            "PARTLABEL": "Basic data partition",
-            "PARTUUID": "966c356c-43cb-497e-ae85-aa205302f506"
+        "/dev/nvme0n1": {
+            "PTUUID": "a8b2719c-5a03-465b-bf55-79a66e858dbf",
+            "PTTYPE": "gpt"
         }
     }
 
@@ -350,7 +302,7 @@ def test_data():
             "pass": "1"
         },
         "/boot": {
-            "device": "UUID=17db5c7a-f330-4a1d-85a6-b658bdf2a9fc",
+            "device": "UUID=1849d6be-54e2-4832-9d23-472f6606bee0",
             "fstype": "ext4",
             "opts": [
                 "defaults"
@@ -359,13 +311,22 @@ def test_data():
             "pass": "2"
         },
         "/boot/efi": {
-            "device": "UUID=35A5-46F3",
+            "device": "UUID=5AE6-7C22",
             "fstype": "vfat",
             "opts": [
                 "umask=0077"
             ],
             "dump": "0",
             "pass": "1"
+        },
+        "none": {
+            "device": "/dev/mapper/ubuntu--vg-swap_1",
+            "fstype": "swap",
+            "opts": [
+                "sw"
+            ],
+            "dump": "0",
+            "pass": "0"
         }
     }
     partitions = mount_points.keys()
