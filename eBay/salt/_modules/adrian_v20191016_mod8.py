@@ -382,7 +382,9 @@ def test_data():
 
     # TROUBLESHOOTING INFO
     print("TROUBLESHOOTING INFO_MOUNT_POINTS: " + json.dumps(mount_points, indent=4))
-    print("TROUBLESHOOTING INFO_PARTITIONS: " + json.dumps(partitions, indent=4))
+    #print("TROUBLESHOOTING INFO_PARTITIONS: " + json.dumps(partitions, indent=4))
+    # Suspecting failure with partitions
+    print("TROUBLESHOOTING INFO_PARTITIONS: " + partitions)
     print("TROUBLESHOOTING INFO_BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
     # END TROUBLESHOOTING INFO
 
