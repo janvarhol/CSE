@@ -39,7 +39,7 @@ def is_boot_partition(block_device, block_devices):
 
     # TROUBLESHOOTING INFO
     print("__is_boot_partition_MOUNT_POINTS: " + json.dumps(mount_points, indent=4))
-    print("__is_boot_partition_PARTITIONS: " + json.dumps(partitions, indent=4))
+    print("__is_boot_partition_PARTITIONS: " + str(partitions))
     print("__is_boot_partition_BLOCK_DEVICE: " + block_device)
     print("__is_boot_partition_BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
     # END TROUBLESHOOTING INFO
