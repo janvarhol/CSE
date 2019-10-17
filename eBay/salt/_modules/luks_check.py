@@ -156,8 +156,16 @@ def get_disks_encrypted():
     # modified block_devices.iteritems() to block_devices.items()
     for block_device, value in block_devices.items():
         # Checking for keys inside block_device
+        # could be TYPE, PTTYPE
         print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
-        if block_devices[block_device]['TYPE'].lower() != 'swap':
+        if 'TYPE' in block_devices[block_device].keys():
+            TYPE = 'TYPE'
+        elif 'PTTYPE' in block_devices[block_device].keys():
+            TYPE = 'PTTYPE'
+        else:
+            TYPE = 'TYPE'
+
+        if block_devices[block_device][TYPE].lower() != 'swap':
             if not block_device.startswith(tuple(skip_block_device_names)):
                 print("")
                 print("")
