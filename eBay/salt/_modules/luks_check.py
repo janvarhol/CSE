@@ -362,14 +362,15 @@ def test_data():
         print("TROUBLESHOOTING INFO_BLOCK_DEVICE: " + block_device)
 
         # Checking for keys inside block_device
+        # could be TYPE, PTTYPE
         print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
-
-        TYPE = 'TYPE'
 
         if 'TYPE' in block_devices[block_device].keys():
             TYPE = 'TYPE'
-        elseif 'PTTYPE' in block_devices[block_device].keys():
+        elif 'PTTYPE' in block_devices[block_device].keys():
             TYPE = 'PTTYPE'
+        else:
+            TYPE = 'TYPE'
             
         if block_devices[block_device][TYPE].lower() != 'swap':
             if not block_device.startswith(tuple(skip_block_device_names)):
