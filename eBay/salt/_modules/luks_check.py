@@ -389,9 +389,9 @@ def test_data():
         elif 'PTTYPE' in block_devices[block_device].keys():
             TYPE = 'PTTYPE'
         else:
-            TYPE = 'TYPE'
+            TYPE = 'NOT KNOWN'
             
-        if block_devices[block_device][TYPE].lower() != 'swap':
+        if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
             if not block_device.startswith(tuple(skip_block_device_names)):
                 print("")
                 print("")
@@ -481,9 +481,13 @@ def test_data():
                 #    return True
                 #else:
                 #    return False
-        else:
+        elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
             print("IGNORING swap partition in " + block_device)
             log.warning("IGNORING swap partition in " + block_device)
+        elif TYPE == 'NOT KNOWN':
+            print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
+            log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
+            
 
 
     return True
