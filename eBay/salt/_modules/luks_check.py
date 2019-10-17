@@ -364,7 +364,14 @@ def test_data():
         # Checking for keys inside block_device
         print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
 
-        if block_devices[block_device]['TYPE'].lower() != 'swap':
+        TYPE = 'TYPE'
+
+        if 'TYPE' in block_devices[block_device].keys():
+            TYPE = 'TYPE'
+        elseif 'PTTYPE' in block_devices[block_device].keys():
+            TYPE = 'PTTYPE'
+            
+        if block_devices[block_device][TYPE].lower() != 'swap':
             if not block_device.startswith(tuple(skip_block_device_names)):
                 print("")
                 print("")
