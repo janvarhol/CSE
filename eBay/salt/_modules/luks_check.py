@@ -213,90 +213,38 @@ def test_data():
     # TESTING DATA
     print("TESTING DATA ---- TEST BLOCK_DEVICES")
     block_devices = {
-        "/dev/mapper/nvme0n1p3_crypt": {
-            "UUID": "JSDqwJ-7sCa-KpqE-UxFh-RWua-7u1X-RW5Wd2",
-            "TYPE": "LVM2_member"
-        },
-        "/dev/mapper/ubuntu--vg-root": {
-            "UUID": "7011a064-d62b-46a1-9cd6-3a523d2255fc",
-            "TYPE": "ext4"
-        },
-        "/dev/loop0": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop1": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop2": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop3": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop4": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop6": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop7": {
-            "TYPE": "squashfs"
-        },
-        "/dev/nvme0n1p1": {
-            "UUID": "02B2-C309",
-            "TYPE": "vfat",
-            "PARTLABEL": "EFI System Partition",
-            "PARTUUID": "dc2b4a50-d69f-48f4-999a-488763bcf9f3"
-        },
-        "/dev/nvme0n1p2": {
-            "UUID": "c5e34f80-9221-48ca-9583-0a207628510d",
-            "TYPE": "ext4",
-            "PARTUUID": "bba5b3c3-f9a2-448a-9c3c-e1cfd12c3b59"
-        },
-        "/dev/nvme0n1p3": {
-            "UUID": "aed02e15-44bf-4941-8356-aa33f9bf0d19",
+        "/dev/sdb3": {
             "TYPE": "crypto_LUKS",
-            "PARTUUID": "72e2d9ed-6d4f-4e10-b23a-ad46079f037d"
+            "UUID": "cf23e37c-8b77-448a-8d81-7493699f25eb",
+            "PARTUUID": "b0105d0e-fa7b-4fe0-a54b-06fae9c2b18c"
         },
-        "/dev/mapper/ubuntu--vg-swap_1": {
-            "UUID": "01096e9b-0c22-4542-9df9-b36d1a53f31c",
-            "TYPE": "swap"
+        "/dev/sda4": {
+            "PARTUUID": "61ef36dd-1fa4-4103-9801-e8f2a3258e8e",
+            "PARTLABEL": "Basic data partition"
         },
-        "/dev/loop8": {
-            "TYPE": "squashfs"
+        "/dev/sda1": {
+            "PARTUUID": "b7d07973-dff9-4fac-a2ac-d55c0601175b",
+            "TYPE": "ntfs",
+            "UUID": "66AE15F6AE15BF8B",
+            "PARTLABEL": "Basic data partition",
+            "LABEL": "Windows RE Tools"
         },
-        "/dev/loop9": {
-            "TYPE": "squashfs"
+        "/dev/sda2": {
+            "PARTUUID": "0fd565ae-b165-4795-a78b-7f938a60625f",
+            "TYPE": "vfat",
+            "UUID": "3A17-BCBA",
+            "PARTLABEL": "EFI system partition"
         },
-        "/dev/loop10": {
-            "TYPE": "squashfs"
+        "/dev/sda3": {
+            "PARTUUID": "4871c0a5-2a12-4eff-94f6-da2164b6694e",
+            "PARTLABEL": "Microsoft reserved partition"
         },
-        "/dev/loop11": {
-            "TYPE": "squashfs"
+        "/dev/mapper/sdb3_crypt": {
+            "TYPE": "LVM2_member",
+            "UUID": "gzNsao-aChh-grGy-7OPf-2QqQ-1R8W-w8kYdi"
         },
-        "/dev/loop12": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop13": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop14": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop15": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop16": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop17": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop18": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop19": {
-            "TYPE": "squashfs"
+        "/dev/sdc1": {
+            "PARTUUID": "89b9b543-01"
         },
         "/dev/loop20": {
             "TYPE": "squashfs"
@@ -304,18 +252,81 @@ def test_data():
         "/dev/loop21": {
             "TYPE": "squashfs"
         },
-        "/dev/loop22": {
+        "/dev/mapper/ubuntu--vg-swap_1": {
+            "TYPE": "swap",
+            "UUID": "aac6d855-7379-4d15-9baf-a5cd4adde7f6"
+        },
+        "/dev/loop18": {
             "TYPE": "squashfs"
         },
-        "/dev/loop23": {
+        "/dev/sdb1": {
+            "PARTUUID": "22e62335-9450-4aa6-a88c-68ed2e438e30",
+            "TYPE": "vfat",
+            "UUID": "285C-06CE",
+            "PARTLABEL": "EFI System Partition"
+        },
+        "/dev/loop4": {
             "TYPE": "squashfs"
         },
-        "/dev/loop24": {
+        "/dev/loop7": {
             "TYPE": "squashfs"
         },
-        "/dev/nvme0n1": {
-            "PTUUID": "2444e68d-0dbf-460e-9e5e-b522116d1c38",
-            "PTTYPE": "gpt"
+        "/dev/loop6": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop1": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop0": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop3": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop2": {
+            "TYPE": "squashfs"
+        },
+        "/dev/sdb2": {
+            "TYPE": "ext4",
+            "UUID": "0d7ba725-0caa-4e3f-83d3-f22d8294a828",
+            "PARTUUID": "8adc901d-5f52-49cd-8e36-8a980e6abe6f"
+        },
+        "/dev/loop9": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop8": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop11": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop10": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop13": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop12": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop15": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop14": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop17": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop16": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop19": {
+            "TYPE": "squashfs"
+        },
+        "/dev/mapper/ubuntu--vg-root": {
+            "TYPE": "ext4",
+            "UUID": "730314a3-4ecc-472b-b5b7-962f460a5cfc"
         }
     }
 
