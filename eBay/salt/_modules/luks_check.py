@@ -2,12 +2,8 @@
 # -*- coding: utf-8 -*-
 '''
 Checking for LUKS encryption in all disks
-
-
 :configuration:
-
     :depends: none
-
 '''
 import logging
 import json
@@ -165,7 +161,7 @@ def get_disks_encrypted():
         else:
             TYPE = 'TYPE'
 
-        if block_devices[block_device][TYPE].lower() != 'swap':
+        if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
             if not block_device.startswith(tuple(skip_block_device_names)):
                 print("")
                 print("")
@@ -189,9 +185,13 @@ def get_disks_encrypted():
                     else:
                         print("IGNORING boot or similar partition in " + block_device)
                         log.warning("IGNORING boot or similar partition in " + block_device)
-        else:
+        elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
             print("IGNORING swap partition in " + block_device)
             log.warning("IGNORING swap partition in " + block_device)
+        elif TYPE == 'NOT KNOWN':
+            print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
+            log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
+
 
     return disks_encrypted
 
@@ -401,14 +401,6 @@ def test_data():
                 IS_BOOT = False
                 UUID = 'UUID'
 
-                # Use PTUUID for /dev/nvme* devices
-                #if block_device.startswith('/dev/nvme'):
-                #    for key in block_devices[block_device].keys():
-                #        print("Checking UUID key on block device")
-                #        if key == 'PTUUID':
-                #            print("UUID CHANGED TO PTUUID FOR DEVICE " + block_device)
-                #            UUID = 'PTUUID'
-
                 if "UUID" in block_devices[block_device].keys():
                     UUID = 'UUID'
                     print("Using UUID")
@@ -487,6 +479,7 @@ def test_data():
         elif TYPE == 'NOT KNOWN':
             print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
             log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
+
             
 
 
