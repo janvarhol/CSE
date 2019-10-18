@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 '''
 Module for Sending Messages via SMTP - updating for mime.multipart
-
 .. versionadded:: 2014.7.0
-
 '''
 
 import csv
-
+import logging
 log = logging.getLogger(__name__)
 
 def send_msg(recipient, subject, mac):
