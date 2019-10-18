@@ -10,10 +10,6 @@ import csv
 
 log = logging.getLogger(__name__)
 
-
-__virtualname__ = 'send_msg2csv'
-
-
 def send_msg(recipient, subject, mac):
     log.info("recipient: %s", recipient)
     log.info("subject: %s", subject)
