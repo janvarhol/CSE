@@ -25,7 +25,7 @@ def send_msg(recipient, subject, mac):
 def save2csv(recipient, subject, mac):
     with open('/tmp/employee_file.csv', mode='w') as employee_file:
         employee_writer = csv.writer(employee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        employee_writer.writerow(['John Smith', 'Accounting', 'November'])
-        employee_writer.writerow(['Erica Meyers', 'IT', 'March'])
+        employee_writer.writerow([recipient, subject, mac])
+        employee_writer.writerow([recipient, subject, mac])
     
     return True
