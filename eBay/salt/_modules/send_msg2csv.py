@@ -12,5 +12,20 @@ def send_msg(recipient, subject, mac):
     log.info("recipient: %s", recipient)
     log.info("subject: %s", subject)
     log.info("mac: %s", mac)
+    
+    # send email...
+    # blah 
+    # blah
+    
+    # save data to csv file
+    save2csv(recipient, subject, mac)
+    
+    return True
 
+def save2csv(recipient, subject, mac):
+    with open('/tmp/employee_file.csv', mode='w') as employee_file:
+        employee_writer = csv.writer(employee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        employee_writer.writerow(['John Smith', 'Accounting', 'November'])
+        employee_writer.writerow(['Erica Meyers', 'IT', 'March'])
+    
     return True
