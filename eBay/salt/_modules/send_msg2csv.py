@@ -5,6 +5,7 @@ Module for Sending Messages via SMTP - updating for mime.multipart
 '''
 
 import csv
+import datetime
 import logging
 log = logging.getLogger(__name__)
 
@@ -25,6 +26,6 @@ def send_msg(recipient, subject, mac):
 def save2csv(recipient, subject, mac):
     with open('/tmp/employee_file.csv', mode='a') as employee_file:
         employee_writer = csv.writer(employee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        employee_writer.writerow([recipient, subject, mac])
+        employee_writer.writerow([recipient, subject, mac, datetime.now()])
     
     return True
