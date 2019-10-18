@@ -5,7 +5,7 @@ Module for Sending Messages via SMTP - updating for mime.multipart
 '''
 
 import csv
-import datetime
+from datetime import datetime
 import logging
 log = logging.getLogger(__name__)
 
