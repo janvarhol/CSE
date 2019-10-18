@@ -24,8 +24,8 @@ def send_msg(recipient, subject, mac):
     return True
 
 def save2csv(recipient, subject, mac):
-    with open('/tmp/employee_file.csv', mode='a') as employee_file:
-        employee_writer = csv.writer(employee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        employee_writer.writerow([recipient, subject, mac, datetime.now()])
+    with open('/tmp/email_records.csv', mode='a') as email_records:
+        email_records_writer = csv.writer(email_records, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        email_records_writer.writerow([recipient, subject, mac, datetime.now()])
     
     return True
