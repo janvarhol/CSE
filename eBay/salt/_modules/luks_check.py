@@ -1,4 +1,3 @@
-# adrian_v20190826_mod3.py
 # -*- coding: utf-8 -*-
 '''
 Checking for LUKS encryption in all disks
@@ -154,6 +153,7 @@ def get_disks_encrypted():
 
         # modified block_devices.iteritems() to block_devices.items()
         for block_device, value in block_devices.items():
+        
             # Checking for keys inside block_device
             # could be TYPE, PTTYPE
             print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
@@ -165,7 +165,11 @@ def get_disks_encrypted():
                 TYPE = 'TYPE'
 
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
-                if not block_device.startswith(tuple(skip_block_device_names)):
+                # IGNORE GPT PARTITIONS
+                if block_devices[block_device][TYPE].lower() == 'gpt':
+                    print("IGNORING gpt partition " + block_device)
+                    log.warning("IGNORING gpt partition " + block_device)
+                elif not block_device.startswith(tuple(skip_block_device_names)):
                     print("")
                     print("")
                     print("")
@@ -188,9 +192,11 @@ def get_disks_encrypted():
                         else:
                             print("IGNORING boot or similar partition in " + block_device)
                             log.warning("IGNORING boot or similar partition in " + block_device)
+            # IGNORE SWAP PARTITIONS
             elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
                 print("IGNORING swap partition in " + block_device)
                 log.warning("IGNORING swap partition in " + block_device)
+            # SKIP NOT KNOWN TYPE PARTITIONS 
             elif TYPE == 'NOT KNOWN':
                 print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
                 log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
@@ -222,120 +228,91 @@ def test_data():
         # TESTING DATA
         print("TESTING DATA ---- TEST BLOCK_DEVICES")
         block_devices = {
-            "/dev/sdb3": {
-                "TYPE": "crypto_LUKS",
-                "UUID": "cf23e37c-8b77-448a-8d81-7493699f25eb",
-                "PARTUUID": "b0105d0e-fa7b-4fe0-a54b-06fae9c2b18c"
+            "/dev/mapper/nvme0n1p3_crypt": {
+                "UUID": "LgztHh-i26I-tnPy-9GN3-Wxsm-CkPx-fXNewJ",
+                "TYPE": "LVM2_member"
             },
-            "/dev/sda4": {
-                "PARTUUID": "61ef36dd-1fa4-4103-9801-e8f2a3258e8e",
-                "PARTLABEL": "Basic data partition"
-            },
-            "/dev/sda1": {
-                "PARTUUID": "b7d07973-dff9-4fac-a2ac-d55c0601175b",
-                "TYPE": "ntfs",
-                "UUID": "66AE15F6AE15BF8B",
-                "PARTLABEL": "Basic data partition",
-                "LABEL": "Windows RE Tools"
-            },
-            "/dev/sda2": {
-                "PARTUUID": "0fd565ae-b165-4795-a78b-7f938a60625f",
-                "TYPE": "vfat",
-                "UUID": "3A17-BCBA",
-                "PARTLABEL": "EFI system partition"
-            },
-            "/dev/sda3": {
-                "PARTUUID": "4871c0a5-2a12-4eff-94f6-da2164b6694e",
-                "PARTLABEL": "Microsoft reserved partition"
-            },
-            "/dev/mapper/sdb3_crypt": {
-                "TYPE": "LVM2_member",
-                "UUID": "gzNsao-aChh-grGy-7OPf-2QqQ-1R8W-w8kYdi"
-            },
-            "/dev/sdc1": {
-                "PARTUUID": "89b9b543-01"
-            },
-            "/dev/loop20": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop21": {
-                "TYPE": "squashfs"
+            "/dev/mapper/ubuntu--vg-root": {
+                "UUID": "a1a7733b-8751-4df3-b572-e33809afe4a8",
+                "TYPE": "ext4"
             },
             "/dev/mapper/ubuntu--vg-swap_1": {
-                "TYPE": "swap",
-                "UUID": "aac6d855-7379-4d15-9baf-a5cd4adde7f6"
+                "UUID": "ce9882ec-6db3-44a1-94a6-5a1e57cde1de",
+                "TYPE": "swap"
             },
-            "/dev/loop18": {
-                "TYPE": "squashfs"
-            },
-            "/dev/sdb1": {
-                "PARTUUID": "22e62335-9450-4aa6-a88c-68ed2e438e30",
-                "TYPE": "vfat",
-                "UUID": "285C-06CE",
-                "PARTLABEL": "EFI System Partition"
-            },
-            "/dev/loop4": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop7": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop6": {
+            "/dev/loop0": {
                 "TYPE": "squashfs"
             },
             "/dev/loop1": {
                 "TYPE": "squashfs"
             },
-            "/dev/loop0": {
+            "/dev/loop2": {
                 "TYPE": "squashfs"
             },
             "/dev/loop3": {
                 "TYPE": "squashfs"
             },
-            "/dev/loop2": {
+            "/dev/loop4": {
                 "TYPE": "squashfs"
             },
-            "/dev/sdb2": {
+            "/dev/loop6": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop7": {
+                "TYPE": "squashfs"
+            },
+            "/dev/nvme0n1p1": {
+                "UUID": "8ADA-A427",
+                "TYPE": "vfat",
+                "PARTLABEL": "EFI System Partition",
+                "PARTUUID": "50dd1d2e-dc5b-4927-9487-969d639be4e6"
+            },
+            "/dev/nvme0n1p2": {
+                "UUID": "2a21e580-3165-4774-bd89-677bc10677e6",
                 "TYPE": "ext4",
-                "UUID": "0d7ba725-0caa-4e3f-83d3-f22d8294a828",
-                "PARTUUID": "8adc901d-5f52-49cd-8e36-8a980e6abe6f"
+                "PARTUUID": "73d128d1-cb17-468e-aaf4-b8f910f2c5dc"
             },
-            "/dev/loop9": {
-                "TYPE": "squashfs"
+            "/dev/nvme0n1p3": {
+                "UUID": "bba6f4f0-10c8-4064-8429-e5fa611e8532",
+                "TYPE": "crypto_LUKS",
+                "PARTUUID": "fa10044d-142d-473c-a4b3-d75b51cb663d"
             },
             "/dev/loop8": {
                 "TYPE": "squashfs"
             },
-            "/dev/loop11": {
+            "/dev/loop9": {
                 "TYPE": "squashfs"
             },
             "/dev/loop10": {
                 "TYPE": "squashfs"
             },
-            "/dev/loop13": {
+            "/dev/loop11": {
                 "TYPE": "squashfs"
             },
             "/dev/loop12": {
                 "TYPE": "squashfs"
             },
-            "/dev/loop15": {
+            "/dev/loop13": {
                 "TYPE": "squashfs"
             },
             "/dev/loop14": {
                 "TYPE": "squashfs"
             },
-            "/dev/loop17": {
+            "/dev/loop15": {
                 "TYPE": "squashfs"
             },
             "/dev/loop16": {
                 "TYPE": "squashfs"
             },
-            "/dev/loop19": {
+            "/dev/loop17": {
                 "TYPE": "squashfs"
             },
-            "/dev/mapper/ubuntu--vg-root": {
-                "TYPE": "ext4",
-                "UUID": "730314a3-4ecc-472b-b5b7-962f460a5cfc"
+            "/dev/loop18": {
+                "TYPE": "squashfs"
+            },
+            "/dev/nvme0n1": {
+                "PTUUID": "feb7954a-46d4-4a6d-9a1b-3ce16801ef11",
+                "PTTYPE": "gpt"
             }
         }
 
@@ -350,7 +327,7 @@ def test_data():
                 "pass": "1"
             },
             "/boot": {
-                "device": "UUID=c5e34f80-9221-48ca-9583-0a207628510d",
+                "device": "UUID=2a21e580-3165-4774-bd89-677bc10677e6",
                 "fstype": "ext4",
                 "opts": [
                     "defaults"
@@ -359,7 +336,7 @@ def test_data():
                 "pass": "2"
             },
             "/boot/efi": {
-                "device": "UUID=02B2-C309",
+                "device": "UUID=8ADA-A427",
                 "fstype": "vfat",
                 "opts": [
                     "umask=0077"
@@ -377,6 +354,7 @@ def test_data():
                 "pass": "0"
             }
         }
+        
         partitions = mount_points.keys()
         # END TESTING DATA
 
@@ -401,7 +379,11 @@ def test_data():
                 TYPE = 'NOT KNOWN'
 
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
-                if not block_device.startswith(tuple(skip_block_device_names)):
+                # IGNORE GPT PARTITIONS
+                if block_devices[block_device][TYPE].lower() == 'gpt':
+                    print("IGNORING gpt partition " + block_device)
+                    log.warning("IGNORING gpt partition " + block_device)
+                elif not block_device.startswith(tuple(skip_block_device_names)):
                     print("")
                     print("")
                     print("Checking encryption on device: " + block_device)
