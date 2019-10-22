@@ -162,7 +162,7 @@ def get_disks_encrypted():
             elif 'PTTYPE' in block_devices[block_device].keys():
                 TYPE = 'PTTYPE'
             else:
-                TYPE = 'TYPE'
+                TYPE = 'NOT KNOWN'
 
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
                 # IGNORE GPT PARTITIONS
