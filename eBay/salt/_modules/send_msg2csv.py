@@ -19,21 +19,17 @@ def send_msg(recipient, subject, mac):
     # blah
     
     # save data to csv file
-    text = 'blah'
-    payload = [recipient, subject, mac, text]
-    filename = __salt__['pillar.get']('logdir', '/var/log/salt/')+'stale_minions.csv'
-    save2csv(filename, payload)
+    save2csv(recipient, subject, mac)
 
     return True
 
-def save2csv(filename, payload):
+def save2csv(recipient, subject, mac):
     '''
     Save data to csv file
     '''
-    payload2 = 'blah'
-    print(filename)
-    with open(filename, mode='a') as email_records:
-        email_records_writer = csv.writer(email_records, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL
-        email_records_writer.writerow([payload2])
+    with open('/tmp/email_records.csv', mode='a') as email_records:
+        email_records_writer = csv.writer(email_records, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        email_records_writer.writerow([recipient, subject, mac, datetime.now()])
 
     return True
+
