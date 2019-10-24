@@ -27,10 +27,11 @@ def save2csv(recipient, subject, mac):
     '''
     Save data to csv file
     '''
+    payload = [recipient, subject, mac]
     filename = __salt__['pillar.get']('logdir', '/var/log/salt/stale_minions.csv')
     with open(filename, mode='a') as email_records:
         email_records_writer = csv.writer(email_records, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        email_records_writer.writerow([datetime.now(), recipient, subject, mac])
+        email_records_writer.writerow([datetime.now(), payload])
 
     return True
 
