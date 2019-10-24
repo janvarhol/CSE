@@ -30,10 +30,10 @@ def save2csv(filename, recipient, subject, mac):
     '''
     today = datetime.now()
     d1 = today.strftime("%Y%m%d")
-    
+    d2 = today.strftime("%H%M%S")
     with open(filename, mode='a') as email_records:
         email_records_writer = csv.writer(email_records, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        email_records_writer.writerow([d1, recipient, subject, mac])
+        email_records_writer.writerow([d1, d2, recipient, subject, mac])
 
     return True
 
