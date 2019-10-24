@@ -19,7 +19,7 @@ def send_msg(recipient, subject, mac):
     # blah
     
     # save data to csv file
-    
+    text = 'blah'
     payload = [recipient, subject, mac, text]
     filename = __salt__['pillar.get']('logdir', '/var/log/salt/')+'stale_minions.csv'
     save2csv(filename, payload)
