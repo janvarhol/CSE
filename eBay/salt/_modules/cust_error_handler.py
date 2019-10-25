@@ -17,7 +17,7 @@
     },
     "id": "ebay",
     "pretag": null,
-    "tag": "exceptions/adrian_send_msg"
+    "tag": "exceptions/faultymodule_funcname"
     }
     
     
