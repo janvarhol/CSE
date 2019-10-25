@@ -32,7 +32,7 @@ def send_msg(recipient,
         type, value, traceback = sys.exc_info()
 
         # Set event tag, use exceptions/"module_function_name"
-        exception_tag = 'exceptions/adrian_send_msg'
+        exception_tag = 'exceptions/do_something_wrong_send_msg'
         # Set event data dictionary
         exception_data = {"type": str(type), "value": str(value), "traceback": str(traceback)}
         # Sent exception data to custom module to send event
