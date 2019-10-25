@@ -20,7 +20,6 @@
     "tag": "exceptions/faultymodule_funcname"
     }
     
-    
     How to use in other module example code:
     try:
         # Doing something wrong
@@ -40,10 +39,8 @@
         __salt__['cust_error_handler.send_event'](exception_tag, exception_data)
        
         return False
-
-
-
 '''    
+    
     
 import logging
 
