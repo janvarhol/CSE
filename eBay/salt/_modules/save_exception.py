@@ -17,7 +17,7 @@ def exception_2csv(type="Unknown_type", value="Unknown_value", traceback="Unknow
     today = datetime.now()
     d1 = today.strftime("%Y%m%d")
     d2 = today.strftime("%H%M%S")
-    with open(/tmp/exceptions.csv, mode='a') as exceptions_records:
+    with open('/tmp/exceptions.csv', mode='a') as exceptions_records:
         exceptions_records_writer = csv.writer(exceptions_records, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         exceptions_records_writer.writerow([d1, d2, type, value, traceback])
 
