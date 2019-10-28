@@ -24,7 +24,7 @@ def is_disk_encrypted(device):
         print("--->>> Scanning disk for LVM information")
         try:
             lvm_pv_info = __salt__['lvm.pvdisplay'](device)
-            print(lvm_pv_info)
+            print(lvm_pv_info[device]['Volume Group Name'])
             #return 1
             cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks /dev/home/homevol', ignore_retcode=True)
         except:
