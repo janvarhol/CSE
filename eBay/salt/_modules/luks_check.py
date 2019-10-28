@@ -15,6 +15,7 @@ def is_disk_encrypted(device):
     retcode 0 = Disk Encrypted
     retcode 1 = Disk not encrypted
     '''
+    print("--->>> Checking disk encrypted on device: " + device)
     cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks ' + device, ignore_retcode=True)
 #    print(cryptsetup_isLuks)
 
