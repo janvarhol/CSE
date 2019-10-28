@@ -24,7 +24,7 @@ def is_disk_encrypted(device):
         print("--->>> Scanning disk information")
         return 1
     else:
-        print("--->>> Un-handled case, returning Disk not encrypted"
+        print("--->>> Un-handled case, returning Disk not encrypted")
         return 1
 #    print(cryptsetup_isLuks)
 
