@@ -16,20 +16,23 @@ def is_disk_encrypted(device):
     retcode 1 = Disk not encrypted
     '''
     print("--->>> Checking disk encrypted on device: " + device)
+    log.info("--->>> Checking disk encrypted on device: " + device)
     # Check if device name ends with partition number, like /dev/sda5
     if device[-1:].isdigit():
         cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks ' + device, ignore_retcode=True)
     elif device[-1:].isalpha():
     # if device name ends with alpha, meaning it's a disk, like /dev/sdb
         print("--->>> Scanning disk for LVM information")
+        log.info("--->>> Scanning disk for LVM information")
         try:
             lvm_pv_info = __salt__['lvm.pvdisplay'](device)
             lvm_vol_group_name = lvm_pv_info[device]['Volume Group Name']
             lvm_lv_info = __salt__['lvm.lvdisplay'](lvm_vol_group_name)
             for log_vol_name in lvm_lv_info:  
               lvm_log_vol__name = lvm_lv_info[log_vol_name]['Logical Volume Name']
-              print(lvm_log_vol__name)
-              cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks /dev/home/homevol', ignore_retcode=True)
+              print("--->>> Scanned Logical Volume Name: " + lvm_log_vol__name)
+              log.info("--->>> Scanned Logical Volume Name: " + lvm_log_vol__name)
+              cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks ' + lvm_log_vol__name, ignore_retcode=True)
         except:
             return 1
     else:
