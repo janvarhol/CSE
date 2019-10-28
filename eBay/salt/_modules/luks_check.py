@@ -21,9 +21,14 @@ def is_disk_encrypted(device):
         cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks ' + device, ignore_retcode=True)
     elif device[-1:].isalpha():
     # if device name ends with alpha, meaning it's a disk, like /dev/sdb
-        print("--->>> Scanning disk information")
-        #return 1
-        cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks /dev/home/homevol', ignore_retcode=True)
+        print("--->>> Scanning disk for LVM information")
+        try:
+            lvm_pv_info = __salt__['lvm.pvdisplay'](device)
+            print(lvm_pv_info)
+            #return 1
+            cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks /dev/home/homevol', ignore_retcode=True)
+        except:
+            return 1
     else:
         print("--->>> Un-handled case, returning Disk not encrypted")
         return 1
