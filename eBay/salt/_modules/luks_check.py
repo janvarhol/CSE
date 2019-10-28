@@ -20,9 +20,10 @@ def is_disk_encrypted(device):
     if device[-1:].isdigit():
         cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks ' + device, ignore_retcode=True)
     elif device[-1:].isalpha():
-    # if device name ends with alpha, meaning it's a disk, like /dev/sda5
+    # if device name ends with alpha, meaning it's a disk, like /dev/sdb
         print("--->>> Scanning disk information")
-        return 1
+        #return 1
+        cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks /dev/home/homevol' + device, ignore_retcode=True)
     else:
         print("--->>> Un-handled case, returning Disk not encrypted")
         return 1
