@@ -29,17 +29,17 @@ def is_disk_encrypted(device):
             lvm_vol_group_name = lvm_pv_info[device]['Volume Group Name']
             lvm_lv_info = __salt__['lvm.lvdisplay'](lvm_vol_group_name)
             for log_vol_name in lvm_lv_info:  
-              lvm_log_vol__name = lvm_lv_info[log_vol_name]['Logical Volume Name']
-              print("--->>> Scanned Logical Volume Name: " + lvm_log_vol__name)
-              log.info("--->>> Scanned Logical Volume Name: " + lvm_log_vol__name)
+              lvm_log_vol_name = lvm_lv_info[log_vol_name]['Logical Volume Name']
+              print("--->>> Scanned Logical Volume Name: " + lvm_log_vol_name)
+              log.info("--->>> Scanned Logical Volume Name: " + lvm_log_vol_name)
             
               # Run crypsetup using LVM Logical Volume Name instead of device name
               # /dev/sdb vs /dev/home/homevol
-              cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks ' + lvm_log_vol__name, ignore_retcode=True)
+              cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks ' + lvm_log_vol_name, ignore_retcode=True)
               # if cryptsetup is not 0, return failure, disk not encrypted
               if cryptsetup_isLuks >= 1:
-                print("--->>> cryptsetup on scanned Logical Volume Name FAILED: " + lvm_log_vol__name)
-                log.warning("--->>> cryptsetup on scanned Logical Volume Name FAILED: " + lvm_log_vol__name)
+                print("--->>> cryptsetup on scanned Logical Volume Name FAILED: " + lvm_log_vol_name)
+                log.warning("--->>> cryptsetup on scanned Logical Volume Name FAILED: " + lvm_log_vol_name)
                 return cryptsetup_isLuks          
         except:
             # If something goes wrong, return 1 (False / Disk not encrypted, must be fixed)
