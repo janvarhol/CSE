@@ -241,7 +241,7 @@ def get_disks_encrypted():
         return True
 
 def test_data():
-    skip_osfinger_list = ['Raspbian-9', Raspbian-10]
+    skip_osfinger_list = ['Raspbian-9', 'Raspbian-10']
     skip_partition_types = ['gpt', 'ntfs']
 
     if __grains__['osfinger'] not in skip_osfinger_list:
