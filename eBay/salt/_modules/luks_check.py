@@ -163,7 +163,7 @@ def get_disks_encrypted():
     '''
     Checks all disks are encrypted
     '''
-    skip_osfinger_list = ['Raspbian-9']
+    skip_osfinger_list = ['Raspbian-9', 'Raspbian-10']
 
     if __grains__['osfinger'] not in skip_osfinger_list:
         cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
