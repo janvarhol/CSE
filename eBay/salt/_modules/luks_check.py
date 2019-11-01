@@ -191,7 +191,7 @@ def get_disks_encrypted():
             # Checking for keys inside block_device
             # could be TYPE, PTTYPE
             print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
-            time.sleep(1)
+            #time.sleep(1)
             
             if 'TYPE' in block_devices[block_device].keys():
                 TYPE = 'TYPE'
