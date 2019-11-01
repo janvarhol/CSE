@@ -233,12 +233,14 @@ def get_disks_encrypted():
                             log.warning("IGNORING boot or similar partition in " + block_device)
             # IGNORE SWAP PARTITIONS
             elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
+                print("")
                 print("IGNORING swap partition in " + block_device)
                 log.warning("IGNORING swap partition in " + block_device)
             # SKIP NOT KNOWN TYPE PARTITIONS 
             elif TYPE == 'NOT KNOWN':
-                print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
-                log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
+                print("")
+                print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
+                log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
 
 
         return disks_encrypted
@@ -491,11 +493,15 @@ def test_data():
                     #else:
                     #    return False
             elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
+                print("")
                 print("IGNORING swap partition in " + block_device)
+                print("")
                 log.warning("IGNORING swap partition in " + block_device)
             elif TYPE == 'NOT KNOWN':
-                print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
-                log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
+                print("")
+                print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
+                print("")
+                log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
 
         return True
     else:
