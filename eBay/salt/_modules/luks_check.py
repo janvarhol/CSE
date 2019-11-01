@@ -6,6 +6,8 @@ Checking for LUKS encryption in all disks
 '''
 import logging
 import json
+import time
+
 log = logging.getLogger(__name__)
 
 
@@ -189,6 +191,8 @@ def get_disks_encrypted():
             # Checking for keys inside block_device
             # could be TYPE, PTTYPE
             print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
+            time.sleep(1)
+            
             if 'TYPE' in block_devices[block_device].keys():
                 TYPE = 'TYPE'
             elif 'PTTYPE' in block_devices[block_device].keys():
