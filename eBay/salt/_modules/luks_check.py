@@ -6,7 +6,7 @@ Checking for LUKS encryption in all disks
 '''
 import logging
 import json
-import time
+#import time
 
 log = logging.getLogger(__name__)
 
