@@ -175,7 +175,7 @@ def get_disks_encrypted():
         block_devices = __salt__['disk.blkid']()
         # Some devices that can be ignored
         skip_block_device_names = ['/dev/loop', '/dev/mapper', '/dev/sr0']
-        skip_partition_types = ['gpt', 'ntfs']
+        skip_partition_types = ['gpt', 'ntfs', 'dos']
         
         # ADRIAN - INFO
         print("BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
@@ -242,7 +242,7 @@ def get_disks_encrypted():
 
 def test_data():
     skip_osfinger_list = ['Raspbian-9', 'Raspbian-10']
-    skip_partition_types = ['gpt', 'ntfs']
+    skip_partition_types = ['gpt', 'ntfs', 'dos']
 
     if __grains__['osfinger'] not in skip_osfinger_list:
         # List devices
