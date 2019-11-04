@@ -218,7 +218,10 @@ def get_disks_encrypted():
                     # INFO
                     print("BLOCK DEVICE: " + block_device)
 
-                    if is_disk_encrypted(block_device) == 0:
+                    if block_devices[block_device][TYPE] == 'crypto_LUKS': 
+                      print(block_device + " is encrypted")
+                      log.warning(block_device + " is encrypted")
+                    elif is_disk_encrypted(block_device) == 0:
                         print(block_device + " is encrypted")
                         log.warning(block_device + " is encrypted")
                     else:
