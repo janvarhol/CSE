@@ -6,6 +6,8 @@ Checking for LUKS encryption in all disks
 '''
 import logging
 import json
+#import time
+
 log = logging.getLogger(__name__)
 
 
@@ -175,7 +177,8 @@ def get_disks_encrypted():
         block_devices = __salt__['disk.blkid']()
         # Some devices that can be ignored
         skip_block_device_names = ['/dev/loop', '/dev/mapper', '/dev/sr0']
-
+        skip_partition_types = ['gpt', 'ntfs', 'dos']
+        
         # ADRIAN - INFO
         print("BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
 
@@ -188,6 +191,8 @@ def get_disks_encrypted():
             # Checking for keys inside block_device
             # could be TYPE, PTTYPE
             print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
+            #time.sleep(1)
+            
             if 'TYPE' in block_devices[block_device].keys():
                 TYPE = 'TYPE'
             elif 'PTTYPE' in block_devices[block_device].keys():
@@ -196,10 +201,13 @@ def get_disks_encrypted():
                 TYPE = 'NOT KNOWN'
 
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
-                # IGNORE GPT PARTITIONS
-                if block_devices[block_device][TYPE].lower() == 'gpt':
-                    print("IGNORING gpt partition " + block_device)
-                    log.warning("IGNORING gpt partition " + block_device)
+                # IGNORE PARTITION TYPES in skip_partition_types
+                if block_devices[block_device][TYPE].lower() in skip_partition_types:
+                    print("")
+                    print("")
+                    print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
+                    print("")
+                    log.warning("IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
                 elif not block_device.startswith(tuple(skip_block_device_names)):
                     print("")
                     print("")
@@ -225,12 +233,14 @@ def get_disks_encrypted():
                             log.warning("IGNORING boot or similar partition in " + block_device)
             # IGNORE SWAP PARTITIONS
             elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
+                print("")
                 print("IGNORING swap partition in " + block_device)
                 log.warning("IGNORING swap partition in " + block_device)
             # SKIP NOT KNOWN TYPE PARTITIONS 
             elif TYPE == 'NOT KNOWN':
-                print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
-                log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
+                print("")
+                print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
+                log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
 
 
         return disks_encrypted
@@ -240,7 +250,8 @@ def get_disks_encrypted():
         return True
 
 def test_data():
-    skip_osfinger_list = ['Raspbian-9']
+    skip_osfinger_list = ['Raspbian-9', 'Raspbian-10']
+    skip_partition_types = ['gpt', 'ntfs', 'dos']
 
     if __grains__['osfinger'] not in skip_osfinger_list:
         # List devices
@@ -390,12 +401,16 @@ def test_data():
                 TYPE = 'PTTYPE'
             else:
                 TYPE = 'NOT KNOWN'
-
+ 
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
-                # IGNORE GPT PARTITIONS
-                if block_devices[block_device][TYPE].lower() == 'gpt':
-                    print("IGNORING gpt partition " + block_device)
-                    log.warning("IGNORING gpt partition " + block_device)
+                # IGNORE PARTITION TYPES in skip_partition_types
+                if block_devices[block_device][TYPE].lower() in skip_partition_types:
+                    print("")
+                    print("")
+                    print("")
+                    print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
+                    print("")
+                    log.warning("IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
                 elif not block_device.startswith(tuple(skip_block_device_names)):
                     print("")
                     print("")
@@ -478,11 +493,15 @@ def test_data():
                     #else:
                     #    return False
             elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
+                print("")
                 print("IGNORING swap partition in " + block_device)
+                print("")
                 log.warning("IGNORING swap partition in " + block_device)
             elif TYPE == 'NOT KNOWN':
-                print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
-                log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!" + block_device)
+                print("")
+                print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
+                print("")
+                log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
 
         return True
     else:
