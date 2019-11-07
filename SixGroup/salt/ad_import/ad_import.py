@@ -22,7 +22,7 @@ print(client.api.auth.get_all_groups())
 print("GROUP_LINKS: ")
 print(client.api.auth.get_group_links())
 print("GET GROUP: ")
-print(client.api.auth.get_group(group_name='sys-mpzhlgumpi03-login', config_name='winad'))
+print(client.api.auth.get_group(group_name='sys-mpzhlgumpi02-login', config_name='winad'))
 print("")
 
 
