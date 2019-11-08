@@ -478,6 +478,16 @@ def test_data():
                 TYPE = 'NOT KNOWN'
  
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
+                #IGNORE "vfat" "EFI System Partition"
+                if 'PARTLABEL' in block_devices[block_device].keys():
+                    if block_devices[block_device][TYPE].lower == 'vfat' and block_devices[block_device]['PARTLABEL'] = "EFI System Partition":
+                        print("")
+                        print("")
+                        print("")
+                        print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
+                        print("")
+                        log.warning("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
+
                 # IGNORE PARTITION TYPES in skip_partition_types
                 if block_devices[block_device][TYPE].lower() in skip_partition_types:
                     print("")
