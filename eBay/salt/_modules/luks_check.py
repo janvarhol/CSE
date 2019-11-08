@@ -480,7 +480,7 @@ def test_data():
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
                 #IGNORE "vfat" "EFI System Partition"
                 if 'PARTLABEL' in block_devices[block_device].keys():
-                    if block_devices[block_device][TYPE].lower == 'vfat' and block_devices[block_device]['PARTLABEL'] = "EFI System Partition":
+                    if block_devices[block_device][TYPE].lower == 'vfat' and block_devices[block_device]['PARTLABEL'] == "EFI System Partition":
                         print("")
                         print("")
                         print("")
