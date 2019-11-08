@@ -480,7 +480,7 @@ def test_data():
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
                 #IGNORE "vfat" "EFI System Partition"
                 print("Device is not swap, moving forward...")
-                print("Device keys: " + block_devices[block_device].keys())
+                print("Device keys: " + str(block_devices[block_device].keys()))
                 if 'PARTLABEL' in block_devices[block_device].keys():
                     print("PARTLABEL found in keys")
                     print("Checking if device is vfat and EFI System Partition")
