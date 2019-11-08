@@ -487,7 +487,7 @@ def test_data():
                     print(block_devices[block_device][TYPE].lower())
                     print(block_devices[block_device]['PARTLABEL'])
                     
-                    if block_devices[block_device][TYPE].lower() == 'vfat' and block_devices[block_device]['PARTLABEL'] == "EFI System Partition":
+                    if block_devices[block_device][TYPE].lower() == 'vfat' and block_devices[block_device]['PARTLABEL'].lower() == "efi system partition":
                         print("")
                         print("")
                         print("")
