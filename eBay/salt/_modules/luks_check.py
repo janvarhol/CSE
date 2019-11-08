@@ -479,7 +479,11 @@ def test_data():
  
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
                 #IGNORE "vfat" "EFI System Partition"
+                print("Device is not swap, moving forward...")
+                print("Device keys: " + block_devices[block_device].keys())
                 if 'PARTLABEL' in block_devices[block_device].keys():
+                    print("PARTLABEL found in keys")
+                    print("Checking if device is vfat and EFI System Partition")
                     if block_devices[block_device][TYPE].lower == 'vfat' and block_devices[block_device]['PARTLABEL'] == "EFI System Partition":
                         print("")
                         print("")
@@ -593,3 +597,4 @@ def test_data():
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         return True
+    
