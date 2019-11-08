@@ -484,7 +484,10 @@ def test_data():
                 if 'PARTLABEL' in block_devices[block_device].keys():
                     print("PARTLABEL found in keys")
                     print("Checking if device is vfat and EFI System Partition")
-                    if block_devices[block_device][TYPE].lower == 'vfat' and block_devices[block_device]['PARTLABEL'] == "EFI System Partition":
+                    print(block_devices[block_device][TYPE].lower())
+                    print(block_devices[block_device]['PARTLABEL'])
+                    
+                    if block_devices[block_device][TYPE].lower() == 'vfat' and block_devices[block_device]['PARTLABEL'] == "EFI System Partition":
                         print("")
                         print("")
                         print("")
@@ -597,4 +600,3 @@ def test_data():
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         return True
-    
