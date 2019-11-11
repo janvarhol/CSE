@@ -187,7 +187,8 @@ def get_disks_encrypted():
 
         # modified block_devices.iteritems() to block_devices.items()
         for block_device, value in block_devices.items():
-        
+            SKIP_DEVICE = False
+            
             # Checking for keys inside block_device
             # could be TYPE, PTTYPE
             print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
@@ -201,46 +202,70 @@ def get_disks_encrypted():
                 TYPE = 'NOT KNOWN'
 
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
+                print("Device is not swap, moving forward...")
+                print("Device keys: " + str(block_devices[block_device].keys()))
+
+                #IGNORE "vfat" "EFI System Partition"
+                if 'PARTLABEL' in block_devices[block_device].keys():
+                    print("PARTLABEL found in keys")
+                    print("Checking if device is vfat and EFI System Partition")
+                    print(block_devices[block_device][TYPE].lower())
+                    print(block_devices[block_device]['PARTLABEL'])
+                    
+                    if block_devices[block_device][TYPE].lower() == 'vfat' and block_devices[block_device]['PARTLABEL'].lower() == "efi system partition":
+                        SKIP_DEVICE = True
+                        print("")
+                        print("")
+                        print("")
+                        print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
+                        print("")
+                        log.warning("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
+
                 # IGNORE PARTITION TYPES in skip_partition_types
                 if block_devices[block_device][TYPE].lower() in skip_partition_types:
+                    SKIP_DEVICE = True
                     print("")
                     print("")
                     print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
                     print("")
                     log.warning("IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
                 elif not block_device.startswith(tuple(skip_block_device_names)):
-                    print("")
-                    print("")
-                    print("")
-                    print("Checking encryption on device: " + block_device)
-                    log.warning("Checking encryption on device: " + block_device)
+                    if not SKIP_DEVICE:
+                        print("")
+                        print("")
+                        print("")
+                        print("Device not skipped")
+                        print("Checking encryption on device: " + block_device)
+                        log.warning("Checking encryption on device: " + block_device)
 
-                    # INFO
-                    print("BLOCK DEVICE: " + block_device)
+                        # INFO
+                        print("BLOCK DEVICE: " + block_device)
 
-                    if block_devices[block_device][TYPE] == 'crypto_LUKS': 
-                      print(block_device + " is encrypted")
-                      log.warning(block_device + " is encrypted")
-                    elif is_disk_encrypted(block_device) == 0:
-                        print(block_device + " is encrypted")
-                        log.warning(block_device + " is encrypted")
-                    else:
-                        # NEW - CHECKING BOOT PARTITION
-                        if not is_boot_partition(block_device, block_devices):
-                            print(block_device + " IS NOT encrypted!!")
-                            log.warning(block_device + " IS NOT encrypted!!")
-                            disks_encrypted = False
-                            return disks_encrypted
+                        if block_devices[block_device][TYPE] == 'crypto_LUKS': 
+                          print(block_device + " is encrypted")
+                          log.warning(block_device + " is encrypted")
+                        elif is_disk_encrypted(block_device) == 0:
+                            print(block_device + " is encrypted")
+                            log.warning(block_device + " is encrypted")
                         else:
-                            print("IGNORING boot or similar partition in " + block_device)
-                            log.warning("IGNORING boot or similar partition in " + block_device)
+                            # NEW - CHECKING BOOT PARTITION
+                            if not is_boot_partition(block_device, block_devices):
+                                print(block_device + " IS NOT encrypted!!")
+                                log.warning(block_device + " IS NOT encrypted!!")
+                                disks_encrypted = False
+                                return disks_encrypted
+                            else:
+                                print("IGNORING boot or similar partition in " + block_device)
+                                log.warning("IGNORING boot or similar partition in " + block_device)
             # IGNORE SWAP PARTITIONS
             elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
+                SKIP_DEVICE = True
                 print("")
                 print("IGNORING swap partition in " + block_device)
                 log.warning("IGNORING swap partition in " + block_device)
             # SKIP NOT KNOWN TYPE PARTITIONS 
             elif TYPE == 'NOT KNOWN':
+                SKIP_DEVICE = True
                 print("")
                 print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
                 log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
@@ -273,113 +298,185 @@ def test_data():
         # TESTING DATA
         print("TESTING DATA ---- TEST BLOCK_DEVICES")
         block_devices = {
-        "/dev/sdb": {
-            "UUID": "3JL4X0-59x0-6Lgp-sXGU-p5XK-2hpp-ay8HUh",
-            "TYPE": "LVM2_member"
-        },
-        "/dev/mapper/home--vg-home--lv": {
-            "UUID": "4f7f66b9-cebf-44bc-9836-752f8e538fc4",
-            "TYPE": "crypto_LUKS"
-        },
-        "/dev/sdc": {
-            "UUID": "AHMdi7-0mLi-hhBI-FHNP-zg6C-7Acj-WYM841",
-            "TYPE": "LVM2_member"
-        },
-        "/dev/mapper/ubuntu--vg-root": {
-            "UUID": "bc1debd2-5500-41d9-a1db-2d6d00565f6a",
-            "TYPE": "ext4"
-        },
-        "/dev/mapper/sda3_crypt": {
-            "UUID": "Bt3ybT-OupL-Y7tW-YAXX-9Plp-jgQu-0mnFuV",
-            "TYPE": "LVM2_member"
-        },
-        "/dev/sda3": {
-            "PARTUUID": "5161b977-c612-4b95-a05a-aae9aaa82dd8",
-            "UUID": "b32f2ad4-5022-432b-b17a-f6218a99ac52",
-            "TYPE": "crypto_LUKS"
-        },
-        "/dev/dm-3": {
-            "UUID": "cee5c7be-8e3b-4f80-b412-127e723a233b",
-            "TYPE": "swap"
-        },
-        "/dev/sda2": {
-            "PARTUUID": "be5279df-d48a-41bc-abc3-e3ef7acaf35e",
-            "UUID": "cbf9e6ad-a56f-4c89-a7f5-cfb32b01ecd1",
-            "TYPE": "ext2"
-        },
-        "/dev/loop0": {
-            "TYPE": "squashfs"
-        },
-        "/dev/mapper/ubuntu--vg-swap_1": {
-            "UUID": "cee5c7be-8e3b-4f80-b412-127e723a233b",
-            "TYPE": "swap"
-        },
-        "/dev/loop2": {
-            "TYPE": "squashfs"
-        },
-        "/dev/loop1": {
-            "TYPE": "squashfs"
-        },
-        "/dev/mapper/crypt_home": {
-            "UUID": "dbcd5f64-1e74-4b56-8b12-aa3a3bd47d0d",
-            "TYPE": "ext4"
-        },
-        "/dev/loop3": {
-            "TYPE": "squashfs"
-        },
-        "/dev/sda1": {
-            "PARTUUID": "b0f95149-509e-4dbe-8004-6fa3ea7923af",
-            "UUID": "5878-4E27",
-            "TYPE": "vfat",
-            "PARTLABEL": "EFI System Partition"
+            "/dev/mapper/sda3_crypt": {
+                "UUID": "iqx2uU-zvtb-thBP-Cj5W-cm7f-TYuY-gzC4PA",
+                "TYPE": "LVM2_member"
+            },
+            "/dev/mapper/ubuntu--vg-root": {
+                "UUID": "9f2aa3e3-5cf2-43bc-8ec4-449b48d669bf",
+                "TYPE": "ext4"
+            },
+            "/dev/loop1": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop4": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop6": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop7": {
+                "TYPE": "squashfs"
+            },
+            "/dev/sda1": {
+                "UUID": "35A5-46F3",
+                "TYPE": "vfat",
+                "PARTLABEL": "EFI System Partition",
+                "PARTUUID": "6361cd04-bca4-4b90-b52d-edf96e032233"
+            },
+            "/dev/sda2": {
+                "UUID": "17db5c7a-f330-4a1d-85a6-b658bdf2a9fc",
+                "TYPE": "ext4",
+                "PARTUUID": "f50f1bff-4e4d-44dd-b037-f55cf340e1f8"
+            },
+            "/dev/sda3": {
+                "UUID": "829793e4-70d6-4577-864c-352e6461f40b",
+                "TYPE": "crypto_LUKS",
+                "PARTUUID": "662e6850-17a7-4d07-87dc-85f31d2995d6"
+            },
+            "/dev/sdb1": {
+                "LABEL": "Windows RE Tools",
+                "UUID": "1EA62A93A62A6B89",
+                "TYPE": "ntfs",
+                "PARTLABEL": "Basic data partition",
+                "PARTUUID": "ced5ee38-10a3-4007-81b6-d8dc4fd1f2eb"
+            },
+            "/dev/sdb2": {
+                "UUID": "FE2D-3BAD",
+                "TYPE": "vfat",
+                "PARTLABEL": "EFI system partition",
+                "PARTUUID": "ad74bfd0-aa74-40ef-8c15-b943b444cc3e"
+            },
+            "/dev/sdc1": {
+                "LABEL": "SSD",
+                "UUID": "C89C3E479C3E2FF4",
+                "TYPE": "ntfs",
+                "PARTUUID": "149fdb39-01"
+            },
+            "/dev/sdc5": {
+                "UUID": "6b86f871-bcb4-4f27-a663-c2b1ab6936f8",
+                "TYPE": "ext4",
+                "PARTUUID": "149fdb39-05"
+            },
+            "/dev/sdc6": {
+                "UUID": "1aa62b05-80ae-4021-b63b-f50486d6d5e1",
+                "TYPE": "swap",
+                "PARTUUID": "149fdb39-06"
+            },
+            "/dev/mapper/ubuntu--vg-swap_1": {
+                "UUID": "50f8d4e4-fc97-4333-8baa-18a4a7e75429",
+                "TYPE": "swap"
+            },
+            "/dev/loop9": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop11": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop13": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop14": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop15": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop18": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop20": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop21": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop22": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop24": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop25": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop26": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop0": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop19": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop12": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop23": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop27": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop3": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop5": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop10": {
+                "TYPE": "squashfs"
+            },
+            "/dev/loop2": {
+                "TYPE": "squashfs"
+            },
+            "/dev/sdb3": {
+                "PARTLABEL": "Microsoft reserved partition",
+                "PARTUUID": "f7522d02-5960-4a24-a870-fb73baa4112c"
+            },
+            "/dev/sdb4": {
+                "PARTLABEL": "Basic data partition",
+                "PARTUUID": "966c356c-43cb-497e-ae85-aa205302f506"
+            }
         }
-        }
+        
         mount_points = {
-        "none": {
-            "device": "/dev/mapper/ubuntu--vg-swap_1",
-            "fstype": "swap",
-            "opts": [
-                "sw"
-            ],
-            "dump": "0",
-            "pass": "0"
-        },
-        "/boot/efi": {
-            "device": "UUID=5878-4E27",
-            "fstype": "vfat",
-            "opts": [
-                "umask=0077"
-            ],
-            "dump": "0",
-            "pass": "1"
-        },
-        "/boot": {
-            "device": "UUID=cbf9e6ad-a56f-4c89-a7f5-cfb32b01ecd1",
-            "fstype": "ext2",
-            "opts": [
-                "defaults"
-            ],
-            "dump": "0",
-            "pass": "2"
-        },
-        "/": {
-           "device": "/dev/mapper/ubuntu--vg-root",
-            "fstype": "ext4",
-            "opts": [
-                "errors=remount-ro"
-            ],
-            "dump": "0",
-            "pass": "1"
-        },
-        "/home": {
-            "device": "/dev/mapper/crypt_home",
-            "fstype": "ext4",
-            "opts": [
-                "defaults"
-            ],
-            "dump": "0",
-            "pass": "2"
-        }
+            "/": {
+                "device": "/dev/mapper/ubuntu--vg-root",
+                "fstype": "ext4",
+                "opts": [
+                    "errors=remount-ro"
+                ],
+                "dump": "0",
+                "pass": "1"
+            },
+            "/boot": {
+                "device": "UUID=17db5c7a-f330-4a1d-85a6-b658bdf2a9fc",
+                "fstype": "ext4",
+                "opts": [
+                    "defaults"
+                ],
+                "dump": "0",
+                "pass": "2"
+            },
+            "/boot/efi": {
+                "device": "UUID=35A5-46F3",
+                "fstype": "vfat",
+                "opts": [
+                    "umask=0077"
+                ],
+                "dump": "0",
+                "pass": "1"
+            },
+            "none": {
+                "device": "/dev/mapper/ubuntu--vg-swap_1",
+                "fstype": "swap",
+                "opts": [
+                    "sw"
+                ],
+                "dump": "0",
+                "pass": "0"
+            }
         }
         
         partitions = mount_points.keys()
@@ -392,6 +489,7 @@ def test_data():
         # END TROUBLESHOOTING INFO
 
         for block_device, value in block_devices.iteritems():
+            SKIP_DEVICE = False
             print("TROUBLESHOOTING INFO_BLOCK_DEVICE: " + block_device)
 
             # Checking for keys inside block_device
@@ -405,9 +503,29 @@ def test_data():
             else:
                 TYPE = 'NOT KNOWN'
  
-            if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
+            if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':        
+                print("Device is not swap, moving forward...")
+                print("Device keys: " + str(block_devices[block_device].keys()))
+
+                #IGNORE "vfat" "EFI System Partition"
+                if 'PARTLABEL' in block_devices[block_device].keys():
+                    print("PARTLABEL found in keys")
+                    print("Checking if device is vfat and EFI System Partition")
+                    print(block_devices[block_device][TYPE].lower())
+                    print(block_devices[block_device]['PARTLABEL'])
+                    
+                    if block_devices[block_device][TYPE].lower() == 'vfat' and block_devices[block_device]['PARTLABEL'].lower() == "efi system partition":
+                        SKIP_DEVICE = True
+                        print("")
+                        print("")
+                        print("")
+                        print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
+                        print("")
+                        log.warning("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
+
                 # IGNORE PARTITION TYPES in skip_partition_types
                 if block_devices[block_device][TYPE].lower() in skip_partition_types:
+                    SKIP_DEVICE = True
                     print("")
                     print("")
                     print("")
@@ -415,92 +533,96 @@ def test_data():
                     print("")
                     log.warning("IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
                 elif not block_device.startswith(tuple(skip_block_device_names)):
-                    print("")
-                    print("")
-                    print("Checking encryption on device: " + block_device)
-                    print("BLOCK DEVICE: " + block_device)
+                    if not SKIP_DEVICE:
+                        print("")
+                        print("")
+                        print("Device not skipped")
+                        print("Checking encryption on device: " + block_device)
+                        print("BLOCK DEVICE: " + block_device)
 
-                    IS_BOOT = False
-                    UUID = 'UUID'
-
-                    if "UUID" in block_devices[block_device].keys():
+                        IS_BOOT = False
                         UUID = 'UUID'
-                        print("Using UUID")
-                        block_device_UUID = block_devices[block_device][UUID]
-                        print("block_device_UUID: " + block_device_UUID)
-                    elif "PTUUID" in block_devices[block_device].keys():
-                        UUID = 'PTUUID'
-                        print("Using PTUUID")
-                        block_device_UUID = block_devices[block_device][UUID]
-                        print("block_device_UUID: " + block_device_UUID)
-                    elif "PARTUUID" in block_devices[block_device].keys():
-                        UUID = 'PARTUUID'
-                        print("Using PARTUUID")
-                        block_device_UUID = block_devices[block_device][UUID]
-                        print("block_device_UUID: " + block_device_UUID)
 
-                    #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
-
-                    print("--- BLOCK DEVICE UUID --- : " + block_device_UUID)
-                    print("")
-                    print("")
-
-                    # /boot partition UUID match check (boot partitions can be not encrypted)
-                    if '/boot' in partitions:
-                        print("Checking /boot partition")
-                        log.info("Checking /boot partition")
-
-                        # Get and compare UUIDs from block partition and block device
-                        try:
-                            #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
+                        if "UUID" in block_devices[block_device].keys():
+                            UUID = 'UUID'
+                            print("Using UUID")
                             block_device_UUID = block_devices[block_device][UUID]
-                            boot_UUID = mount_points['/boot']['device'].replace('UUID=', '')
-                            print("Block device " + block_device + " UUID: " + block_device_UUID)
-                            log.info("Block device " + block_device + " UUID: " + block_device_UUID)
-                            print("Boot /boot partition UUID: " + boot_UUID)
-                            log.info("Boot /boot partition UUID: " + boot_UUID)
-
-                            if boot_UUID == block_device_UUID:
-                                print("UUID MATCH for /boot partition and " + block_device + " device")
-                                log.info("UUID MATCH for /boot partition and " + block_device + " device")
-                                #return True
-                                IS_BOOT = True
-                        except:
-                            print("EXCEPTION for /boot - NOT RUNNING CHECK ON TEST DATA")
-
-                    # /boot/efi partition UUID match check
-                    if '/boot/efi' in partitions:
-                        print("Checking /boot/efi partition")
-                        log.info("Checking /boot/efi partition")
-
-                        # Get and compare UUIDs from block partition and block device
-                        try:
-                            #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
+                            print("block_device_UUID: " + block_device_UUID)
+                        elif "PTUUID" in block_devices[block_device].keys():
+                            UUID = 'PTUUID'
+                            print("Using PTUUID")
                             block_device_UUID = block_devices[block_device][UUID]
-                            boot_UUID = mount_points['/boot/efi']['device'].replace('UUID=', '')
-                            print("Block device " + block_device + " UUID: " + block_device_UUID)
-                            log.info("Block device " + block_device + " UUID: " + block_device_UUID)
-                            print("Boot /boot/efi partition UUID: " + boot_UUID)
-                            log.info("Boot /boot/efi partition UUID: " + boot_UUID)
+                            print("block_device_UUID: " + block_device_UUID)
+                        elif "PARTUUID" in block_devices[block_device].keys():
+                            UUID = 'PARTUUID'
+                            print("Using PARTUUID")
+                            block_device_UUID = block_devices[block_device][UUID]
+                            print("block_device_UUID: " + block_device_UUID)
 
-                            if boot_UUID == block_device_UUID:
-                                print("UUID MATCH for /boot/efi partition and " + block_device + " device")
-                                log.info("UUID MATCH for /boot/efi partition and " + block_device + " device")
-                                #return True
-                                IS_BOOT = True
-                        except:
-                            print("EXCEPTION for /boot/efi - NOT RUNNING CHECK ON TEST DATA")
+                        #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
 
-                    #if IS_BOOT:
-                    #    return True
-                    #else:
-                    #    return False
+                        print("--- BLOCK DEVICE UUID --- : " + block_device_UUID)
+                        print("")
+                        print("")
+
+                        # /boot partition UUID match check (boot partitions can be not encrypted)
+                        if '/boot' in partitions:
+                            print("Checking /boot partition")
+                            log.info("Checking /boot partition")
+
+                            # Get and compare UUIDs from block partition and block device
+                            try:
+                                #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
+                                block_device_UUID = block_devices[block_device][UUID]
+                                boot_UUID = mount_points['/boot']['device'].replace('UUID=', '')
+                                print("Block device " + block_device + " UUID: " + block_device_UUID)
+                                log.info("Block device " + block_device + " UUID: " + block_device_UUID)
+                                print("Boot /boot partition UUID: " + boot_UUID)
+                                log.info("Boot /boot partition UUID: " + boot_UUID)
+
+                                if boot_UUID == block_device_UUID:
+                                    print("UUID MATCH for /boot partition and " + block_device + " device")
+                                    log.info("UUID MATCH for /boot partition and " + block_device + " device")
+                                    #return True
+                                    IS_BOOT = True
+                            except:
+                                print("EXCEPTION for /boot - NOT RUNNING CHECK ON TEST DATA")
+
+                        # /boot/efi partition UUID match check
+                        if '/boot/efi' in partitions:
+                            print("Checking /boot/efi partition")
+                            log.info("Checking /boot/efi partition")
+
+                            # Get and compare UUIDs from block partition and block device
+                            try:
+                                #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
+                                block_device_UUID = block_devices[block_device][UUID]
+                                boot_UUID = mount_points['/boot/efi']['device'].replace('UUID=', '')
+                                print("Block device " + block_device + " UUID: " + block_device_UUID)
+                                log.info("Block device " + block_device + " UUID: " + block_device_UUID)
+                                print("Boot /boot/efi partition UUID: " + boot_UUID)
+                                log.info("Boot /boot/efi partition UUID: " + boot_UUID)
+
+                                if boot_UUID == block_device_UUID:
+                                    print("UUID MATCH for /boot/efi partition and " + block_device + " device")
+                                    log.info("UUID MATCH for /boot/efi partition and " + block_device + " device")
+                                    #return True
+                                    IS_BOOT = True
+                            except:
+                                print("EXCEPTION for /boot/efi - NOT RUNNING CHECK ON TEST DATA")
+
+                        #if IS_BOOT:
+                        #    return True
+                        #else:
+                        #    return False
             elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
+                SKIP_DEVICE = True
                 print("")
                 print("IGNORING swap partition in " + block_device)
                 print("")
                 log.warning("IGNORING swap partition in " + block_device)
             elif TYPE == 'NOT KNOWN':
+                SKIP_DEVICE = True
                 print("")
                 print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
                 print("")
