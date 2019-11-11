@@ -167,6 +167,10 @@ def get_disks_encrypted():
     '''
     skip_osfinger_list = ['Raspbian-9', 'Raspbian-10']
 
+    luks_assessment_encrypted = []
+    luks_assessment_NOT_encrypted = []
+    
+
     if __grains__['osfinger'] not in skip_osfinger_list:
         cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
         if not cryptsetup_bin:
@@ -244,16 +248,22 @@ def get_disks_encrypted():
                         if block_devices[block_device][TYPE] == 'crypto_LUKS': 
                           print(block_device + " is encrypted")
                           log.warning(block_device + " is encrypted")
+                          # Add device to luks_assessment_encrypted
+                          luks_assessment_encrypted.append(block_device)
                         elif is_disk_encrypted(block_device) == 0:
                             print(block_device + " is encrypted")
                             log.warning(block_device + " is encrypted")
+                            # Add device to luks_assessment_encrypted
+                            luks_assessment_encrypted.append(block_device)
                         else:
                             # NEW - CHECKING BOOT PARTITION
                             if not is_boot_partition(block_device, block_devices):
                                 print(block_device + " IS NOT encrypted!!")
                                 log.warning(block_device + " IS NOT encrypted!!")
                                 disks_encrypted = False
-                                return disks_encrypted
+                                # Add device to luks_assessment_NOT_encrypted
+                                luks_assessment_NOT_encrypted.append(block_device)
+                                #return disks_encrypted
                             else:
                                 print("IGNORING boot or similar partition in " + block_device)
                                 log.warning("IGNORING boot or similar partition in " + block_device)
@@ -271,7 +281,19 @@ def get_disks_encrypted():
                 log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
 
 
-        return disks_encrypted
+        #return disks_encrypted
+
+        print("")
+        print("-------- LUKS ENCRYPTION RESULT --------")
+        print("ENCRYPTED DEVICES: " + str(luks_assessment_encrypted))
+        print("")        
+        print("NOT ENCRYPTED DEVICES: " + str(luks_assessment_NOT_encrypted))
+
+        # If there are NOT encrypted device, return False
+        if len(luks_assessment_NOT_encrypted) > 0:
+          return False
+        else:
+          return True    
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
@@ -633,3 +655,4 @@ def test_data():
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         return True
+
