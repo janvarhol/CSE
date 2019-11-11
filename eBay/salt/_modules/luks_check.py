@@ -285,9 +285,9 @@ def get_disks_encrypted():
 
         print("")
         print("-------- LUKS ENCRYPTION RESULT --------")
-        print("ENCRYPTED DEVICES: " + str(luks_assessment_encrypted))
+        print("ENCRYPTED DEVICES: " + json.dumps(luks_assessment_encrypted, indent=4))
         print("")        
-        print("NOT ENCRYPTED DEVICES: " + str(luks_assessment_NOT_encrypted))
+        print("DEVICES NOT ENCRYPTED: " + json.dumps(luks_assessment_NOT_encrypted, indent=4))
 
         # If there are NOT encrypted device, return False
         if len(luks_assessment_NOT_encrypted) > 0:
