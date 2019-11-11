@@ -291,9 +291,9 @@ def get_disks_encrypted():
 
         # If there are NOT encrypted device, return False
         if len(luks_assessment_NOT_encrypted) > 0:
-          return False
+            return False
         else:
-          return True    
+            return True    
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
