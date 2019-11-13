@@ -173,23 +173,16 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         throttle_list = []
         throttle_lists = []
         
-        
+        # Generate throttle lists
         for minion in ret:
-            print("minion: " + minion)
-            print("len throttle list: " + str(len(throttle_list)))
-                  
             if len(throttle_list) == throttle:
-                print("list igual a throttle, cambiar de lista")    
                 throttle_lists.append(throttle_list)
                 throttle_list = []
-                throttle_list.append(minion)
-                
+                throttle_list.append(minion)                
             else:
-                print("agregar minion a lista")
                 throttle_list.append(minion)
-
         throttle_lists.append(throttle_list)
-        print(throttle_lists)
+        print("Throttle lists: + throttle_lists)
             
 
  
