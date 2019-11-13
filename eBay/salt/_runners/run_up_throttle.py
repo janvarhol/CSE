@@ -230,5 +230,5 @@ def do_the_job(throttle_lists):
         else:
             #print("No es una lista")
             #print(type(item))
-            print("minion": +item)
+            print("minion: " +item)
             print("---")
