@@ -221,8 +221,11 @@ def do_the_job(throttle_lists):
     print(throttle_lists)
     print("-----------------")
 
-    for item in throttle_lists:
-        if isinstance(item, list):
+    for item_lista in throttle_lists:
+        for item in item_lista:
+            print("minion: " +item)
+        '''
+        #if isinstance(item, list):
             print("Es una lista")
             print(type(item))
             print(item)
@@ -232,3 +235,4 @@ def do_the_job(throttle_lists):
             #print(type(item))
             print("minion: " +item)
             print("---")
+        '''
