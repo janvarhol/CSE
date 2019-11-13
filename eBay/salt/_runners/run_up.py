@@ -147,6 +147,12 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     # Execute on minions up
     exec_ret = {}
 
+    # Throttling execution
+    minions_tgt_list = []
+    minions_count = len(ret)
+    print("Throttle: " + throttle)
+    print("Minions count: " + minions_count)
+    
     '''
     for minion in ret:
         # Execute luks_check.get_disks_encrypted on minion
