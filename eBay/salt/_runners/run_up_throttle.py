@@ -225,10 +225,10 @@ def do_the_job(throttle_lists):
         if type(item) == 'list':
             print("Es una lista")
             print(type(item))
-            print(item
+            print(item)
             print("---")
         else:
             print("No es una lista")
             print(type(item))
-            print(item
+            print(item)
             print("---"))
