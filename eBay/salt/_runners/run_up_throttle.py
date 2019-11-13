@@ -143,7 +143,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     now = datetime.now()
     # dd/mm/YY H:M:S
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    
+
     # Execute on minions up
     exec_ret = {}
 
@@ -152,15 +152,15 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     minions_count = len(ret)
     print("Throttle: " + str(throttle))
     print("Minions count: " + str(minions_count))
-    
+
     if throttle > minions_count:
         print("Equal throttle to minions count")
-        throttle = minions_count 
+        throttle = minions_count
 
     minions_tgt_list = ','.join(ret)
     print("Minions target list: " + minions_tgt_list)
-    
-   
+
+
     if minions_count <= throttle:
         # Execute full list
         # Execute luks_check.get_disks_encrypted on minion
@@ -172,23 +172,23 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         # Execute in batches based on throttle
         throttle_list = []
         throttle_lists = []
-        
+
         # Generate throttle lists
         for minion in ret:
             if len(throttle_list) == throttle:
                 throttle_lists.append(throttle_list)
                 throttle_list = []
-                throttle_list.append(minion)                
+                throttle_list.append(minion)
             else:
                 throttle_list.append(minion)
         throttle_lists.append(throttle_list)
         #print("Throttle lists: " + str(throttle_lists))
         do_the_job(throttle_lists)
-        
-            
 
- 
-    
+
+
+
+
     '''
     for minion in ret:
         # Execute luks_check.get_disks_encrypted on minion
@@ -211,7 +211,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
 
     return exec_ret
     '''
-    
+
     return True
 
 
@@ -221,6 +221,9 @@ def do_the_job(throttle_lists):
     print(throttle_lists)
 
     for item in throttle_lists:
-        print(type(item))
-        print(item)
-
+        if type(item) == 'list':
+            print("Es una lista")
+            print(item)
+        else:
+            print("No es una lista")
+            print(item)
