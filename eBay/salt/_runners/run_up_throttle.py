@@ -230,7 +230,10 @@ def do_the_job(throttle_lists):
         else:
             print("0 minions")
 
+        for minion in exec_ret:
+            print(exec_ret['minion'])
 
+            
         exec_ret_lists.append(exec_ret)
 
 
