@@ -125,5 +125,7 @@ def execute(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
         timeout=timeout,
         gather_job_timeout=gather_job_timeout
     )
-    #.get('up', [])
+    for minion in ret:
+        print("minion up found: " + minion)
+        
     return ret
