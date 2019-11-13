@@ -163,7 +163,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
 
     if minions_count < throttle:
         # Execute full list
-        do_the_job(minions_tgt_list.split(','))
+        ret = do_the_job(minions_tgt_list.split(','))
     else:
         # Execute in batches based on throttle
         throttle_list = []
@@ -179,36 +179,9 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
                 throttle_list.append(minion)
         throttle_lists.append(throttle_list)
         #print("Throttle lists: " + str(throttle_lists))
-        do_the_job(throttle_lists)
+        ret = do_the_job(throttle_lists)
 
-
-
-
-
-    '''
-    for minion in ret:
-        # Execute luks_check.get_disks_encrypted on minion
-        exec_ret[minion] = __salt__['salt.execute'](minion, 'luks_check.get_disks_encrypted')
-
-
-        # datetime object containing current date and time
-        now = datetime.now()
-        # dd/mm/YY H:M:S
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-
-        # Set grains based on luks_check execution result True/False
-        if exec_ret[minion][minion] == False:
-            grains = {'runner_luks_encrypted': False, 'Time': dt_string, 'test': True}
-            exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
-        else:
-            grains = {'runner_luks_encrypted': True, 'Time': dt_string, 'test': True}
-            exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
-
-
-    return exec_ret
-    '''
-
-    return True
+    return ret
 
 
 def do_the_job(throttle_lists):
@@ -221,14 +194,7 @@ def do_the_job(throttle_lists):
     for minions_tgt_list in throttle_lists:
         # Execute luks_check.get_disks_encrypted on minion
         exec_ret = __salt__['salt.execute'](minions_tgt_list, 'luks_check.get_disks_encrypted', tgt_type='list')
-        if len(exec_ret) == 1:
-            print("1 solo minion")
-            print(exec_ret)
-        elif len(exec_ret) > 1:
-            print("Grupo de minions")
-            print(exec_ret)
-        else:
-            print("0 minions")
+        exec_ret_lists.append(exec_ret)
 
         for minion in exec_ret:
             #print(exec_ret[minion])
@@ -247,7 +213,5 @@ def do_the_job(throttle_lists):
                 exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
 
 
-        exec_ret_lists.append(exec_ret)
-
-
-    print(exec_ret_lists)
+    #print(exec_ret_lists)
+    return exec_ret_lists
