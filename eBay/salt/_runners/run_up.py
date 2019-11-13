@@ -120,7 +120,7 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
 
     return exec_ret
 
-def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None, throttle=10):
+def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
     '''
     Exec function on minions that are up
     CLI Example:
@@ -138,18 +138,18 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         gather_job_timeout=gather_job_timeout
     )
 
-    # Execute on minions up
-    exec_ret = {}
 
     # datetime object containing current date and time
     now = datetime.now()
     # dd/mm/YY H:M:S
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
+    # Execute on minions up
+    exec_ret = {}
     
     minions_tgt_list = []
     minions_count = len(ret)
-    print("Throttle: " + throttle)
+    #print("Throttle: " + throttle)
     print("Minions count: " + minions_count)
 
     '''
