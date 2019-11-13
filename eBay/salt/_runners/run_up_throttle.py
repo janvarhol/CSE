@@ -56,9 +56,9 @@ def status(output=True, tgt='*', tgt_type='glob', timeout=None, gather_job_timeo
     Print the status of all known salt minions
     CLI Example:
     .. code-block:: bash
-        salt-run run_up.status
-        salt-run run_up.status tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up.status timeout=5 gather_job_timeout=10
+        salt-run run_up_throttle.status
+        salt-run run_up_throttle.status tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up_throttle.status timeout=5 gather_job_timeout=10
     '''
     ret = {}
 
@@ -79,9 +79,9 @@ def up(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):  # pyli
     Print a list of all of the minions that are up
     CLI Example:
     .. code-block:: bash
-        salt-run run_up.up
-        salt-run run_up.up tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up.up timeout=5 gather_job_timeout=10
+        salt-run run_up_throttle.up
+        salt-run run_up_throttle.up tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up_throttle.up timeout=5 gather_job_timeout=10
     '''
     ret = status(
         output=False,
@@ -98,9 +98,9 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
     Exec test.version on minions that are up
     CLI Example:
     .. code-block:: bash
-        salt-run run_up.execute_version
-        salt-run run_up.execute_version tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up.execute_version timeout=5 gather_job_timeout=10
+        salt-run run_up_throttle.execute_version
+        salt-run run_up_throttle.execute_version tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up_throttle.execute_version timeout=5 gather_job_timeout=10
     '''
 
     # Get minions up
@@ -126,9 +126,9 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     Exec function on minions that are up
     CLI Example:
     .. code-block:: bash
-        salt-run run_up.execute_luks_check
-        salt-run run_up.execute_luks_check tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up.execute_luks_check timeout=5 gather_job_timeout=10
+        salt-run run_up_throttle.execute_luks_check
+        salt-run run_up_throttle.execute_luks_check tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up_throttle.execute_luks_check timeout=5 gather_job_timeout=10
     '''
 
     # Get minions up
@@ -153,6 +153,10 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     print("Throttle: " + str(throttle))
     print("Minions count: " + str(minions_count))
     
+    minions_tgt_list = ','.join(ret)
+    print("Minions target list :" + minions_tgt_list)
+    
+    '''
     if minions_count <= throttle:
         # Execute full list
         # Create target list
@@ -163,10 +167,11 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         exec_ret = __salt__['salt.execute'](minions_tgt_list, 'luks_check.get_disks_encrypted', tgt_type='list')
         print(exec_ret)
     else:
-        # Execute in batches based on throtle
-        throttle_range = range(throttle+1)
-        for i in throttle_range:
-            print(i)
+        # Execute in batches based on throttle
+        for minion in ret:
+            for i in range(throttle+1):
+                minions_tgt_list += minion+','
+    '''        
     
     '''
     for minion in ret:
