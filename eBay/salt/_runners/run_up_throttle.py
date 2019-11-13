@@ -219,11 +219,16 @@ def do_the_job(throttle_lists):
     print("DOING THE JOB: ")
     print(type(throttle_lists))
     print(throttle_lists)
+    print("-----------------")
 
     for item in throttle_lists:
         if type(item) == 'list':
             print("Es una lista")
-            print(item)
+            print(type(item))
+            print(item
+            print("---")
         else:
             print("No es una lista")
-            print(item)
+            print(type(item))
+            print(item
+            print("---"))
