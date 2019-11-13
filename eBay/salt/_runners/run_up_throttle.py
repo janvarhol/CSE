@@ -181,8 +181,8 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
 
         ret = do_the_job(throttle_lists)
 
-    if show_job_output = True:
-        print(json.dumps(ret, indent=4, sort_keys=True))
+    #if show_job_output = True:
+    #    print(json.dumps(ret, indent=4, sort_keys=True))
 
     return True
 
