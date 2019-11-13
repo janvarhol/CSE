@@ -129,9 +129,12 @@ def execute(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
     )
     
     # Execute on minions up
+    exec_ret = {}
+    
     for minion in ret:
         print("Executing function on minion: " + minion)
-        exec_ret = __salt__['salt.execute'](minion, 'test.version')
-        print(exec_ret)
+        exec_ret[minion] = __salt__['salt.execute'](minion, 'test.version')
+        #print(exec_ret)
         
-    return ret
+    #return ret
+    return exec_ret
