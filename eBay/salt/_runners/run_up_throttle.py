@@ -166,10 +166,6 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
    
     else:
         # Execute in batches based on throttle
-        print(type(ret))
-        
-        i=0
-        total = 0
         throttle_list = []
         throttle_lists = []
         
