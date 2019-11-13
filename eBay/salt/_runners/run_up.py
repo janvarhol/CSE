@@ -4,33 +4,16 @@ Runner to execute modules only on minions that are up
 '''
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
-#import os
-#import operator
-#import re
-#import subprocess
-#import tempfile
-#import time
+from datetime import datetime
 import logging
-#import uuid
 
 # Import 3rd-party libs
 from salt.ext import six
-#from salt.ext.six.moves.urllib.request import urlopen as _urlopen  # pylint: disable=no-name-in-module,import-error
 
 # Import salt libs
 import salt.client
-#import salt.client.ssh
-#import salt.key
-#import salt.utils.compat
-#import salt.utils.files
-#import salt.utils.minions
-#import salt.utils.path
-#import salt.utils.versions
-#import salt.wheel
-#import salt.version
-from salt.exceptions import SaltClientError, SaltSystemExit
-#FINGERPRINT_REGEX = re.compile(r'^([a-f0-9]{2}:){15}([a-f0-9]{2})$')
-from datetime import datetime
+#from salt.exceptions import SaltClientError, SaltSystemExit
+
 
 log = logging.getLogger(__name__)
 
@@ -181,7 +164,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
             exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
         else:
             grains = {'runner_luks_encrypted': True, 'Time': dt_string, 'test': True}
-            exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})         
+            exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
 
 
     return exec_ret
