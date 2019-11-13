@@ -120,6 +120,7 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
 
     return exec_ret
 
+
 def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
     '''
     Exec function on minions that are up
@@ -138,25 +139,15 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         gather_job_timeout=gather_job_timeout
     )
 
-
     # datetime object containing current date and time
     now = datetime.now()
     # dd/mm/YY H:M:S
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-
+    
     # Execute on minions up
     exec_ret = {}
-    
-    minions_tgt_list = []
-    minions_count = len(ret)
-    #print("Throttle: " + throttle)
-    print("Minions count: " + minions_count)
 
-    '''
     for minion in ret:
-        if len(minions_list) < throttle:
-            minions_list.append(minion)
-        
         # Execute luks_check.get_disks_encrypted on minion
         exec_ret[minion] = __salt__['salt.execute'](minion, 'luks_check.get_disks_encrypted')
 
@@ -174,9 +165,6 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
             grains = {'runner_luks_encrypted': True, 'Time': dt_string, 'test': True}
             exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
 
-    
 
     return exec_ret
-    '''
 
-    return True
