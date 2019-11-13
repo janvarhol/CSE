@@ -174,8 +174,12 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         throttle_lists = []
         
         
-        for minion in ret:       
+        for minion in ret:
+            print("minion: " + minion)
+            print("len throttle list: " + str(len(throttle_list))
+                  
             if len(throttle_list) == throttle:
+                print("list igual a throttle")    
                 throttle_lists.append(throttle_list)
                 throttle_list = []
             else:
