@@ -110,7 +110,7 @@ def up(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):  # pyli
     return ret
 
 
-def exec(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
+def execute(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
     '''
     Exec function on minions that are up
     CLI Example:
