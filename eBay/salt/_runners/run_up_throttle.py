@@ -222,7 +222,7 @@ def do_the_job(throttle_lists):
     print("-----------------")
 
     for item in throttle_lists:
-        if type(item) == 'list':
+        if isinstance(item, list):
             print("Es una lista")
             print(type(item))
             print(item)
