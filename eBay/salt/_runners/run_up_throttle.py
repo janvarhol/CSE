@@ -214,3 +214,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
 def do_the_job(throttle_lists):
     print("DOING THE JOB: ")
     print(throttle_lists)
+
+    for item in throttle_lists:
+        print(type(item))
+
