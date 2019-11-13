@@ -150,7 +150,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     # Throttling execution
     minions_tgt_list = []
     minions_count = len(ret)
-    print("Throttle: " + throttle)
+    print("Throttle: " + str(throttle))
     print("Minions count: " + minions_count)
     
     '''
