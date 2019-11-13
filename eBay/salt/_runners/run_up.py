@@ -147,6 +147,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     # Execute on minions up
     exec_ret = {}
 
+    '''
     for minion in ret:
         # Execute luks_check.get_disks_encrypted on minion
         exec_ret[minion] = __salt__['salt.execute'](minion, 'luks_check.get_disks_encrypted')
@@ -167,4 +168,6 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
 
 
     return exec_ret
-
+    '''
+    
+    return True
