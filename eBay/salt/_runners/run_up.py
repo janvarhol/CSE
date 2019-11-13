@@ -73,9 +73,9 @@ def status(output=True, tgt='*', tgt_type='glob', timeout=None, gather_job_timeo
     Print the status of all known salt minions
     CLI Example:
     .. code-block:: bash
-        salt-run manage.status
-        salt-run manage.status tgt="webservers" tgt_type="nodegroup"
-        salt-run manage.status timeout=5 gather_job_timeout=10
+        salt-run run_up.status
+        salt-run run_up.status tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up.status timeout=5 gather_job_timeout=10
     '''
     ret = {}
 
@@ -96,9 +96,9 @@ def up(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):  # pyli
     Print a list of all of the minions that are up
     CLI Example:
     .. code-block:: bash
-        salt-run manage.up
-        salt-run manage.up tgt="webservers" tgt_type="nodegroup"
-        salt-run manage.up timeout=5 gather_job_timeout=10
+        salt-run run_up.up
+        salt-run run_up.up tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up.up timeout=5 gather_job_timeout=10
     '''
     ret = status(
         output=False,
@@ -107,4 +107,23 @@ def up(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):  # pyli
         timeout=timeout,
         gather_job_timeout=gather_job_timeout
     ).get('up', [])
+    return ret
+
+
+def exec(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
+    '''
+    Exec function on minions that are up
+    CLI Example:
+    .. code-block:: bash
+        salt-run run_up.up
+        salt-run run_up.up tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up.up timeout=5 gather_job_timeout=10
+    '''
+    ret = up(
+        tgt=tgt,
+        tgt_type=tgt_type,
+        timeout=timeout,
+        gather_job_timeout=gather_job_timeout
+    )
+    #.get('up', [])
     return ret
