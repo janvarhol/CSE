@@ -119,15 +119,19 @@ def execute(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
         salt-run run_up.up tgt="webservers" tgt_type="nodegroup"
         salt-run run_up.up timeout=5 gather_job_timeout=10
     '''
+    
+    # Get minions up
     ret = up(
         tgt=tgt,
         tgt_type=tgt_type,
         timeout=timeout,
         gather_job_timeout=gather_job_timeout
     )
+    
+    # Execute on minions up
     for minion in ret:
         print("Executing function on minion: " + minion)
-        exec_ret = __salt__['salt.execute']('*', 'test.version')
+        exec_ret = __salt__['salt.execute'](minion, 'test.version')
         print(exec_ret)
         
     return ret
