@@ -30,6 +30,7 @@ import salt.client
 #import salt.version
 from salt.exceptions import SaltClientError, SaltSystemExit
 #FINGERPRINT_REGEX = re.compile(r'^([a-f0-9]{2}:){15}([a-f0-9]{2})$')
+from datetime import datetime
 
 log = logging.getLogger(__name__)
 
@@ -119,7 +120,7 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
         salt-run run_up.execute_version tgt="webservers" tgt_type="nodegroup"
         salt-run run_up.execute_version timeout=5 gather_job_timeout=10
     '''
-    
+
     # Get minions up
     ret = up(
         tgt=tgt,
@@ -127,15 +128,15 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
         timeout=timeout,
         gather_job_timeout=gather_job_timeout
     )
-    
+
     # Execute on minions up
     exec_ret = {}
-    
+
     for minion in ret:
         print("Executing function on minion: " + minion)
         exec_ret[minion] = __salt__['salt.execute'](minion, 'test.version')
 
-    
+
     return exec_ret
 
 def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
@@ -147,7 +148,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         salt-run run_up.execute_luks_check tgt="webservers" tgt_type="nodegroup"
         salt-run run_up.execute_luks_check timeout=5 gather_job_timeout=10
     '''
-    
+
     # Get minions up
     ret = up(
         tgt=tgt,
@@ -155,17 +156,29 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         timeout=timeout,
         gather_job_timeout=gather_job_timeout
     )
-    
+
     # Execute on minions up
     exec_ret = {}
-    
+
+    # datetime object containing current date and time
+    now = datetime.now()
+    # dd/mm/YY H:M:S
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    print("date and time =", dt_string)	
     for minion in ret:
         print("Executing function on minion: " + minion)
         exec_ret[minion] = __salt__['salt.execute'](minion, 'luks_check.get_disks_encrypted')
-        print(exec_ret[minion][minion])
-        
-                #grains = {'luks_encrypted': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
-                #__salt__['grains.set']('luks', grains, force=True)
 
-    
+
+        # datetime object containing current date and time
+        now = datetime.now()
+        # dd/mm/YY H:M:S
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        
+        if exec_ret[minion][minion] == False:
+            grains = {'runner_luks_encrypted': False, 'Time': now }
+            print(grains)
+            #__salt__['grains.set']('luks    ', grains, force=True)
+
+
     return exec_ret
