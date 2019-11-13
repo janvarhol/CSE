@@ -221,4 +221,5 @@ def do_the_job(throttle_lists):
 
     for item in throttle_lists:
         print(type(item))
+        print(item)
 
