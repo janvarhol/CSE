@@ -154,13 +154,18 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     print("Minions count: " + str(minions_count))
     
     if minions_count <= throttle:
+        # Execute full list
         # Create target list
         minions_tgt_list = ','.join(ret)
         print(minions_tgt_list)
     
-    # Execute luks_check.get_disks_encrypted on minion
-    exec_ret = __salt__['salt.execute'](minions_tgt_list, 'luks_check.get_disks_encrypted', tgt_type='list')
-    print(exec_ret)
+        # Execute luks_check.get_disks_encrypted on minion
+        exec_ret = __salt__['salt.execute'](minions_tgt_list, 'luks_check.get_disks_encrypted', tgt_type='list')
+        print(exec_ret)
+    else:
+        # Execute in batches based on throtle
+        for i in range(0,throttle):
+            print(i)
     
     '''
     for minion in ret:
