@@ -133,7 +133,6 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
     exec_ret = {}
 
     for minion in ret:
-        print("Executing function on minion: " + minion)
         exec_ret[minion] = __salt__['salt.execute'](minion, 'test.version')
 
 
@@ -165,8 +164,9 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     # dd/mm/YY H:M:S
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
+
     for minion in ret:
-        print("Executing function on minion: " + minion)
+        # Execute luks_check.get_disks_encrypted on minion
         exec_ret[minion] = __salt__['salt.execute'](minion, 'luks_check.get_disks_encrypted')
 
 
@@ -174,11 +174,14 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         now = datetime.now()
         # dd/mm/YY H:M:S
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        
+
+        # Set grains based on luks_check execution result True/False
         if exec_ret[minion][minion] == False:
             grains = {'runner_luks_encrypted': False, 'Time': dt_string }
             print(grains)
-            #__salt__['grains.set']('luks    ', grains, force=True)
+        else:
+            grains = {'runner_luks_encrypted': True, 'Time': dt_string }
+            print(grains)
 
 
     return exec_ret
