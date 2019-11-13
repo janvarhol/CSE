@@ -1,11 +1,20 @@
 # -*- coding: utf-8 -*-
 '''
 Runner to execute modules only on minions that are up
+
+# salt-run saltutil.sync_runners
+# salt-run run_up_throttle.execute_luks_check
+#           timeout=1 
+#           gather_job_timeout=1
+#           throttle=2
+#           show_job_output=True
+
 '''
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 from datetime import datetime
 import logging
+import json
 
 # Import 3rd-party libs
 from salt.ext import six
@@ -56,9 +65,9 @@ def status(output=True, tgt='*', tgt_type='glob', timeout=None, gather_job_timeo
     Print the status of all known salt minions
     CLI Example:
     .. code-block:: bash
-        salt-run run_up.status
-        salt-run run_up.status tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up.status timeout=5 gather_job_timeout=10
+        salt-run run_up_throttle.status
+        salt-run run_up_throttle.status tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up_throttle.status timeout=5 gather_job_timeout=10
     '''
     ret = {}
 
@@ -79,9 +88,9 @@ def up(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):  # pyli
     Print a list of all of the minions that are up
     CLI Example:
     .. code-block:: bash
-        salt-run run_up.up
-        salt-run run_up.up tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up.up timeout=5 gather_job_timeout=10
+        salt-run run_up_throttle.up
+        salt-run run_up_throttle.up tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up_throttle.up timeout=5 gather_job_timeout=10
     '''
     ret = status(
         output=False,
@@ -98,9 +107,9 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
     Exec test.version on minions that are up
     CLI Example:
     .. code-block:: bash
-        salt-run run_up.execute_version
-        salt-run run_up.execute_version tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up.execute_version timeout=5 gather_job_timeout=10
+        salt-run run_up_throttle.execute_version
+        salt-run run_up_throttle.execute_version tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up_throttle.execute_version timeout=5 gather_job_timeout=10
     '''
 
     # Get minions up
@@ -120,14 +129,15 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
 
     return exec_ret
 
-def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
+
+def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None, throttle=10, show_job_output=False):
     '''
     Exec function on minions that are up
     CLI Example:
     .. code-block:: bash
-        salt-run run_up.execute_luks_check
-        salt-run run_up.execute_luks_check tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up.execute_luks_check timeout=5 gather_job_timeout=10
+        salt-run run_up_throttle.execute_luks_check
+        salt-run run_up_throttle.execute_luks_check tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up_throttle.execute_luks_check timeout=5 gather_job_timeout=10
     '''
 
     # Get minions up
@@ -138,32 +148,79 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
         gather_job_timeout=gather_job_timeout
     )
 
-    # Execute on minions up
-    exec_ret = {}
-
     # datetime object containing current date and time
     now = datetime.now()
     # dd/mm/YY H:M:S
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
+    # Execute on minions up
+    exec_ret = {}
 
-    for minion in ret:
+    # Throttling execution
+    minions_tgt_list = ''
+    minions_count = len(ret)
+    print("Throttle: " + str(throttle))
+    print("Minions count: " + str(minions_count))
+
+    if throttle > minions_count:
+        # Equal throttle to minions count
+        throttle = minions_count
+
+    minions_tgt_list = ','.join(ret)
+
+    # Run the job
+    if minions_count < throttle:
+        # Execute full list
+        ret = do_the_job(minions_tgt_list.split(','))
+    else:
+        # Execute in batches based on throttle
+        throttle_list = []
+        throttle_lists = []
+
+        # Generate throttle lists
+        for minion in ret:
+            if len(throttle_list) == throttle:
+                throttle_lists.append(throttle_list)
+                throttle_list = []
+                throttle_list.append(minion)
+            else:
+                throttle_list.append(minion)
+        throttle_lists.append(throttle_list)
+
+        ret = do_the_job(throttle_lists)
+
+    if show_job_output == True:
+        return True, json.dumps(ret, indent=4, sort_keys=True)
+    else:
+        return True
+
+
+def do_the_job(throttle_lists):
+    # Run luks_check and set grains
+    print("DOING THE JOB: ")
+
+    exec_ret_lists = []
+    for minions_tgt_list in throttle_lists:
         # Execute luks_check.get_disks_encrypted on minion
-        exec_ret[minion] = __salt__['salt.execute'](minion, 'luks_check.get_disks_encrypted')
+        exec_ret = __salt__['salt.execute'](minions_tgt_list, 'luks_check.get_disks_encrypted', tgt_type='list')
+        exec_ret_lists.append(exec_ret)
 
 
-        # datetime object containing current date and time
-        now = datetime.now()
-        # dd/mm/YY H:M:S
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        for minion in exec_ret:
+            #print(exec_ret[minion])
 
-        # Set grains based on luks_check execution result True/False
-        if exec_ret[minion][minion] == False:
-            grains = {'runner_luks_encrypted': False, 'Time': dt_string, 'test': True}
-            exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
-        else:
-            grains = {'runner_luks_encrypted': True, 'Time': dt_string, 'test': True}
-            exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
+            # datetime object containing current date and time
+            now = datetime.now()
+            # dd/mm/YY H:M:S
+            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
+            # Set grains based on luks_check execution result True/False
+            if exec_ret[minion] == False:
+                grains = {'runner_luks_encrypted': False, 'Time': dt_string, 'test': True}
+                exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
+            else:
+                grains = {'runner_luks_encrypted': True, 'Time': dt_string, 'test': True}
+                exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
 
 
-    return exec_ret
+    return exec_ret_lists
