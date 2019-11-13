@@ -213,28 +213,16 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
 
 def do_the_job(throttle_lists):
     print("DOING THE JOB: ")
-    print(type(throttle_lists))
-    print(throttle_lists)
-    print("-----------------")
+    #print(type(throttle_lists))
+    #print(throttle_lists)
+    #print("-----------------")
 
+    exec_ret_lists = []
     for minions_tgt_list in throttle_lists:
         # Execute luks_check.get_disks_encrypted on minion
         print("Executing luks_check on minions list")
         exec_ret = __salt__['salt.execute'](minions_tgt_list, 'luks_check.get_disks_encrypted', tgt_type='list')
+        exec_ret_lists.append(exec_ret)
         print(exec_ret)
 
-        '''
-        for item in item_lista:
-            print("minion: " +item)
-
-        #if isinstance(item, list):
-            print("Es una lista")
-            print(type(item))
-            print(item)
-            print("---")
-        else:
-            #print("No es una lista")
-            #print(type(item))
-            print("minion: " +item)
-            print("---")
-        '''
+    print(exec_ret_lists)
