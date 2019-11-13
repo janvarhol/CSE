@@ -110,14 +110,14 @@ def up(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):  # pyli
     return ret
 
 
-def execute(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
+def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
     '''
-    Exec function on minions that are up
+    Exec test.version on minions that are up
     CLI Example:
     .. code-block:: bash
-        salt-run run_up.up
-        salt-run run_up.up tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up.up timeout=5 gather_job_timeout=10
+        salt-run run_up.execute_version
+        salt-run run_up.execute_version tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up.execute_version timeout=5 gather_job_timeout=10
     '''
     
     # Get minions up
@@ -134,6 +134,38 @@ def execute(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
     for minion in ret:
         print("Executing function on minion: " + minion)
         exec_ret[minion] = __salt__['salt.execute'](minion, 'test.version')
+
+    
+    return exec_ret
+
+def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
+    '''
+    Exec function on minions that are up
+    CLI Example:
+    .. code-block:: bash
+        salt-run run_up.execute_luks_check
+        salt-run run_up.execute_luks_check tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up.execute_luks_check timeout=5 gather_job_timeout=10
+    '''
+    
+    # Get minions up
+    ret = up(
+        tgt=tgt,
+        tgt_type=tgt_type,
+        timeout=timeout,
+        gather_job_timeout=gather_job_timeout
+    )
+    
+    # Execute on minions up
+    exec_ret = {}
+    
+    for minion in ret:
+        print("Executing function on minion: " + minion)
+        exec_ret[minion] = __salt__['salt.execute'](minion, 'luks_check.get_disks_encrypted')
+        print(exec_ret[minion])
+        
+                #grains = {'luks_encrypted': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
+                #__salt__['grains.set']('luks', grains, force=True)
 
     
     return exec_ret
