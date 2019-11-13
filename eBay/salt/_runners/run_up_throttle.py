@@ -231,8 +231,20 @@ def do_the_job(throttle_lists):
             print("0 minions")
 
         for minion in exec_ret:
-            print(exec_ret[minion])
+            #print(exec_ret[minion])
 
+            # datetime object containing current date and time
+            now = datetime.now()
+            # dd/mm/YY H:M:S
+            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
+            # Set grains based on luks_check execution result True/False
+            if exec_ret[minion] == False:
+                grains = {'runner_luks_encrypted': False, 'Time': dt_string, 'test': True}
+                exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
+            else:
+                grains = {'runner_luks_encrypted': True, 'Time': dt_string, 'test': True}
+                exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
 
 
         exec_ret_lists.append(exec_ret)
