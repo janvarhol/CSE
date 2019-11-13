@@ -180,9 +180,10 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
             grains = {'runner_luks_encrypted': False, 'Time': dt_string, 'test': True}
             #print(grains)
             #__salt__['grains.set']('luks', grains, force=True)
-            exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('runner_luks', grains, force=True))
+            force = True
+            exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('runner_luks', grains, force))
 
-            
+
         else:
             grains = {'runner_luks_encrypted': True, 'Time': dt_string }
             print(grains)
