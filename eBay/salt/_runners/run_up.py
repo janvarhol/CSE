@@ -162,7 +162,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     for minion in ret:
         print("Executing function on minion: " + minion)
         exec_ret[minion] = __salt__['salt.execute'](minion, 'luks_check.get_disks_encrypted')
-        print(exec_ret[minion])
+        print(exec_ret[minion][minion])
         
                 #grains = {'luks_encrypted': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
                 #__salt__['grains.set']('luks', grains, force=True)
