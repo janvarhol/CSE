@@ -161,7 +161,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     print("Minions target list: " + minions_tgt_list)
 
 
-    if minions_count <= throttle:
+    if minions_count < throttle:
         # Execute full list
         # Execute luks_check.get_disks_encrypted on minion
         #print("Executing luks_check on full minions list")
