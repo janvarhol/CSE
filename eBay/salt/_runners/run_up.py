@@ -121,7 +121,7 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
     return exec_ret
 
 
-def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
+def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None, throttle=10):
     '''
     Exec function on minions that are up
     CLI Example:
