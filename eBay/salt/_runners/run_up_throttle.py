@@ -166,9 +166,22 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
    
     else:
         # Execute in batches based on throttle
-        print(type(ret)
+        print(type(ret))
+        
+        i=0
+        total = 0
+        throttle_list = []
+        throttle_lists = []
+        
+        while total <= minions_count:
+             while i <= throttle:
+                 throttle_list.append(ret[i])
+                 total +=1
+             throttle_lists.append(throttle_list)
+        print(throttle_lists)
+            
 
-    '''        
+ 
     
     '''
     for minion in ret:
