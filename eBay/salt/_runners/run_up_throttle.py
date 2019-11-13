@@ -197,7 +197,7 @@ def do_the_job(throttle_lists):
         exec_ret = __salt__['salt.execute'](minions_tgt_list, 'luks_check.get_disks_encrypted', tgt_type='list')
         exec_ret_lists.append(exec_ret)
 
-        '''
+
         for minion in exec_ret:
             #print(exec_ret[minion])
 
@@ -213,6 +213,6 @@ def do_the_job(throttle_lists):
             else:
                 grains = {'runner_luks_encrypted': True, 'Time': dt_string, 'test': True}
                 exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
-        '''
+        
 
     return exec_ret_lists
