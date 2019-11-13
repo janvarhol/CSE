@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 '''
 Runner to execute modules only on minions that are up
+
+# salt-run saltutil.sync_runners
+# salt-run run_up_throttle.execute_luks_check
+#           timeout=1 
+#           gather_job_timeout=1
+#           throttle=2
+#           show_job_output=True
+
 '''
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
