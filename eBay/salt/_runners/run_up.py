@@ -12,7 +12,6 @@ from salt.ext import six
 
 # Import salt libs
 import salt.client
-#from salt.exceptions import SaltClientError, SaltSystemExit
 
 
 log = logging.getLogger(__name__)
