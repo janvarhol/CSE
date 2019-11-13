@@ -182,7 +182,7 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
             else:
                 throttle_list.append(minion)
         throttle_lists.append(throttle_list)
-        print("Throttle lists: " + throttle_lists)
+        print("Throttle lists: " + str(throttle_lists))
             
 
  
