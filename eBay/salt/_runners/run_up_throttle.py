@@ -6,6 +6,7 @@ Runner to execute modules only on minions that are up
 from __future__ import absolute_import, print_function, unicode_literals
 from datetime import datetime
 import logging
+import json
 
 # Import 3rd-party libs
 from salt.ext import six
@@ -121,7 +122,7 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
     return exec_ret
 
 
-def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None, throttle=10):
+def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None, throttle=10, show_job_output=False):
     '''
     Exec function on minions that are up
     CLI Example:
@@ -154,13 +155,12 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
     print("Minions count: " + str(minions_count))
 
     if throttle > minions_count:
-        #print("Equal throttle to minions count")
+        # Equal throttle to minions count
         throttle = minions_count
 
     minions_tgt_list = ','.join(ret)
-    #print("Minions target list: " + minions_tgt_list)
 
-
+    # Run the job
     if minions_count < throttle:
         # Execute full list
         ret = do_the_job(minions_tgt_list.split(','))
@@ -178,17 +178,18 @@ def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeou
             else:
                 throttle_list.append(minion)
         throttle_lists.append(throttle_list)
-        #print("Throttle lists: " + str(throttle_lists))
+
         ret = do_the_job(throttle_lists)
 
-    return ret
+    if show_job_output = True:
+        print(json.dumps(ret, indent=4, sort_keys=True))
+
+    return True
 
 
 def do_the_job(throttle_lists):
+    # Run luks_check and set grains
     print("DOING THE JOB: ")
-    #print(type(throttle_lists))
-    #print(throttle_lists)
-    #print("-----------------")
 
     exec_ret_lists = []
     for minions_tgt_list in throttle_lists:
@@ -213,5 +214,4 @@ def do_the_job(throttle_lists):
                 exec_ret[minion] = __salt__['salt.execute'](minion, 'grains.set', arg=('luks:runner_exec', grains), kwarg={'force': True})
 
 
-    #print(exec_ret_lists)
     return exec_ret_lists
