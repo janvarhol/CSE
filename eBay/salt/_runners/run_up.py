@@ -126,6 +126,8 @@ def execute(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None):
         gather_job_timeout=gather_job_timeout
     )
     for minion in ret:
-        print("minion up found: " + minion)
+        print("Executing function on minion: " + minion)
+        exec_ret = __salt__['salt.execute']('*', 'test.version')
+        print(exec_ret)
         
     return ret
