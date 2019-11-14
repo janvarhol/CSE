@@ -3,8 +3,8 @@
 Runner to execute modules only on minions that are up
 
 # salt-run saltutil.sync_runners
-# salt-run run_up_throttle.execute_luks_check
-#           timeout=1 
+# salt-run run_up_throttle.exec_luks_check_throttle
+#           timeout=1
 #           gather_job_timeout=1
 #           throttle=2
 #           show_job_output=True
@@ -130,14 +130,14 @@ def execute_version(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=N
     return exec_ret
 
 
-def execute_luks_check(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None, throttle=10, show_job_output=False):
+def exec_luks_check_throttle(tgt='*', tgt_type='glob', timeout=None, gather_job_timeout=None, throttle=10, show_job_output=False):
     '''
     Exec function on minions that are up
     CLI Example:
     .. code-block:: bash
-        salt-run run_up_throttle.execute_luks_check
-        salt-run run_up_throttle.execute_luks_check tgt="webservers" tgt_type="nodegroup"
-        salt-run run_up_throttle.execute_luks_check timeout=5 gather_job_timeout=10
+        salt-run run_up_throttle.exec_luks_check_throttle
+        salt-run run_up_throttle.exec_luks_check_throttle tgt="webservers" tgt_type="nodegroup"
+        salt-run run_up_throttle.exec_luks_check_throttle timeout=5 gather_job_timeout=10
     '''
 
     # Get minions up
