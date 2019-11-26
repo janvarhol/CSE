@@ -9,10 +9,8 @@
 {# {% set master = salt.pillar.get('master_id') %}
 {% set exceptions = salt['ebay_exceptions.load'](minion_id) %}
 #}
-
-{# AM: BLOCK MODIFIED FOR TESTING
 {% set minion_data = {'include_scan': True} %}
-#}
+
 {% load_yaml as checks %}
 # minion.password_check modified with test.configurable_test_state to fix return to True/False
 - name: password_check
