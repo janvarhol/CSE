@@ -6,9 +6,10 @@
 {% set minion_macs = salt['lampapi.get_minion_macs'](minion_id) %}
 {# {% set minion_data = salt.lampapi.get_minion(minion_id) %} #}
 {# {% set scan_date = salt.lampapi.get_last_update(minion_id) %} #}
-{% set master = salt.pillar.get('master_id') %}
+{# {% set master = salt.pillar.get('master_id') %}
 {% set exceptions = salt['ebay_exceptions.load'](minion_id) %}
 #}
+
 {# AM: BLOCK MODIFIED FOR TESTING
 {% set minion_data = {'include_scan': True} %}
 #}
