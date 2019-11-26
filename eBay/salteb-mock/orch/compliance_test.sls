@@ -85,7 +85,7 @@ install_schedules:
 {% set except_this_raspbian = false %}
 {% set exclude_checks = ['luks_check', 'qualys_scan_check'] %}
 {% if check.name in exclude_checks and minion_osfinger.startswith('Raspbian') %}
-{% set except_this_raspbian = true %}
+  {% set except_this_raspbian = true %}
 {% endif %}
 
 {% if (check.name not in exceptions) and not except_this_raspbian %}
@@ -143,7 +143,7 @@ set_compliance_exception_grain_False_{{check.name}}:
       - "compliant:exception:{{check.name}}"
       - False
 
-{#{% if salt['date_compare.is_today'](scan_date) %}#}
+{# {% if salt['date_compare.is_today'](scan_date) %} #}
 
 {{ check.name }}_fail:
   salt.state:
@@ -166,7 +166,7 @@ set_compliance_exception_grain_False_{{check.name}}:
     - onfail:
       - {{ check.name }}
 
-{#{% endif %}#}
+{# {% endif %} #}
 
 {% else %}
 # Set exception to true
