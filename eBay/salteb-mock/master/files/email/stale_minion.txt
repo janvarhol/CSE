@@ -1,0 +1,16 @@
+<p>Hi <strong><em>{{ stale_minion_data.name }}</em></strong>,</p>
+
+<p>When the Linux Access Management Portal (LAMP) detects a device hasn't been able to be verified compliant in 7 days, it immediately marks the device 
+as non-compliant and removes the MAC address from network access.</p>
+
+<p>Your registered Linux device <strong><em>{{ stale_minion_data.description }}</em></strong>, with MAC Address <strong><em>{{ mac }} </em></strong>,
+ has not been able to be reached for more then 7 days, and so network access for this device has been revoked.
+ To regain network access, you will need to re-register the device via the <a href="https://lamp.corp.ebay.com/">LAMP</a> web site.</p>
+
+<p><a href="https://wiki.vip.corp.ebay.com/display/LCDM/Troubleshooting+and+Non-Compliance+Issues">Click</a> here for FAQ's and Troubleshooting.
+For more information, see our <a href="https://wiki.vip.corp.ebay.com/display/LCDM/Linux+Client+Device+Management+Home">Wiki Page</a>.
+
+<span lang="EN-AU">If you have any questions or concerns, please </span><a href="mailto:{{ email_admin }}"><span lang="EN-AU">contact us</span></a><span lang="EN-AU">.</span></p>
+
+<p><span lang="EN-AU">Thank you for your attention to this important IT security matter.</span></p>
+<p><strong><span lang="EN-AU">ITSS Security</span></strong></p>

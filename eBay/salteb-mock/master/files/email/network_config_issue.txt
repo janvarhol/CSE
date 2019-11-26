@@ -1,0 +1,16 @@
+<p>Hi <strong><em>{{ name }}</em></strong>.</p>
+
+<p>The Linux Access Management Portal (LAMP) detected an issue with the network configuration of your device.</p>
+
+<p>Your registered Linux device <strong><em>{{ description }}</em></strong>, with MAC Address <strong><em>{{ mac }} </em></strong> and Minion ID <strong><em>{{ minion_id }} </em></strong>, triggered a fault in
+NetworkManager and was unable to validate that the network interface is configured to use 802.1x security to connect to the network</p>
+
+<p>A quick way to validate that you are using 802.1x is to <a href="https://wiki.vip.corp.ebay.com/pages/viewpage.action?pageId=532579646">check here</a></p>
+
+<p><a href="https://wiki.vip.corp.ebay.com/display/LCDM/Troubleshooting+and+Non-Compliance+Issues">Click</a> here for FAQ's and Troubleshooting.
+For more information, see our <a href="https://wiki.vip.corp.ebay.com/display/LCDM/Linux+Client+Device+Management+Home">WikiPage</a>. 
+<span lang="EN-AU">If you have any questions or concerns, please </span><a href="mailto:{{ email_admin }}"><span lang="EN-AU">contact us</span></a><span lang="EN-AU">.</span></p>
+
+<p><span lang="EN-AU">Thank you for your attention to this important IT security matter.</span></p>
+
+<p><strong><span lang="EN-AU">ITSS Security</span></strong></p>

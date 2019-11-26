@@ -1,0 +1,23 @@
+<p>Hi <strong><em>{{ name }}</em></strong>.</p>
+
+<p>You have requested your eBay backup Linux LUKS decryption keys from the Linux Access Management Portal (LAMP).</p>
+
+<p>Your registered Linux device <strong><em>{{ description }}</em></strong>, with MAC Address <strong><em>{{ mac }} </em></strong> and Minion ID <strong><em>{{ minion_id }} </em></strong>.</p>
+
+{% if not keys %}
+<p>You have no encrypted volumes.</p>
+{% else %}
+<p>Here are the keys </p>
+<pre><code>{% for key in keys %}
+    {{key}}
+{% endfor %}</code></pre>
+{% endif %}
+
+<p><a href="https://wiki.vip.corp.ebay.com/display/LCDM/Troubleshooting+and+Non-Compliance+Issues">Click</a> here for FAQ's and Troubleshooting.
+For more information, see our <a href="https://wiki.vip.corp.ebay.com/display/LCDM/Linux+Client+Device+Management+Home">Wiki
+Page</a>.
+ <span lang="EN-AU">If you have any questions or concerns, please </span><a href="mailto:{{ email_admin }}"><span lang="EN-AU">contact us</span></a><span lang="EN-AU">.</span></p>
+
+<p><span lang="EN-AU">Thank you for your attention to this important IT security matter.</span></p>
+
+<p><strong><span lang="EN-AU">ITSS Security</span></strong></p>
