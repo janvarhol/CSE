@@ -1,0 +1,8 @@
+<p>MAC <strong> {{ mac }}</strong> on minion <strong> {{ stale_minion_data.description }}</strong> with ID:<strong> {{ stale_minion_data.minion_id }}</strong>,
+ was not able to be removed from ISE.</p>
+ 
+ <p>Please check the logs for more information.</p>
+ 
+ <p><span lang="EN-AU">Thank you for your attention to this important IT security matter.</span></p>
+ 
+ <p><strong><span lang="EN-AU">ITSS Security</span></strong></p>

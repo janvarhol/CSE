@@ -1,0 +1,19 @@
+<p>Hi <strong><em>{{ name }}</em></strong>,</p>
+
+<p>When the Linux Access Management Portal (LAMP) detects a device that isn't compliant, it immediately marks the device as non-compliant and you are notified via email.
+ If the device remains non-compliant for more than 7 days, network access is revoked. These actions apply to devices that don't meet eBay's Information Security compliance policy.</p>
+
+<p>Your registered Linux device <strong><em>{{ description }}</em></strong>, with MAC Address <strong><em>{{ mac }} </em></strong> and Minion ID <strong><em>{{ minion_id }}</em></strong>,
+ has been marked as non-compliant for the following reason:</p>
+<ul><li><strong><em>{{ reason }}</em></strong>.</li></ul>
+
+<p>Administration has been notified of this issue and will look into it. You will be notified of any actions to take.</p>
+
+<p><a href="https://wiki.vip.corp.ebay.com/display/LCDM/Troubleshooting+and+Non-Compliance+Issues">Click</a> here for FAQ's and Troubleshooting.
+<a href="https://wiki.vip.corp.ebay.com/display/LCDM/Disk+Encryption+Guidance">Check</a> if your minion is not encrypted with LUKS.</p>
+
+<p>For more information, see our <a href="https://wiki.vip.corp.ebay.com/display/LCDM/Linux+Client+Device+Management+Home">Wiki Page</a>.
+ If you have any questions or concerns, please <a href="mailto:{{ email_admin }}">contact us</a>.</p>
+
+<p>Thank you for your attention to this important IT security matter. </p>
+<p><strong>ITSS Security</strong></p>

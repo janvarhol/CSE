@@ -1,0 +1,14 @@
+<p>The Linux Access Management Portal (LAMP) has detected a device that isn't compliant. If the device remains non-compliant for more than 7 days, network access is revoked.
+ These actions apply to devices that don't meet eBay's Information Security compliance policy.</p>
+
+<p>A device registered to <strong><em>{{ name }}</em></strong>, <strong><em>{{ description }}</em></strong>, with MAC Address <strong><em>{{ mac }} </em></strong>, has been
+marked as non-compliant for the following reason:</p> <ul><li><strong><em>{{ reason }}</em></strong>.</li></ul>
+
+<p>Please take actions to make this device compliant with Information Security policy.</p>
+
+<p>For more information, see our <a href="https://wiki.vip.corp.ebay.com/display/LCDM/Troubleshooting+and+Non-Compliance+Issues">Wiki Page</a>. If you have any questions or concerns, please
+    <a href="mailto:{{ email_admin }}">contact us</a>.</p>
+<p>Thank you for your attention to this important IT security matter.</p>
+<p>
+    <strong>ITSS Security</strong>
+</p>

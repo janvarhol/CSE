@@ -1,0 +1,33 @@
+RedHat:
+  pkgs:
+    - clamav-update
+    - clamav
+  services:
+    - clamd@scan
+  scan_cmd:
+  excludes:
+    - /dev
+    - /proc
+    - /sys
+
+Debian:
+  pkgs:
+    - clamav
+  services:
+    - clamdav
+  scan_cmd:
+  excludes:
+    - /dev
+    - /proc
+    - /sys
+
+Arch:
+  pkgs:
+    - clamav
+  service:
+    - clamav-daemon
+  scan_cmd:
+  excludes:
+    - /dev
+    - /proc
+    - /sys
