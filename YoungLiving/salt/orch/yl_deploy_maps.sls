@@ -11,7 +11,7 @@ check_pillar:
 
 # or
 {% set environYL = salt['pillar.get']('environYL', None) %}
-{% if environYL is not none %}
+{% if environYL is not none and someothervar is defined %}
 
 {% set instances_list = [] %}
 {% set cloud_map_deploy = salt.saltutil.runner(name='cloud.map_run', arg=['/srv/salt/cloud/maps/lab_deploy-hasse-hasse1118-student1.map'], kwargs={'parallel': True}) %}
@@ -35,4 +35,12 @@ test_connected_{{ instance }}:
     - name: test.ping
 {% endfor %}
 {% endif %}
+
+{% else %}
+show_info:
+  test.configurable_test_state:
+    - name: INFO
+    - changes: False
+    - result: False
+    - comment: Required variables not found
 {% endif %}
