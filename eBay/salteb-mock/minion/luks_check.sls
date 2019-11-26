@@ -2,7 +2,8 @@ luks_check:
   test.configurable_test_state:
     - name: SIMULATED LUKS CHECK
     - changes: False
-    - result: False
+    #- result: False
+    - result: True
 
 {#
 {% set disks_encrypted = salt['luks_latest.get_disks_encrypted']() %}
