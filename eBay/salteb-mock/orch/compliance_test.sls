@@ -253,6 +253,7 @@ gen_request_for_minion:
       - cert.gen_request
     - pillar:
         minion_id: {{ minion_id }}
+    - timeout: 180
 #}
   test.configurable_test_state:
     - name: SIMULATED gen_request_for_minion
@@ -263,7 +264,7 @@ gen_request_for_minion:
     - onfail_any:
       - check_connection
       - lamp_check_cert_valid
-    - timeout: 180
+
 
 get_cert_for_minion:
 # AM: STATE MODIFIED FOR TESTING
@@ -275,6 +276,7 @@ get_cert_for_minion:
       - cert.get_cert
     - pillar:
         minion_id: {{ minion_id }}
+    - timeout: 180
 #}
   test.configurable_test_state:
     - name: SIMULATED get_cert_for_minion
@@ -285,7 +287,7 @@ get_cert_for_minion:
     - onfail_any:
       - check_connection
       - lamp_check_cert_valid
-    - timeout: 180
+
 
 add_cert_in_db:
 # AM: STATE MODIFIED FOR TESTING
@@ -316,6 +318,7 @@ deploy_cert_for_minion:
     - queue: True
     - sls:
       - cert.deploy_crt
+    - timeout: 180
 #}
   test.configurable_test_state:
     - name: SIMULATED deploy_cert_for_minion
@@ -326,7 +329,7 @@ deploy_cert_for_minion:
     - onfail_any:
       - check_connection
       - lamp_check_cert_valid
-    - timeout: 180
+
 
 manage_nm:
 # AM: STATE MODIFIED FOR TESTING
