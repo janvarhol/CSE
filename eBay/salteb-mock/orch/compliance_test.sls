@@ -10,6 +10,7 @@
 {% set exceptions = salt['ebay_exceptions.load'](minion_id) %}
 #}
 {% set minion_data = {'include_scan': True} %}
+{% set exceptions = [] %}
 
 {% load_yaml as checks %}
 # minion.password_check modified with test.configurable_test_state to fix return to True/False
