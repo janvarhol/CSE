@@ -28,7 +28,8 @@
 # luks state modified with test.configurable_test_state to return to fix return to True/False
 - name: luks_check
   fail_reason: minion is not encrypted properly with LUKS
-  sls: luks # ---->>>> Krushna: CHECK IF THIS SHOULD BE minion.luks_check (minion/luks_check.sls)
+  #sls: luks # ---->>>> Krushna: CHECK IF THIS SHOULD BE minion.luks_check (minion/luks_check.sls)
+  sls: minion.luks_check
   msg_admin: True
 
 {% endload %}
