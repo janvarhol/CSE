@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 def do_wrong():
     mydict = []
     exception_tag = 'exceptions/do_something_wrong_send_msg'
-    exception_data = {"type": "ABCTYPE", "value": "ABCVALUE", "traceback": "ABCTRACE}
+    exception_data = {"type": "ABCTYPE", "value": "ABCVALUE", "traceback": "ABCTRACE"}
     __salt__['cust_error_handler.send_event'](exception_tag, exception_data)
     return False
     
