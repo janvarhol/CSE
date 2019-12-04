@@ -39,4 +39,4 @@ def start(tags):
         if event:
             log.info("v5_NEW EVENT: " + jevent)
             print("ADRIAN")
-            print(tags)
+            print("tags: " + str(tags))
