@@ -14,7 +14,7 @@ import salt.utils.json
 log = logging.getLogger(__name__)
 
 
-def start():
+def start(tags):
     '''
     Listen to events and write them to a log file
     '''
@@ -37,5 +37,6 @@ def start():
         event = event_bus.get_event(full=True)
         jevent = salt.utils.json.dumps(event, indent=4)
         if event:
-            log.info("v4_NEW EVENT: " + jevent)
+            log.info("v5_NEW EVENT: " + jevent)
             print("ADRIAN")
+            print(tags)
