@@ -23,6 +23,7 @@ def start():
                 __opts__,
                 __opts__['sock_dir'],
                 listen=True)
+        log.info('TEST ENGINE STARTED ON MASTER')
     else:
         event_bus = salt.utils.event.get_event(
             'minion',
