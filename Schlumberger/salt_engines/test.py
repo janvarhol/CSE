@@ -34,7 +34,7 @@ def start():
         log.debug('test engine started')
 
     while True:
-        event = event_bus.get_event()
+        event = event_bus.get_event(full=True)
         jevent = salt.utils.json.dumps(event)
         if event:
             log.info("NEW EVENT: " + jevent)
