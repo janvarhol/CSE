@@ -35,8 +35,7 @@ def start():
 
     while True:
         event = event_bus.get_event(full=True)
-        jevent = salt.utils.json.dumps(event)
+        jevent = salt.utils.json.dumps(event, indent=4)
         if event:
-            log.info("v3_NEW EVENT: " + jevent)
+            log.info("v4_NEW EVENT: " + jevent)
             print("ADRIAN")
-            print(event)
