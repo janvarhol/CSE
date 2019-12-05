@@ -36,7 +36,6 @@ def start(tags):
     while True:
         event = event_bus.get_event(full=True)
         jevent = salt.utils.json.dumps(event, indent=4)
-        if event:
+        if event and event['tag'] in tags:
             print("TAGS: " + str(tags))
-            if event['tag'] in tags:
-                log.info("v5_NEW EVENT: " + jevent)
+            log.info("v5_NEW EVENT: " + jevent)
