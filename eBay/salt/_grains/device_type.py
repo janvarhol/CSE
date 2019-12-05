@@ -16,8 +16,8 @@ def device_type():
         result = __salt__['cmd.run_all']('dmidecode --string chassis-type')
         
         if result['retcode'] == 0:
-            print("TROUBLESHOOTING: ")
-            print(result['stdout'])
+            log.info("TROUBLESHOOTING: ")
+            log.info(result['stdout'])
          
         
             if result['stdout'] in DESKTOPS:
