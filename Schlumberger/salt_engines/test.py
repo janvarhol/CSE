@@ -35,6 +35,14 @@ log = logging.getLogger(__name__)
 
 
 def redis_set(redis_conn,event):
+    jevent = salt.utils.json.dumps(event)
+
+    #Filter by event tag
+    if jevent['tag'].startswith('salt/job/'):
+        print("PROCESSING SALT JOB EVENT")
+        jevent['event_type'] = 'salt_job'
+        print(jevent)
+
     return True
 
 def start(tags):
