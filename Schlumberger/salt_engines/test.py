@@ -42,5 +42,5 @@ def start(tags):
             #Iterate thru tags list
             #Remove end '/' to match both strings
             if any(fnmatch.fnmatch(event['tag'].rstrip('/'), tag.rstrip('/')) for tag in tags):
-                print("TAGS: " + str(tags))
-                log.info("v6_NEW EVENT: " + jevent)
+                log.info("LOOKING FOR TAGS: " + str(tags))
+                log.info("TAG: {} - PROCESSING NEW EVENT FOUND MATCHING: ".format(tag.rstrip('/'), jevent))
