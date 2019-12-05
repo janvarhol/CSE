@@ -39,6 +39,7 @@ def start(tags):
         jevent = salt.utils.json.dumps(event, indent=4)
         #if event and event['tag'] in tags:
         if event:
+            #Iterate thru tags list
             if any(fnmatch.fnmatch(event['tag'], tag) for tag in tags):
                 print("TAGS: " + str(tags))
                 log.info("v6_NEW EVENT: " + jevent)
