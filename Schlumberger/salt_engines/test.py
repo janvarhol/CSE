@@ -40,5 +40,5 @@ def start(tags):
         #if event and event['tag'] in tags:
         if event:
             if any(fnmatch.fnmatch(event['tag'], tag) for tag in tags):
-            print("TAGS: " + str(tags))
-            log.info("v5_NEW EVENT: " + jevent)
+                print("TAGS: " + str(tags))
+                log.info("v6_NEW EVENT: " + jevent)
