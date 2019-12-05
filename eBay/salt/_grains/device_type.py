@@ -1,10 +1,14 @@
 import salt.modules.cmdmod
- 
+import logging
+
+log = logging.getLogger(__name__)
+
 __salt__ = {
     'cmd.run': salt.modules.cmdmod._run_quiet,
     'cmd.retcode': salt.modules.cmdmod._retcode_quiet,
     'cmd.run_all': salt.modules.cmdmod._run_all_quiet,
 }
+
 DESKTOPS = ['Other', 'Desktop', 'Space-saving', 'Tower']
 LAPTOPS = ['Laptop', 'Notebook']
 SERVER = ['Server']
