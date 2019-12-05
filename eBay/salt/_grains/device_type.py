@@ -20,7 +20,7 @@ def devicetype():
                 grains['device_type'] = 'Laptop'
             elif result['stdout'] in SERVER:
                 grains['device_type'] = 'Server'
-            else
+            else:
                 grains['device_type'] = 'Unknown'
         else:
             grains['device_type'] = 'ERROR'
