@@ -6,6 +6,7 @@ A simple test engine, not intended for real use but as an example
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
+import fnmatch
 
 # Import salt libs
 import salt.utils.event
@@ -36,6 +37,8 @@ def start(tags):
     while True:
         event = event_bus.get_event(full=True)
         jevent = salt.utils.json.dumps(event, indent=4)
-        if event and event['tag'] in tags:
+        #if event and event['tag'] in tags:
+        if event:
+            if any(fnmatch.fnmatch(event['tag'], tag) for tag in tags):
             print("TAGS: " + str(tags))
             log.info("v5_NEW EVENT: " + jevent)
