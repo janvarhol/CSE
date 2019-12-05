@@ -8,7 +8,7 @@ __salt__ = {
 DESKTOPS = ['Other', 'Desktop', 'Space-saving', 'Tower']
 LAPTOPS = ['Laptop', 'Notebook']
 SERVER = ['Server']
-`
+
 def devicetype():
     grains = {}
     try:
