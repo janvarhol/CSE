@@ -40,6 +40,7 @@ def start(tags):
         #if event and event['tag'] in tags:
         if event:
             #Iterate thru tags list
-            if any(fnmatch.fnmatch(event['tag'], tag) for tag in tags):
+            #Remove end '/' to match both strings
+            if any(fnmatch.fnmatch(event['tag'].rstrip('/'), tag) for tag.rstrip('/') in tags):
                 print("TAGS: " + str(tags))
                 log.info("v6_NEW EVENT: " + jevent)
