@@ -22,13 +22,13 @@ def device_type():
         if result['retcode'] == 0:
             log.info("TROUBLESHOOTING: ")
             log.info(result['stdout'])
-         
+            first_line = result['stdout'].splitlines()[0]
         
-            if result['stdout'] in DESKTOPS:
+            if first_line in DESKTOPS:
                 grains['device_type'] = 'Desktop'
-            elif result['stdout'] in LAPTOPS:
+            elif first_line in LAPTOPS:
                 grains['device_type'] = 'Laptop'
-            elif result['stdout'] in SERVER:
+            elif first_line in SERVER:
                 grains['device_type'] = 'Server'
             else:
                 grains['device_type'] = 'Unknown'
