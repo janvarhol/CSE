@@ -9,11 +9,17 @@ DESKTOPS = ['Other', 'Desktop', 'Space-saving', 'Tower']
 LAPTOPS = ['Laptop', 'Notebook']
 SERVER = ['Server']
 
-def devicetype():
+
+def device_type():
     grains = {}
     try:
         result = __salt__['cmd.run_all']('dmidecode --string chassis-type')
+        
         if result['retcode'] == 0:
+            print("TROUBLESHOOTING: ")
+            print(result['stdout'])
+         
+        
             if result['stdout'] in DESKTOPS:
                 grains['device_type'] = 'Desktop'
             elif result['stdout'] in LAPTOPS:
