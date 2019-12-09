@@ -20,9 +20,9 @@ def device_type():
     grains = {}
     
     log.info("CHECKING PLATFORM INFO")
-    log.info(sys.platform())
+    log.info(str(sys.platform()))
     log.info("CHECKING OS UNAME INFO")
-    log.info(os.uname())
+    log.info(str(os.uname()))
 
     
     try:
