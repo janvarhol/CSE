@@ -16,6 +16,12 @@ SERVER = ['Server']
 
 def device_type():
     grains = {}
+    
+    if __grains['osfinger'] == 'Debian-9':
+        log.info("IT IS A DEBIAN SYSTEM")
+        grains['device_type'] = 'Debian System'
+        return grains
+    
     try:
         result = __salt__['cmd.run_all']('dmidecode --string chassis-type')
         
