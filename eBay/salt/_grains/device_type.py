@@ -1,5 +1,7 @@
 import salt.modules.cmdmod
 import logging
+import sys
+import os
 
 log = logging.getLogger(__name__)
 
@@ -17,10 +19,11 @@ SERVER = ['Server']
 def device_type():
     grains = {}
     
-    if __salt__['grains.item']('osfinger') == 'Debian-9':
-        log.info("IT IS A DEBIAN SYSTEM")
-        grains['device_type'] = 'Debian System'
-        return grains
+    log.info("CHECKING PLATFORM INFO")
+    log.info(sys.platform())
+    log.info("CHECKING OS UNAME INFO")
+    log.info(os.uname())
+
     
     try:
         result = __salt__['cmd.run_all']('dmidecode --string chassis-type')
