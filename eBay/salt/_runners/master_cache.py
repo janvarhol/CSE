@@ -30,7 +30,7 @@ __func_alias__ = {
 }
 
 
-def grain(tgt=None, tgt_type='glob', grain='DEVICETYPE', **kwargs):
+def grain(tgt=None, tgt_type='glob', grain='device_type', **kwargs):
     '''
     .. versionchanged:: 2017.7.0
         The ``expr_form`` argument has been renamed to ``tgt_type``, earlier
@@ -75,14 +75,14 @@ def grain(tgt=None, tgt_type='glob', grain='DEVICETYPE', **kwargs):
     cached_grain = {}
     cached_grain['grain_not_found'] = []
     
+    log.debug("Looking grains cache info for grain: " + grain)
+    
     for minion in cached_grains:
         if 'device_type' in cached_grains[minion]:
             cached_grain[minion] = cached_grains[minion]['device_type']
         else:
             cached_grain['grain_not_found'].append(minion)
     
-    log.info(grain)
-    #return cached_grains
     return cached_grain
 
 
