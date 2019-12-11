@@ -71,6 +71,7 @@ def grain(tgt=None, tgt_type='glob', **kwargs):
                                                      grains_fallback=False,
                                                      opts=__opts__)
     cached_grains = pillar_util.get_minion_grains()
+    print(type(cached_grains)
     return cached_grains
 
 
