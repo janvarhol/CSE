@@ -74,10 +74,10 @@ def grain(tgt=None, tgt_type='glob', **kwargs):
     
     cached_grain = {}
     for minion in cached_grains:
-        log.info(minion)
         if 'device_type' in cached_grains[minion]:
-            log.info('device_type grain found in ' + minion)
             cached_grain[minion] = cached_grains[minion]['device_type']
+        else:
+            cached_grain['grain_not_found'].append(minion)
     
     #return cached_grains
     return cached_grain
