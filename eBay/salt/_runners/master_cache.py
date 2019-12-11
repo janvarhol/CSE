@@ -73,6 +73,9 @@ def grain(tgt=None, tgt_type='glob', **kwargs):
     cached_grains = pillar_util.get_minion_grains()
     for minion in cached_grains:
         log.info(minion)
+        if 'device_type' in cached_grains[minion]:
+            log.info('device_type grain found in ' + minion)
+    
     return cached_grains
 
 
