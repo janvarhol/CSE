@@ -4,30 +4,13 @@ Return cached data from minions
 '''
 from __future__ import absolute_import, print_function, unicode_literals
 # Import python libs
-import fnmatch
 import logging
-import os
+
 
 # Import salt libs
-import salt.config
-from salt.ext import six
-import salt.log
-import salt.utils.args
-import salt.utils.gitfs
 import salt.utils.master
-import salt.payload
-import salt.cache
-import salt.fileserver.gitfs
-import salt.pillar.git_pillar
-import salt.runners.winrepo
-from salt.exceptions import SaltInvocationError
-from salt.fileserver import clear_lock as _clear_lock
 
 log = logging.getLogger(__name__)
-
-__func_alias__ = {
-    'list_': 'list',
-}
 
 
 def grain(tgt=None, tgt_type='glob', grain='device_type', sort=False, **kwargs):
