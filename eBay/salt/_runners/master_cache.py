@@ -82,11 +82,9 @@ def grain(tgt=None, tgt_type='glob', grain='device_type', sort=False, **kwargs):
         for minion in cached_grains:
             if grain in cached_grains[minion]:
                 if cached_grains[minion][grain] not in cached_grain:
-                    log.info("key in cached_grain not found, creating list and adding minion")
                     cached_grain[cached_grains[minion][grain]] = []
                     cached_grain[cached_grains[minion][grain]].append(minion)
                 else:
-                    log.info("key in cached_grain found, updating list")
                     cached_grain[cached_grains[minion][grain]].append(minion)
             else:
                 cached_grain['grain_not_found'].append(minion)
