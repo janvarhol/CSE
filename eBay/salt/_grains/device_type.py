@@ -20,7 +20,7 @@ def device_type():
     
     if 'Debian' in os.uname()[3]:
         log.info("Debbie system")
-        grains['device_type'] = 'Debbie'
+        grains['device_type'] = 'Debbie system'
         return grains
         
         
