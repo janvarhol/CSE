@@ -18,7 +18,11 @@ SERVER = ['Server']
 def device_type():
     grains = {}
     
-    if 'Debian' in os.uname()[3]:
+    # TESTING NOTE:
+    # Using Debian for testing
+    # Replace Debian by Raspbian
+    # Set grains['device_type'] as needed
+    if os.uname()[3].startswith('Debian'):
         log.info("Debbie system")
         grains['device_type'] = 'Desktop'
         return grains
