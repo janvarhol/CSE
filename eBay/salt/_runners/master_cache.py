@@ -81,6 +81,7 @@ def grain(tgt=None, tgt_type='glob', **kwargs):
         else:
             cached_grain['grain_not_found'].append(minion)
     
+    log.info(**kwargs)
     #return cached_grains
     return cached_grain
 
