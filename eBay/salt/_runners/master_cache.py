@@ -71,11 +71,16 @@ def grain(tgt=None, tgt_type='glob', grain='device_type', sort=False, **kwargs):
     log.debug("Looking grains cache info for grain: " + grain)
     
     if not sort:
-      for minion in cached_grains:
-          if grain in cached_grains[minion]:
-              cached_grain[minion] = cached_grains[minion][grain]
-          else:
-              cached_grain['grain_not_found'].append(minion)
+        for minion in cached_grains:
+            if grain in cached_grains[minion]:
+                cached_grain[minion] = cached_grains[minion][grain]
+            else:
+                cached_grain['grain_not_found'].append(minion)
+    else:
+        for minion in cached_grains:
+            if grain in cached_grains[minion]:
+                cached_grain[cached_grains[minion][grain]] = minion 
+        
     
     return cached_grain
 
