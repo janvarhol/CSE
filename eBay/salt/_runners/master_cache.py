@@ -30,31 +30,24 @@ __func_alias__ = {
 }
 
 
-def grain(tgt=None, tgt_type='glob', grain='device_type', **kwargs):
+def grain(tgt=None, tgt_type='glob', grain='device_type', sort=False, **kwargs):
     '''
-    .. versionchanged:: 2017.7.0
-        The ``expr_form`` argument has been renamed to ``tgt_type``, earlier
-        releases must use ``expr_form``.
-
-    Return cached grains of the targeted minions.
-
-    tgt
-        Target to match minion ids.
-
-        .. versionchanged:: 2017.7.5,2018.3.0
-            The ``tgt`` argument is now required to display cached grains. If
-            not used, the function will not return grains. This optional
-            argument will become mandatory in the Salt ``Sodium`` release.
-
-    tgt_type
-        The type of targeting to use for matching, such as ``glob``, ``list``,
-        etc.
-
-    CLI Example:
-
-    .. code-block:: bash
-
-        salt-run cache.grains '*'
+    Function similar to runner cache.grains
+    Modified to look for a single grain
+    
+    Usage:
+    salt-run master_cache.grain \* grain='device_type'
+    
+    Returns list of minions with given grain info and list of minions
+    for which the grain was not found
+    ebay:
+      Debbie
+    ebay-minion1:
+      Desktop
+    grain_not_found:
+      - debian-811-1
+      - ubuntu-nonenc-1
+      - ubuntu16-enc-1
     '''
     if tgt is None:
         # Change ``tgt=None`` to ``tgt`` (mandatory kwarg) in Salt Sodium.
@@ -77,11 +70,12 @@ def grain(tgt=None, tgt_type='glob', grain='device_type', **kwargs):
     
     log.debug("Looking grains cache info for grain: " + grain)
     
-    for minion in cached_grains:
-        if grain in cached_grains[minion]:
-            cached_grain[minion] = cached_grains[minion][grain]
-        else:
-            cached_grain['grain_not_found'].append(minion)
+    if not sort:
+      for minion in cached_grains:
+          if grain in cached_grains[minion]:
+              cached_grain[minion] = cached_grains[minion][grain]
+          else:
+              cached_grain['grain_not_found'].append(minion)
     
     return cached_grain
 
