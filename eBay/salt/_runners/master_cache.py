@@ -30,7 +30,7 @@ __func_alias__ = {
 }
 
 
-def grain(tgt=None, tgt_type='glob', **kwargs):
+def grain(tgt=None, tgt_type='glob', grain='DEVICETYPE', **kwargs):
     '''
     .. versionchanged:: 2017.7.0
         The ``expr_form`` argument has been renamed to ``tgt_type``, earlier
@@ -81,7 +81,7 @@ def grain(tgt=None, tgt_type='glob', **kwargs):
         else:
             cached_grain['grain_not_found'].append(minion)
     
-    log.info(**kwargs)
+    log.info(grain)
     #return cached_grains
     return cached_grain
 
