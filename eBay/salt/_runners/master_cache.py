@@ -73,6 +73,8 @@ def grain(tgt=None, tgt_type='glob', **kwargs):
     cached_grains = pillar_util.get_minion_grains()
     
     cached_grain = {}
+    cached_grain['grain_not_found'] = []
+    
     for minion in cached_grains:
         if 'device_type' in cached_grains[minion]:
             cached_grain[minion] = cached_grains[minion]['device_type']
