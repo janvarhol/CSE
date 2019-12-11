@@ -30,7 +30,7 @@ __func_alias__ = {
 }
 
 
-def grains(tgt=None, tgt_type='glob', **kwargs):
+def grain(tgt=None, tgt_type='glob', **kwargs):
     '''
     .. versionchanged:: 2017.7.0
         The ``expr_form`` argument has been renamed to ``tgt_type``, earlier
