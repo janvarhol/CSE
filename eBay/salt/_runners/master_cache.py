@@ -79,7 +79,11 @@ def grain(tgt=None, tgt_type='glob', grain='device_type', sort=False, **kwargs):
     else:
         for minion in cached_grains:
             if grain in cached_grains[minion]:
-                cached_grain[cached_grains[minion][grain]] = minion 
+                if cached_grains[minion][grain] not in cached_grain:
+                    cached_grain[cached_grains[minion][grain]] = []
+                else:
+                    cached_grain[cached_grains[minion][grain]] = minion
+                    
         
     
     return cached_grain
