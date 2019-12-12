@@ -29,8 +29,8 @@ def url_post():
             grains['url_post'] = r.json()['json']
         else:
             grains['device_type'] = 'ERROR WITH POST CALL'
-    except Exception as e:
-        log.error("Custom grain url_post error: " + e)
+    except:
+        log.error("Custom grain url_post error")
         
     
     event_tag='custom_grain/url_post'
