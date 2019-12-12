@@ -1,8 +1,3 @@
-import salt.modules.cmdmod
-import logging
-import os
-
-
 import requests
 import json
 
