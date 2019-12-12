@@ -15,15 +15,13 @@ log = logging.getLogger(__name__)
 def url_post():
     grains = {}
       
-    try:
-        r = requests.post(url, json=payload, headers=headers, verify=False)
-        log.info("url_post call status code: " + r.status_code)
-        if r.status_code == 200:
-            log.info("JSON response: " + json.dumps(r.json()['json'], indent=4))
-            grains['url_post'] = r.json()['json']
-        else:
-            grains['device_type'] = 'ERROR WITH POST CALL'
-    except:
-        log.error("Custom grain url_post error")
+    r = requests.post(url, json=payload, headers=headers, verify=False)
+    log.info("url_post call status code: " + r.status_code)
+    if r.status_code == 200:
+        log.info("JSON response: " + json.dumps(r.json()['json'], indent=4))
+        grains['url_post'] = r.json()['json']
+    else:
+        grains['device_type'] = 'ERROR WITH POST CALL'
+
         
     return grains
