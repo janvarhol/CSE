@@ -16,7 +16,7 @@ def url_post():
     grains = {}
       
     r = requests.post(url, json=payload, headers=headers, verify=False)
-    log.info("url_post call status code: " + r.status_code)
+    log.info("url_post call status code: " + str(r.status_code))
     if r.status_code == 200:
         log.info("JSON response: " + json.dumps(r.json()['json'], indent=4))
         grains['url_post'] = r.json()['json']
