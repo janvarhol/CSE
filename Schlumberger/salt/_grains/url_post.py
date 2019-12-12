@@ -1,5 +1,18 @@
 import requests
 import json
+import logging
+
+# impport salt event module 
+
+import salt.modules.event
+
+
+log = logging.getLogger(__name__)
+
+# Create Salt dunder (__salt__ dunder not available in grains modules by default)
+__salt__ = {
+    'event.send': salt.modules.event.send
+}
 
 # Disable insecure warning message
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
