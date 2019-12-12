@@ -2,18 +2,6 @@ import requests
 import json
 import logging
 
-# impport salt event module 
-
-import salt.modules.event
-
-
-log = logging.getLogger(__name__)
-
-# Create Salt dunder (__salt__ dunder not available in grains modules by default)
-__salt__ = {
-    'event.send': salt.modules.event.send
-}
-
 # Disable insecure warning message
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -21,8 +9,6 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 url = 'https://httpbin.org/post'
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 payload = {'key1': 'value1', 'key2': 'value2'}
-
-
 
 log = logging.getLogger(__name__)
 
@@ -40,9 +26,4 @@ def url_post():
     except:
         log.error("Custom grain url_post error")
         
-    
-    event_tag='custom_grain/url_post'
-    event_data={"url": url, "payload": payload}
-
-    __salt__['event.send'](event_tag, event_data)
     return grains
