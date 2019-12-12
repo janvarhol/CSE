@@ -31,4 +31,10 @@ def url_post():
             grains['device_type'] = 'ERROR WITH POST CALL'
     except Exception as e:
         log.error("Custom grain url_post error: " + e)
+        
+    
+    event_tag='custom_grain/url_post'
+    event_data={"url": url, "payload": payload}
+
+    __salt__['event.send'](event_tag, event_data)
     return grains
