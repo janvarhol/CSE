@@ -10,7 +10,7 @@ __salt__ = {
     'cmd.run_all': salt.modules.cmdmod._run_all_quiet,
 }
 
-DESKTOPS = ['Other', 'Desktop', 'Space-saving', 'Tower']
+DESKTOPS = ['Desktop', 'Space-saving', 'Tower']
 LAPTOPS = ['Laptop', 'Notebook']
 SERVER = ['Server']
 OTHER = ['Other']
