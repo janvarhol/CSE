@@ -31,7 +31,7 @@ def device_type():
     if hostname_cmd:
         desc = __salt__['cmd.run'](
             [hostname_cmd + ' | grep "Operating System"'],
-            python_shell=False
+            python_shell=True
         )
     log.info(desc)
         
