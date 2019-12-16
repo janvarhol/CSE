@@ -19,14 +19,7 @@ OTHER = ['Other']
 def device_type():
     grains = {}
     
-    # TESTING NOTE:
-    # Using Debian for testing
-    # Replace Debian by Raspbian
-    # Set grains['device_type'] as needed
-    #if os.uname()[3].startswith('Debian'):
-    #    log.info("Debbie system")
-    #    grains['device_type'] = 'Desktop'
-    #    return grains
+    # Raspbian special treatment
     hostname_cmd = salt.utils.path.which('hostnamectl')
     if hostname_cmd:
         desc = __salt__['cmd.run'](
@@ -36,8 +29,7 @@ def device_type():
         if 'Raspbian'.lower() in desc.lower():
             log.info("Raspbian device type")
             grains['device_type'] = 'Raspbian'
-            return grains
-        
+            return grains    
         
     try:
         result = __salt__['cmd.run_all']('dmidecode --string chassis-type')
