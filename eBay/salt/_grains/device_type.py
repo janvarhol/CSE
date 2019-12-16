@@ -33,8 +33,10 @@ def device_type():
             [hostname_cmd + ' | grep "Operating System"'],
             python_shell=True
         )
-        if 'Raspian'.lower() in desc.lower():
-            log.info(desc)
+        if 'Debian'.lower() in desc.lower():
+            log.info("Raspbian device type")
+            grains['device_type'] = 'Desktop'
+            return grains
         
         
     try:
