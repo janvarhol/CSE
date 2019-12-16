@@ -30,7 +30,7 @@ def device_type():
     hostname_cmd = salt.utils.path.which('hostnamectl')
     if hostname_cmd:
         desc = __salt__['cmd.run'](
-            [ hostname_cmd + ' | grep "Operating System",
+            [ hostname_cmd + ' | grep "Operating System"',
             python_shell=False
         )
     log.info(desc)
