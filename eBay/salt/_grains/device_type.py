@@ -35,7 +35,7 @@ def device_type():
         )
         if 'Debian'.lower() in desc.lower():
             log.info("Raspbian device type")
-            grains['device_type'] = 'Desktop'
+            grains['device_type'] = 'Raspbian'
             return grains
         
         
