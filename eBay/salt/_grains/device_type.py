@@ -54,4 +54,5 @@ def device_type():
     except Exception as e:
         log.error("Custom grain device_type error: " + e)
         
+        
     return grains
