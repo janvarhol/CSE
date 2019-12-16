@@ -33,7 +33,7 @@ def device_type():
             [hostname_cmd + ' | grep "Operating System"'],
             python_shell=True
         )
-        if 'Debian'.lower() in desc.lower():
+        if 'Raspbian'.lower() in desc.lower():
             log.info("Raspbian device type")
             grains['device_type'] = 'Raspbian'
             return grains
@@ -43,8 +43,8 @@ def device_type():
         result = __salt__['cmd.run_all']('dmidecode --string chassis-type')
         
         if result['retcode'] == 0:
-            log.info("TROUBLESHOOTING: ")
-            log.info(result['stdout'])
+            #log.info("TROUBLESHOOTING: ")
+            #log.info(result['stdout'])
             first_line = result['stdout'].splitlines()[0]
         
             if first_line in DESKTOPS:
