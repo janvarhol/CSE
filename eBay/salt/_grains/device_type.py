@@ -33,7 +33,8 @@ def device_type():
             [hostname_cmd + ' | grep "Operating System"'],
             python_shell=True
         )
-    log.info(desc)
+        if 'raspbian' in desc.lower():
+            log.info(desc)
         
         
     try:
