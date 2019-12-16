@@ -13,6 +13,7 @@ __salt__ = {
 DESKTOPS = ['Other', 'Desktop', 'Space-saving', 'Tower']
 LAPTOPS = ['Laptop', 'Notebook']
 SERVER = ['Server']
+OTHER = ['Other']
 
 
 def device_type():
@@ -22,10 +23,17 @@ def device_type():
     # Using Debian for testing
     # Replace Debian by Raspbian
     # Set grains['device_type'] as needed
-    if os.uname()[3].startswith('Debian'):
-        log.info("Debbie system")
-        grains['device_type'] = 'Desktop'
-        return grains
+    #if os.uname()[3].startswith('Debian'):
+    #    log.info("Debbie system")
+    #    grains['device_type'] = 'Desktop'
+    #    return grains
+    hostname_cmd = salt.utils.path.which('hostnamectl')
+    if hostname_cmd:
+        desc = __salt__['cmd.run'](
+            hostname_cmd,
+            python_shell=False
+        )
+    log.info(desc)
         
         
     try:
@@ -42,6 +50,8 @@ def device_type():
                 grains['device_type'] = 'Laptop'
             elif first_line in SERVER:
                 grains['device_type'] = 'Server'
+            elif first_line in OTHER:
+                grains['device_type'] = 'Other'
             else:
                 grains['device_type'] = 'Unknown'
         else:
