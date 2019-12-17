@@ -27,7 +27,7 @@ def device_type():
         grains['device_type'] = 'not available'
         return grains
      
-    if hostname_cmd:
+    if hostnamectl_cmd:
         desc = __salt__['cmd.run'](
             [hostname_cmd + ' | grep "Operating System"'],
             python_shell=True
