@@ -22,7 +22,7 @@ def device_type():
     # Raspbian special treatment
     #hostname_cmd = salt.utils.path.which('hostnamectl')
     try:
-        hostnamectl_cmd = subprocess.check_output(['which', 'hostnamectl']).splitlines()[0]
+        hostnamectl_cmd = subprocess.check_output(['which', 'hostnamectl21312']).splitlines()[0]
     except:
         grains['device_type'] = 'not available'
         return grains
