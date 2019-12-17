@@ -29,7 +29,7 @@ def device_type():
      
     if hostnamectl_cmd:
         desc = __salt__['cmd.run'](
-            [hostname_cmd + ' | grep "Operating System"'],
+            [hostnamectl_cmd + ' | grep "Operating System"'],
             python_shell=True
         )
         if 'Raspbian'.lower() in desc.lower():
