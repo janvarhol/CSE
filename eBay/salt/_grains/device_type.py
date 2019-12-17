@@ -1,6 +1,7 @@
 import salt.modules.cmdmod
 import logging
-import os
+import subprocess
+#import os
 
 log = logging.getLogger(__name__)
 
@@ -20,7 +21,13 @@ def device_type():
     grains = {}
     
     # Raspbian special treatment
-    hostname_cmd = salt.utils.path.which('hostnamectl')
+    #hostname_cmd = salt.utils.path.which('hostnamectl')
+    try:
+        hostnamectl_cmd = subprocess.check_output(['which', 'hostnamectl']).splitlines()[0]
+    except:
+        grains['device_type'] = 'not available'
+        retun grains
+     
     if hostname_cmd:
         desc = __salt__['cmd.run'](
             [hostname_cmd + ' | grep "Operating System"'],
@@ -50,7 +57,7 @@ def device_type():
             else:
                 grains['device_type'] = 'Unknown'
         else:
-            grains['device_type'] = 'ERROR'
+            grains['device_type'] = 'dmidecode error'
     except Exception as e:
         log.error("Custom grain device_type error: " + e)
         
