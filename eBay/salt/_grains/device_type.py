@@ -1,7 +1,6 @@
 import salt.modules.cmdmod
 import logging
 import subprocess
-#import os
 
 log = logging.getLogger(__name__)
 
@@ -26,7 +25,7 @@ def device_type():
         hostnamectl_cmd = subprocess.check_output(['which', 'hostnamectl']).splitlines()[0]
     except:
         grains['device_type'] = 'not available'
-        retun grains
+        return grains
      
     if hostname_cmd:
         desc = __salt__['cmd.run'](
