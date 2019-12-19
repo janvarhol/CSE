@@ -30,7 +30,7 @@ def device_type():
     if hostnamectl_cmd:
         log.info(type(hostnamectl_cmd))
         log.info("hostnamectl_cmd: " + str(hostnamectl_cmd))
-        hostnamectl_cmd_str = str(hostnamectl_cmd) + ' | grep "Operating System"']
+        hostnamectl_cmd_str = str(hostnamectl_cmd) + ' | grep "Operating System"'
         log.info("hostnamectl_cmd_str: " + str(hostnamectl_cmd))
         desc = __salt__['cmd.run'](
             hostnamectl_cmd_str,
