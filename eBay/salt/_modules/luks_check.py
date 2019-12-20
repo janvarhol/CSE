@@ -24,7 +24,8 @@ def is_disk_encrypted(device):
     if device[-1:].isdigit():
         cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
         log.info("cryptsetup_bin: " + str(cryptsetup_bin))
-        if cryptsetup_bin != None and cryptsetup_bin.len() > 9:
+        log.info("type: " + type(cryptsetup_bin))
+        if cryptsetup_bin != None and len(cryptsetup_bin) > 9:
             log.info("--->> cryptsetup_bin: " + str(cryptsetup_bin))
             cryptsetup_isLuks_cmd = str(cryptsetup_bin) + ' isLuks ' + str(device)
             log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
