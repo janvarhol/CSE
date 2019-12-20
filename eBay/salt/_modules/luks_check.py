@@ -23,7 +23,7 @@ def is_disk_encrypted(device):
     # Check if device name ends with partition number, like /dev/sda5
     if device[-1:].isdigit():
         try:
-            cryptsetup_bin = __salt__['cmd.which']('nada')
+            cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
             if cryptsetup_bin != None and cryptsetup_bin.len() > 9:
                 cryptsetup_isLuks_cmd = str(cryptsetup_bin) + ' isLuks ' + str(device)
                 log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
