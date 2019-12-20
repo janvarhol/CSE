@@ -21,7 +21,12 @@ def is_disk_encrypted(device):
     log.info("--->>> Checking disk encrypted on device: " + device)
     # Check if device name ends with partition number, like /dev/sda5
     if device[-1:].isdigit():
-        cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks ' + device, ignore_retcode=True)
+        try:
+            cryptsetup_isLuks_cmd = 'cryptsetup isLuks ' + str(device)
+            log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
+            cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
+        except:
+            return 1
     elif device[-1:].isalpha():
     # if device name ends with alpha, meaning it's a disk, like /dev/sdb
         print("--->>> Scanning disk for LVM information")
