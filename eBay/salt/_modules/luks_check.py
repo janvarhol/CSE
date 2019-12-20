@@ -22,17 +22,17 @@ def is_disk_encrypted(device):
     log.info("--->>> Checking disk encrypted on device: " + device)
     # Check if device name ends with partition number, like /dev/sda5
     if device[-1:].isdigit():
-        try:
-            cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
-            if cryptsetup_bin != None and cryptsetup_bin.len() > 9:
-                cryptsetup_isLuks_cmd = str(cryptsetup_bin) + ' isLuks ' + str(device)
-                log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
-                cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
-            else:
-                log.warning("cryptsetup binary was not found in path!!!")
-                return 1
-        except:
+        cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
+        log.info("cryptsetup_bin: " + str(cryptsetup_bin))
+        if cryptsetup_bin != None and cryptsetup_bin.len() > 9:
+            log.info("--->> cryptsetup_bin: " + str(cryptsetup_bin))
+            cryptsetup_isLuks_cmd = str(cryptsetup_bin) + ' isLuks ' + str(device)
+            log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
+            cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
+        else:
+            log.warning("cryptsetup binary was not found in path!!!")
             return 1
+ 
     elif device[-1:].isalpha():
     # if device name ends with alpha, meaning it's a disk, like /dev/sdb
         print("--->>> Scanning disk for LVM information")
