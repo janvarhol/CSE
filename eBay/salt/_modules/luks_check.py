@@ -24,12 +24,12 @@ def is_disk_encrypted(device):
     if device[-1:].isdigit():
         try:
             cryptsetup_bin = __salt__['cmd.which']('nada')
-                if cryptsetup_bin not None:
-                    cryptsetup_isLuks_cmd = str(cryptsetup_bin) + ' isLuks ' + str(device)
-                    log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
-                    cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
-                else:
-                    log.warning("cryptsetup binary was not found in path!!!")                   
+            if cryptsetup_bin not None:
+                cryptsetup_isLuks_cmd = str(cryptsetup_bin) + ' isLuks ' + str(device)
+                log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
+                cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
+            else:
+                log.warning("cryptsetup binary was not found in path!!!")                   
         except:
             return 1
     elif device[-1:].isalpha():
