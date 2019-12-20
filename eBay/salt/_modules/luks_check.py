@@ -29,9 +29,10 @@ def is_disk_encrypted(device):
                 log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
                 cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
             else:
-                log.warning("cryptsetup binary was not found in path!!!")                   
+                log.warning("cryptsetup binary was not found in path!!!")
+                return False
         except:
-            return 1
+            return False
     elif device[-1:].isalpha():
     # if device name ends with alpha, meaning it's a disk, like /dev/sdb
         print("--->>> Scanning disk for LVM information")
