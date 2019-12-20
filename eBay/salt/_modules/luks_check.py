@@ -6,6 +6,7 @@ Checking for LUKS encryption in all disks
 '''
 import logging
 import json
+
 #import time
 
 log = logging.getLogger(__name__)
@@ -22,9 +23,13 @@ def is_disk_encrypted(device):
     # Check if device name ends with partition number, like /dev/sda5
     if device[-1:].isdigit():
         try:
-            cryptsetup_isLuks_cmd = 'cryptsetup isLuks ' + str(device)
-            log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
-            cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
+            cryptsetup_bin = __salt__['cmd.which']('nada')
+                if cryptsetup_bin not None:
+                    cryptsetup_isLuks_cmd = str(cryptsetup_bin) + ' isLuks ' + str(device)
+                    log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
+                    cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
+                else:
+                    log.warning("cryptsetup binary was not found in path!!!")                   
         except:
             return 1
     elif device[-1:].isalpha():
