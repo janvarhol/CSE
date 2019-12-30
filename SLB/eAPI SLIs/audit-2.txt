@@ -1,0 +1,16 @@
+{
+                "username": "root",
+                "event_type": "rpc",
+                "event_name": "api.discover",
+                "event_data": {
+                    "rpc_api_version": "5",
+                    "riq": 2
+                },
+                "start_time": "2019-12-30T22:31:58.081602+00:00",
+                "account_uuid": "80c67364-cb31-4f4b-972a-e7ea3f752bb8",
+                "failed": false,
+                "elapsed_msec": 688,
+                "end_time": "2019-12-30T22:31:58.770346+00:00",
+                "session_uuid": "c4e1ed8a-2db9-4d42-b3e3-fd6e56eca230",
+                "id": 19
+            },

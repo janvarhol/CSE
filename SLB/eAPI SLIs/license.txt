@@ -1,0 +1,22 @@
+[
+    3, 
+    {
+        "timestamp": "2019-12-30T22:38:32.197232", 
+        "messages": [
+            {
+                "detail": "license expires on 2020-01-13 (14 days from now)", 
+                "level": "warning"
+            }, 
+            {
+                "detail": "2 masters in use exceeds hard limit of 1", 
+                "level": "error"
+            }, 
+            {
+                "detail": "2 minions in use is within hard limit of 50", 
+                "level": "info"
+            }
+        ]
+    }, 
+    null, 
+    []
+]

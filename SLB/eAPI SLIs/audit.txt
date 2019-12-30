@@ -1,0 +1,1434 @@
+configure audit:enabled and audit:valid_logins in /etc/raas/raas
+[
+    3, 
+    {
+        "count": 236, 
+        "results": [
+            {
+                "username": null, 
+                "event_type": "system", 
+                "event_name": "startup", 
+                "event_data": {
+                    "raas_config": {
+                        "scheduler_max_futures_weeks_ahead": 12, 
+                        "newrelic_enabled": false, 
+                        "webserver_max_time": 0, 
+                        "pki_dir": "/etc/raas/pki", 
+                        "root_dir": "/", 
+                        "jwt": {
+                            "algorithm": "HS256", 
+                            "login_expires": 60, 
+                            "max_logins": 100, 
+                            "expires": 3600, 
+                            "expires_comment": "token expiration in seconds", 
+                            "login_expires_comment": "external authenication, login token expiration in seconds"
+                        }, 
+                        "sentry_dsn": null, 
+                        "log_fmt_logfile": "%(asctime)s,%(msecs)03.0f [%(name)-17s][%(levelname)-8s:%(lineno)-4d][%(processName)s:%(process)d] %(message)s", 
+                        "max_processes": 8, 
+                        "_unknown_args_": [], 
+                        "webserver_body_timeout": null, 
+                        "directory_root": "/srv/raas", 
+                        "log_file": "/var/log/raas/raas", 
+                        "strict_transport_security_header_enabled": true, 
+                        "proxy": {
+                            "tgt_type": "glob", 
+                            "rebalance_interval": 120, 
+                            "monitored": false, 
+                            "monitor_interval": 90, 
+                            "tgt": "deltaproxy*"
+                        }, 
+                        "log_fmt_console": "[%(levelname)-8s] %(message)s", 
+                        "sec": {
+                            "archive_interval_comment": "The interval in seconds between attempts to archive old assessment/remediation results (ENV Var: SSE_SEC_ARCHIVE_INTERVAL)", 
+                            "download_frequency": 86400, 
+                            "old_policy_file_lifespan_comment": "The lifespan of old lock policy files in days that will remain in the RAAS file system", 
+                            "compile_stats_interval_comment": "Interval in seconds between times that the compile stats will be gathered. (ENV Var: SSE_SEC_COMPILE_STATS_INTERVAL)", 
+                            "ingest_on_boot": true, 
+                            "content_lock_timeout": 60, 
+                            "locke_dir": "locke", 
+                            "archive_interval": 300, 
+                            "stats_snapshot_interval": 3600, 
+                            "ingest_custom_override": true, 
+                            "old_policy_file_lifespan": 2, 
+                            "delete_old_policy_files_interval": 86400, 
+                            "delete_old_policy_files_interval_comment": "The interval in seconds between times that theold lock policy files in the RAAS file system will be deleted", 
+                            "locke_dir_comment": "Location where SaltStack content in expanded before ingestion. If the path is relative (no leading slash), then it is relative to the RAAS cache dir (ENV Var: SSE_SEC_LOCKE_DIR)", 
+                            "content_lock_timeout_comment": "When multiple RAAS heads are deployed, the SaltStack SecOps content download and ingestion is serialized so only one RAAS head at a time will attempt it.  This is the value for the redis lock timeout. (ENV Var: SSE_SEC_CONTENT_LOCK_TIMEOUT)", 
+                            "compile_stats_interval": 10, 
+                            "ingest_override": true, 
+                            "content_url_comment": "URL from which SaltStack Secops content will be downloaded. (ENV Var: SSE_SEC_CONTENT_URL)", 
+                            "stats_snapshot_interval_comment": "Interval in seconds between when stats for Secops will be gathered (ENV Var: SSE_SEC_STATS_SNAPSHOT_INTERVAL)", 
+                            "content_url": "https://enterprise.saltstack.com/secops_downloads", 
+                            "download_frequency_comment": "The frequency in seconds of automated SaltStack Secops content downloads and ingestion. (ENV Var: SSE_SEC_DOWNLOAD_FREQUENCY)", 
+                            "content_lock_block_timeout_comment": "This is the maximum time a RAAS head will block on a lock to perform a SaltStack SecOps download and ingestion. (ENV Var: SSE_SEC_CONTENT_LOCK_BLOCK_TIMEOUT)", 
+                            "content_lock_block_timeout": 120, 
+                            "post_ingest_cleanup": true, 
+                            "ingest_on_boot_comment": "If True, SaltStack Secops content will be downloaded and ingested soon after RAAS boot (ENV Var: SSE_SEC_INGEST_ON_BOOT)", 
+                            "post_ingest_cleanup_comment": "If True, post ingestion the contents of the locke_dir will be cleaned out. (ENV Var: SSE_SEC_POST_INGEST_CLEANUP)", 
+                            "ingest_saltstack_override": true, 
+                            "username_comment": "Username used to log in to enterprise.saltstack.com to get content (ENV Var: SSE_SEC_USERNAME)", 
+                            "download_enabled_comment": "If True, SaltStack content downloading is enabled. (should be False for air gapped systems) (ENV Var: SSE_SEC_DOWNLOAD_ENABLED)", 
+                            "username": "secops", 
+                            "download_enabled": true, 
+                            "ingest_saltstack_override_comment": "If True, existing SaltStack content will be updated otherwise the change will be rejected. (ENV Var: SSE_SEC_INGEST_SALTSTACK_OVERRIDE)", 
+                            "ingest_custom_override_comment": "If True, existing Custom content will be updated otherwise the change will be rejected. (ENV Var: SSE_SEC_INGEST_CUSTOM_OVERRIDE)"
+                        }, 
+                        "cmd_returns_max": 0, 
+                        "log_datefmt": "%H:%M:%S", 
+                        "yes": false, 
+                        "master_pending_key_expiration": 7200, 
+                        "config_dir": [
+                            "/etc/raas", 
+                            "/var/lib/raas/.raas/config"
+                        ], 
+                        "port": 443, 
+                        "cors_header_for_webpack": false, 
+                        "master_key_size": 2048, 
+                        "webserver_max_memory": 484840.5, 
+                        "clean_up_cycle": 900, 
+                        "password_sleep": 30, 
+                        "master_username_template": "master_{}", 
+                        "websocket_debounce": 5, 
+                        "redis": {
+                            "broker_db_comment": "queue database number", 
+                            "cache_db_comment": "cache database number", 
+                            "ssl": {}, 
+                            "url": "redis://:abc123@localhost:6379", 
+                            "result_db": "1", 
+                            "querystring": null, 
+                            "broker_db": "0", 
+                            "result_db_comment": "result storage database number", 
+                            "url_comment": "Redis URL without '/{database_number}' at the end", 
+                            "cache_querystring": null, 
+                            "cache_db": "2"
+                        }, 
+                        "cache_cycle": 30, 
+                        "auth_backends": {
+                            "backends": [], 
+                            "settings": {
+                                "login_redirect_url": "--auth-done--", 
+                                "login_url": "/"
+                            }
+                        }, 
+                        "extension_modules": "/var/lib/raas/cache/ext_mods", 
+                        "config_recurse": false, 
+                        "retry_timeout_multiplier": 3, 
+                        "verify_env": true, 
+                        "customer_id": "43cab1f4-de60-4ab1-85b5-1d883c5c5d09", 
+                        "job_unresponsive_check": 5, 
+                        "authers": {
+                            "ldap": {
+                                "log_detail": "ERROR", 
+                                "ssl": {}
+                            }
+                        }, 
+                        "pidfile": "/var/lib/raas/run/raas.pid", 
+                        "apm_elastic": {
+                            "service_name_comment": "Elastic APM Service Name", 
+                            "secret_token": null, 
+                            "service_name": null, 
+                            "server_url": null, 
+                            "environment": "production", 
+                            "server_url_comment": "Elastic APM Server URL", 
+                            "secret_token_comment": "Elastic APM Secret Token"
+                        }, 
+                        "audit": {
+                            "tasks": false, 
+                            "enabled": true, 
+                            "rpc_max_payload": 100, 
+                            "auth": true, 
+                            "system": true, 
+                            "rpc": true, 
+                            "valid_logins": true
+                        }, 
+                        "webserver_max_buffer_size": null, 
+                        "log_datefmt_logfile": "%Y-%m-%d %H:%M:%S", 
+                        "sock_dir": "/var/lib/raas/sock", 
+                        "job_unresponsive_check_stop": 2880, 
+                        "num_processes": 2, 
+                        "password_attempts": 50, 
+                        "vman": {
+                            "username": "vman", 
+                            "download_frequency": 86400, 
+                            "content_url_comment": "URL from which SaltStack Vulnerability Management content will be downloaded. (ENV Var: SSE_VMAN_CONTENT_URL)", 
+                            "compile_stats_interval": 60, 
+                            "stats_snapshot_interval": 3600, 
+                            "old_policy_file_lifespan_comment": "The lifespan of old policy files in days that will remain in the RAAS file system", 
+                            "username_comment": "Username used to log in to enterprise.saltstack.com to get content (ENV Var: SSE_VMAN_USERNAME)", 
+                            "compile_stats_interval_comment": "Interval in seconds between times that the compile stats will be gathered. (ENV Var: SSE_VMAN_COMPILE_STATS_INTERVAL)", 
+                            "download_enabled_comment": "If True, SaltStack content downloading is enabled. (should be False for air gapped systems) (ENV Var: SSE_VMAN_DOWNLOAD_ENABLED)", 
+                            "old_policy_file_lifespan": 2, 
+                            "content_url": "https://enterprise.saltstack.com/vman_downloads", 
+                            "stats_snapshot_interval_comment": "Interval in seconds between when stats for VMan will be gathered (ENV Var: SSE_VMAN_STATS_SNAPSHOT_INTERVAL)", 
+                            "vman_dir_comment": "Location where SaltStack content in expanded before ingestion. If the path is relative (no leading slash), then it is relative to the RAAS cache dir (ENV Var: SSE_VMAN_DIR)", 
+                            "ingest_on_boot": true, 
+                            "download_enabled": true, 
+                            "delete_old_policy_files_interval": 86400, 
+                            "vman_dir": "vman", 
+                            "delete_old_policy_files_interval_comment": "The interval in seconds between times that theold vman policy files in the RAAS file system will be deleted", 
+                            "download_frequency_comment": "The frequency in seconds of automated SaltStack Vulnerability Management content downloads and ingestion. (ENV Var: SSE_VMAN_DOWNLOAD_FREQUENCY)", 
+                            "ingest_on_boot_comment": "If True, SaltStack Vulnerability Management content will be downloaded and ingested soon after RAAS boot (ENV Var: SSE_VMAN_INGEST_ON_BOOT)"
+                        }, 
+                        "enable_grains_indexing": true, 
+                        "cachedir": "/var/lib/raas/cache", 
+                        "cookie": {
+                            "secret": "a99bd759279b8b10fe47abe830cafdbeef26f169af7e1cd5b1ff2335c440e1d0", 
+                            "expires": 43200, 
+                            "name": "raas-session"
+                        }, 
+                        "webserver_max_body_size": null, 
+                        "sql": {
+                            "dialect": "postgresql", 
+                            "driver": "psycopg2", 
+                            "pool_size": 10, 
+                            "ssl": true, 
+                            "host": "localhost", 
+                            "pool_timeout": 10, 
+                            "pool_recycle": 3600, 
+                            "port": 5432
+                        }, 
+                        "interface": "0.0.0.0", 
+                        "log_level": "debug", 
+                        "log_file_loglevel": "debug", 
+                        "scheduler_max_futures_per_cycle": 500, 
+                        "tornado_profiler_enabled": false, 
+                        "tls_crt": "/etc/pki/raas/certs/localhost.crt", 
+                        "tls_key": "/etc/pki/raas/certs/localhost.key", 
+                        "raas_presence_expiration": 3600, 
+                        "license": {
+                            "masters": {
+                                "policy": "fixed", 
+                                "hard_limit": 1
+                            }, 
+                            "features": [
+                                "*"
+                            ], 
+                            "keys": {
+                                "saltstack_key": "fake key", 
+                                "client_key": "fake key"
+                            }, 
+                            "term": {
+                                "duration": 14, 
+                                "policy": "fixed"
+                            }, 
+                            "minions": {
+                                "policy": "fixed", 
+                                "hard_limit": 50
+                            }, 
+                            "metadata": {
+                                "customer": "SaltStack", 
+                                "uuid": "4d723b0b-9ed8-45f5-824b-49c7ae5f1bf4", 
+                                "created": "<class 'datetime.date'>"
+                            }
+                        }, 
+                        "websocket_ping_timeout": 600, 
+                        "dest_revision": "head", 
+                        "tornado_xsrf_cookies_enabled": true, 
+                        "background_workers": {
+                            "without_heartbeat": false, 
+                            "without_mingle_comment": "When true, Don't synchronize with other workers at start-up. Reduces worker startup up time.", 
+                            "prefetch_multiplier": 4, 
+                            "result_expires_comment": "in seconds, how long results are stored in Redis", 
+                            "combined_process": true, 
+                            "prefetch_multiplier_comment": "How many messages to prefetch at a time multiplied by the number of concurrent processes.", 
+                            "without_gossip": false, 
+                            "without_mingle": false, 
+                            "concurrency_comment": "number of worker processes (0 = auto calc one per core up to max)", 
+                            "broker": "redis", 
+                            "max_memory": 1048576, 
+                            "result_expires": 60, 
+                            "without_heartbeat_comment": "When true, Don't send event heartbeats. Reduces Redis usage.", 
+                            "concurrency": 2, 
+                            "combined_process_comment": "run background and web workers together", 
+                            "max_tasks": 100000, 
+                            "max_tasks_comment": "worker recycles after max tasks", 
+                            "max_memory_comment": "in kB, 0=auto, None=unlimited", 
+                            "without_gossip_comment": "When true, Don't subscribe to other workers events. Reduces redis usage.", 
+                            "backend": "redis"
+                        }, 
+                        "websocket_ping_interval": 15, 
+                        "master_unresponsive_check_limit": 2, 
+                        "instance_id": "37f21e4a-0705-46c5-be9b-1bfc845c6422", 
+                        "testing_load_mocks": null, 
+                        "spa_serve_cookie_always": false, 
+                        "log_granular_levels": {}, 
+                        "bug_reports_logfile": "/var/lib/raas/cache/bug-reports.pack", 
+                        "enable_cmd_details": true, 
+                        "schedule_cycle": 10, 
+                        "log_server_sock_path": "/var/lib/raas/sock/log_server.sock", 
+                        "tls_minimum": 1.2, 
+                        "minion_onboarding_throttle": 0, 
+                        "websocket_polling": 15, 
+                        "newrelic_config_file": "/etc/raas/newrelic.ini", 
+                        "user": "raas"
+                    }
+                }, 
+                "start_time": "2019-12-30T22:31:27.996347+00:00", 
+                "account_uuid": null, 
+                "failed": false, 
+                "elapsed_msec": 1745, 
+                "end_time": "2019-12-30T22:31:29.741967+00:00", 
+                "session_uuid": null, 
+                "id": 1
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:31:31.678206+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 19, 
+                "end_time": "2019-12-30T22:31:31.697766+00:00", 
+                "session_uuid": "798da329-0b04-4cbd-b225-b27a46289072", 
+                "id": 2
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143189175656
+                }, 
+                "start_time": "2019-12-30T22:31:31.698584+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:31:31.710028+00:00", 
+                "session_uuid": "798da329-0b04-4cbd-b225-b27a46289072", 
+                "id": 3
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "4279", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:31:31.734971+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 23, 
+                "end_time": "2019-12-30T22:31:31.758566+00:00", 
+                "session_uuid": "619c4594-d315-4ef3-8612-a581a5cfac2f", 
+                "id": 4
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "master.save_master", 
+                "event_data": {
+                    "riq": 140143188824472, 
+                    "rpc_api_version": "5", 
+                    "kwargs": {
+                        "master_id": "saltstack_enterprise_installer", 
+                        "cluster_id": "salt", 
+                        "grains": "{<truncated>}"
+                    }
+                }, 
+                "start_time": "2019-12-30T22:31:31.759484+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 7, 
+                "end_time": "2019-12-30T22:31:31.766660+00:00", 
+                "session_uuid": "619c4594-d315-4ef3-8612-a581a5cfac2f", 
+                "id": 5
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "229", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:31:31.785475+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:31:31.796517+00:00", 
+                "session_uuid": "e6f65779-29dc-497e-8a76-14dc4efe0b38", 
+                "id": 6
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "minions.save_minion_key_state", 
+                "event_data": {
+                    "riq": 140143205809904, 
+                    "rpc_api_version": "5", 
+                    "kwargs": {
+                        "keys": {
+                            "minions_rejected": [], 
+                            "minions_denied": [], 
+                            "minions_pre": [], 
+                            "minions": [
+                                "saltmaster"
+                            ]
+                        }, 
+                        "master_id": "saltstack_enterprise_installer"
+                    }
+                }, 
+                "start_time": "2019-12-30T22:31:31.797109+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 18, 
+                "end_time": "2019-12-30T22:31:31.815933+00:00", 
+                "session_uuid": "e6f65779-29dc-497e-8a76-14dc4efe0b38", 
+                "id": 7
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "4314", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:31:31.832498+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 15, 
+                "end_time": "2019-12-30T22:31:31.847875+00:00", 
+                "session_uuid": "fe964a1c-1c88-49df-b79c-fb0217213a64", 
+                "id": 8
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "minions.save_minion_cache", 
+                "event_data": {
+                    "riq": 140143258069872, 
+                    "rpc_api_version": "5", 
+                    "kwargs": {
+                        "master_id": "saltstack_enterprise_installer", 
+                        "minions": {
+                            "saltmaster": {
+                                "grains": "{<truncated>}", 
+                                "mtime": 1577732994
+                            }
+                        }
+                    }
+                }, 
+                "start_time": "2019-12-30T22:31:31.848620+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 76, 
+                "end_time": "2019-12-30T22:31:31.924799+00:00", 
+                "session_uuid": "fe964a1c-1c88-49df-b79c-fb0217213a64", 
+                "id": 9
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "354", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:31:31.941152+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 13, 
+                "end_time": "2019-12-30T22:31:31.954444+00:00", 
+                "session_uuid": "fb21b166-b454-4674-b903-fc6885679da7", 
+                "id": 10
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "masterfs.save_masterfs", 
+                "event_data": {
+                    "args": [
+                        "saltstack_enterprise_installer", 
+                        {
+                            "base": [
+                                "apache/init.sls", 
+                                "apache/sample.conf", 
+                                "config_baseline.sls", 
+                                "orch/cloud/deploy_webservers.sls", 
+                                "orch/patching_orchestration_webservers.sls", 
+                                "wordpress/linux/init.sls", 
+                                "wordpress/mac/deploy.sls", 
+                                "wordpress/windows/install.sls"
+                            ]
+                        }
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172497480
+                }, 
+                "start_time": "2019-12-30T22:31:31.955051+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 8, 
+                "end_time": "2019-12-30T22:31:31.963993+00:00", 
+                "session_uuid": "fb21b166-b454-4674-b903-fc6885679da7", 
+                "id": 11
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:31:41.686890+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 12, 
+                "end_time": "2019-12-30T22:31:41.699742+00:00", 
+                "session_uuid": "0ce66a02-b406-486a-8700-86374df7a4b2", 
+                "id": 12
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172536528
+                }, 
+                "start_time": "2019-12-30T22:31:41.700421+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 6, 
+                "end_time": "2019-12-30T22:31:41.706817+00:00", 
+                "session_uuid": "0ce66a02-b406-486a-8700-86374df7a4b2", 
+                "id": 13
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:31:51.696988+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:31:51.708932+00:00", 
+                "session_uuid": "56473af4-1243-41d6-8387-6c420cd0a65f", 
+                "id": 14
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172549824
+                }, 
+                "start_time": "2019-12-30T22:31:51.709618+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 5, 
+                "end_time": "2019-12-30T22:31:51.715433+00:00", 
+                "session_uuid": "56473af4-1243-41d6-8387-6c420cd0a65f", 
+                "id": 15
+            }, 
+            {
+                "username": "root", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User root authenticated", 
+                    "headers": {
+                        "Content-Length": "98", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|0a8ea069|e5133a533385e49f0b9ec8e2f9de4555|1577745117", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|0a8ea069|e5133a533385e49f0b9ec8e2f9de4555|1577745117", 
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:31:57.936958+00:00", 
+                "account_uuid": "80c67364-cb31-4f4b-972a-e7ea3f752bb8", 
+                "failed": false, 
+                "elapsed_msec": 54, 
+                "end_time": "2019-12-30T22:31:57.991911+00:00", 
+                "session_uuid": "0b40484a-bb0b-43c7-b043-c44e5f006651", 
+                "id": 16
+            }, 
+            {
+                "username": "root", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User root: authenticated using jwt auth", 
+                    "headers": {
+                        "Upgrade": "websocket", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|0a8ea069|e5133a533385e49f0b9ec8e2f9de4555|1577745117", 
+                        "Sec-Websocket-Version": "13", 
+                        "Connection": "Upgrade", 
+                        "Sec-Websocket-Key": "3D7DZg5+hMShx8fpoEkTGw==", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|0a8ea069|e5133a533385e49f0b9ec8e2f9de4555|1577745117", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDg3MTcsImlkIjoiODBjNjczNjQtY2IzMS00ZjRiLTk3MmEtZTdlYTNmNzUyYmI4IiwiY29uZmlnX25hbWUiOiJpbnRlcm5hbCIsInVzZXJuYW1lIjoicm9vdCIsInNlZWQiOjgxMTh9.o9ROnGzW_wXXpODSJJVEhpYWlYGQhMJAzB5VmKaYSdg"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:31:58.022298+00:00", 
+                "account_uuid": "80c67364-cb31-4f4b-972a-e7ea3f752bb8", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:31:58.033649+00:00", 
+                "session_uuid": "c4e1ed8a-2db9-4d42-b3e3-fd6e56eca230", 
+                "id": 17
+            }, 
+            {
+                "username": "root", 
+                "event_type": "rpc", 
+                "event_name": "api.get_versions", 
+                "event_data": {
+                    "rpc_api_version": "5", 
+                    "riq": 1
+                }, 
+                "start_time": "2019-12-30T22:31:58.054251+00:00", 
+                "account_uuid": "80c67364-cb31-4f4b-972a-e7ea3f752bb8", 
+                "failed": false, 
+                "elapsed_msec": 6, 
+                "end_time": "2019-12-30T22:31:58.060438+00:00", 
+                "session_uuid": "c4e1ed8a-2db9-4d42-b3e3-fd6e56eca230", 
+                "id": 18
+            }, 
+            {
+                "username": "root", 
+                "event_type": "rpc", 
+                "event_name": "api.discover", 
+                "event_data": {
+                    "rpc_api_version": "5", 
+                    "riq": 2
+                }, 
+                "start_time": "2019-12-30T22:31:58.081602+00:00", 
+                "account_uuid": "80c67364-cb31-4f4b-972a-e7ea3f752bb8", 
+                "failed": false, 
+                "elapsed_msec": 688, 
+                "end_time": "2019-12-30T22:31:58.770346+00:00", 
+                "session_uuid": "c4e1ed8a-2db9-4d42-b3e3-fd6e56eca230", 
+                "id": 19
+            }, 
+            {
+                "username": "root", 
+                "event_type": "rpc", 
+                "event_name": "audit.get_audit", 
+                "event_data": {
+                    "rpc_api_version": "5", 
+                    "riq": 3
+                }, 
+                "start_time": "2019-12-30T22:31:58.827570+00:00", 
+                "account_uuid": "80c67364-cb31-4f4b-972a-e7ea3f752bb8", 
+                "failed": false, 
+                "elapsed_msec": 10, 
+                "end_time": "2019-12-30T22:31:58.837778+00:00", 
+                "session_uuid": "c4e1ed8a-2db9-4d42-b3e3-fd6e56eca230", 
+                "id": 20
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:32:01.707234+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:32:01.718753+00:00", 
+                "session_uuid": "73443272-33c0-4756-b48b-d45dcf7ca6f6", 
+                "id": 21
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172668608
+                }, 
+                "start_time": "2019-12-30T22:32:01.719400+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 8, 
+                "end_time": "2019-12-30T22:32:01.727416+00:00", 
+                "session_uuid": "73443272-33c0-4756-b48b-d45dcf7ca6f6", 
+                "id": 22
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:32:11.717797+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:32:11.729115+00:00", 
+                "session_uuid": "c515e7d2-3b02-4f91-ac63-11c2dcc3f67a", 
+                "id": 23
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172200656
+                }, 
+                "start_time": "2019-12-30T22:32:11.729721+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 7, 
+                "end_time": "2019-12-30T22:32:11.737610+00:00", 
+                "session_uuid": "c515e7d2-3b02-4f91-ac63-11c2dcc3f67a", 
+                "id": 24
+            }, 
+            {
+                "username": "anonymous", 
+                "event_type": "rpc", 
+                "event_name": "master.get_master_jwt", 
+                "event_data": {
+                    "riq": 140143172316856, 
+                    "rpc_api_version": "5", 
+                    "kwargs": {
+                        "test": true, 
+                        "master_id": "saltstack_enterprise_installer", 
+                        "encrypted_message": "s0ABNdpKAVT1ejyoE0BqznkO4UKE52cAk5ahRQtDNSjO4v7rx36fkU2/DYgQwFeSgrq/roWG6pNOcfPW0FAITGGvsPxfBPC..."
+                    }
+                }, 
+                "start_time": "2019-12-30T22:32:15.921096+00:00", 
+                "account_uuid": "915f5383-fa08-4a01-97d3-bf492e75754d", 
+                "failed": false, 
+                "elapsed_msec": 21, 
+                "end_time": "2019-12-30T22:32:15.942285+00:00", 
+                "session_uuid": "be595edd-83aa-43a2-9282-f1347bafce93", 
+                "id": 25
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:32:21.727388+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:32:21.738891+00:00", 
+                "session_uuid": "5bef67da-2a20-46ef-8c79-336364e6fcbd", 
+                "id": 26
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172201720
+                }, 
+                "start_time": "2019-12-30T22:32:21.739551+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 4, 
+                "end_time": "2019-12-30T22:32:21.744548+00:00", 
+                "session_uuid": "5bef67da-2a20-46ef-8c79-336364e6fcbd", 
+                "id": 27
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:32:31.737411+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:32:31.748979+00:00", 
+                "session_uuid": "fa4e1ccf-1b0b-4781-847b-1b77a3b7cb17", 
+                "id": 28
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143188896064
+                }, 
+                "start_time": "2019-12-30T22:32:31.749606+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 4, 
+                "end_time": "2019-12-30T22:32:31.754580+00:00", 
+                "session_uuid": "fa4e1ccf-1b0b-4781-847b-1b77a3b7cb17", 
+                "id": 29
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:32:41.746417+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 10, 
+                "end_time": "2019-12-30T22:32:41.757124+00:00", 
+                "session_uuid": "dc6ee624-bbd2-4d2e-a666-469de71cd7ff", 
+                "id": 30
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172338016
+                }, 
+                "start_time": "2019-12-30T22:32:41.757739+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 5, 
+                "end_time": "2019-12-30T22:32:41.763124+00:00", 
+                "session_uuid": "dc6ee624-bbd2-4d2e-a666-469de71cd7ff", 
+                "id": 31
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:32:51.756766+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:32:51.768169+00:00", 
+                "session_uuid": "1767472b-8b82-40bd-a6a9-c3baf736dbca", 
+                "id": 32
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172341376
+                }, 
+                "start_time": "2019-12-30T22:32:51.768775+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 4, 
+                "end_time": "2019-12-30T22:32:51.773765+00:00", 
+                "session_uuid": "1767472b-8b82-40bd-a6a9-c3baf736dbca", 
+                "id": 33
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:33:01.764692+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:33:01.775715+00:00", 
+                "session_uuid": "410fc304-9bfd-4ea4-b8b2-357d51f0c6e8", 
+                "id": 34
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172692792
+                }, 
+                "start_time": "2019-12-30T22:33:01.776419+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 5, 
+                "end_time": "2019-12-30T22:33:01.781974+00:00", 
+                "session_uuid": "410fc304-9bfd-4ea4-b8b2-357d51f0c6e8", 
+                "id": 35
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:33:11.775041+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:33:11.786578+00:00", 
+                "session_uuid": "42cc0d61-57f8-4227-b5bc-49963e64a96d", 
+                "id": 36
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143172637024
+                }, 
+                "start_time": "2019-12-30T22:33:11.787207+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 5, 
+                "end_time": "2019-12-30T22:33:11.792492+00:00", 
+                "session_uuid": "42cc0d61-57f8-4227-b5bc-49963e64a96d", 
+                "id": 37
+            }, 
+            {
+                "username": "anonymous", 
+                "event_type": "rpc", 
+                "event_name": "master.get_master_jwt", 
+                "event_data": {
+                    "riq": 140143162769816, 
+                    "rpc_api_version": "5", 
+                    "kwargs": {
+                        "test": true, 
+                        "master_id": "saltstack_enterprise_installer", 
+                        "encrypted_message": "kGiZyVEEM39CE7n43W37uSASYmJG8fwBM81wnTZJ7LvRTxXYRJaDqdN6CAsrrm49mLtUf4ZH8MWu287qqLbUp8n4BBQRJGS..."
+                    }
+                }, 
+                "start_time": "2019-12-30T22:33:18.336237+00:00", 
+                "account_uuid": "915f5383-fa08-4a01-97d3-bf492e75754d", 
+                "failed": false, 
+                "elapsed_msec": 21, 
+                "end_time": "2019-12-30T22:33:18.357513+00:00", 
+                "session_uuid": "b9b10b55-03f6-4f78-a9b4-269fd180b05d", 
+                "id": 38
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:33:21.785213+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:33:21.796858+00:00", 
+                "session_uuid": "c21f1d6c-a0a6-4e1b-97de-41589a5bb49c", 
+                "id": 39
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143162640592
+                }, 
+                "start_time": "2019-12-30T22:33:21.797474+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 5, 
+                "end_time": "2019-12-30T22:33:21.802660+00:00", 
+                "session_uuid": "c21f1d6c-a0a6-4e1b-97de-41589a5bb49c", 
+                "id": 40
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:33:31.795497+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:33:31.806955+00:00", 
+                "session_uuid": "1a90c8dc-7be4-4224-a8e8-b7315657947a", 
+                "id": 41
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143171995912
+                }, 
+                "start_time": "2019-12-30T22:33:31.807574+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 5, 
+                "end_time": "2019-12-30T22:33:31.813339+00:00", 
+                "session_uuid": "1a90c8dc-7be4-4224-a8e8-b7315657947a", 
+                "id": 42
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:33:41.805612+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:33:41.817150+00:00", 
+                "session_uuid": "0ea235a9-b7b4-4b49-b2b7-0954773593b7", 
+                "id": 43
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143171996528
+                }, 
+                "start_time": "2019-12-30T22:33:41.817729+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 4, 
+                "end_time": "2019-12-30T22:33:41.822724+00:00", 
+                "session_uuid": "0ea235a9-b7b4-4b49-b2b7-0954773593b7", 
+                "id": 44
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:33:51.815520+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 11, 
+                "end_time": "2019-12-30T22:33:51.827151+00:00", 
+                "session_uuid": "bb307262-88d2-44f2-b728-fa03c2ffb500", 
+                "id": 45
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143189056536
+                }, 
+                "start_time": "2019-12-30T22:33:51.827738+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 4, 
+                "end_time": "2019-12-30T22:33:51.832626+00:00", 
+                "session_uuid": "bb307262-88d2-44f2-b728-fa03c2ffb500", 
+                "id": 46
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:34:01.826945+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 10, 
+                "end_time": "2019-12-30T22:34:01.837856+00:00", 
+                "session_uuid": "9d090b20-aa0b-464e-a4b5-1e8fec58ceb4", 
+                "id": 47
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143162381984
+                }, 
+                "start_time": "2019-12-30T22:34:01.838543+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 5, 
+                "end_time": "2019-12-30T22:34:01.843973+00:00", 
+                "session_uuid": "9d090b20-aa0b-464e-a4b5-1e8fec58ceb4", 
+                "id": 48
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "auth", 
+                "event_name": "login", 
+                "event_data": {
+                    "status": 200, 
+                    "note": "User master_saltstack_enterprise_installer: authenticated using jwt auth", 
+                    "headers": {
+                        "Content-Length": "113", 
+                        "Accept-Encoding": "gzip", 
+                        "X-Xsrftoken": "2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Connection": "close", 
+                        "Host": "localhost", 
+                        "Cookie": "_xsrf=2|f5769249|10fe1a5b530f8f95b4d187a0f083f42b|1577732961", 
+                        "Content-Type": "application/x-www-form-urlencoded", 
+                        "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzc3NDc0MDAsInVzZXJuYW1lIjoibWFzdGVyX3NhbHRzdGFja19lbnRlcnByaXNlX2luc3RhbGxlciIsImNvbmZpZ19uYW1lIjoiaW50ZXJuYWwiLCJpZCI6IjcxZDA2OTBlLTU0MWMtNDhlYy1hZmFiLTBjNTg2OTQ1ZTJiZSIsInNlZWQiOjE5MTZ9.ZwBLcdpE9LkanaAYcXUhssRd_Vkc72jvtXSvzIQPI18"
+                    }, 
+                    "remote_ip": "127.0.0.1"
+                }, 
+                "start_time": "2019-12-30T22:34:11.834174+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 10, 
+                "end_time": "2019-12-30T22:34:11.844753+00:00", 
+                "session_uuid": "ab3d382d-71e7-471b-a816-2f140ed67751", 
+                "id": 49
+            }, 
+            {
+                "username": "master_saltstack_enterprise_installer", 
+                "event_type": "rpc", 
+                "event_name": "cmd.get_master_cmd", 
+                "event_data": {
+                    "args": [
+                        "salt", 
+                        "a4104a88ccdb44bfadd8b01d70532fb8"
+                    ], 
+                    "rpc_api_version": "5", 
+                    "riq": 140143162286992
+                }, 
+                "start_time": "2019-12-30T22:34:11.845428+00:00", 
+                "account_uuid": "71d0690e-541c-48ec-afab-0c586945e2be", 
+                "failed": false, 
+                "elapsed_msec": 7, 
+                "end_time": "2019-12-30T22:34:11.853078+00:00", 
+                "session_uuid": "ab3d382d-71e7-471b-a816-2f140ed67751", 
+                "id": 50
+            }
+        ]
+    }, 
+    null, 
+    []
+]
