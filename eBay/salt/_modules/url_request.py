@@ -18,7 +18,7 @@ headers_post = {'Content-type': 'application/json', 'Accept': 'application/json'
 payload_post = {'key1': 'value1', 'key2': 'value2'}
 
 # GET DATA
-url_get = 'https://httpbin.org/get'
+url_get = 'https://httpbin.org123123/get123123'
 
 
 log = logging.getLogger(__name__)
