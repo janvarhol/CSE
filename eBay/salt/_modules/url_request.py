@@ -75,23 +75,25 @@ def request_post():
         # request status code
         # print(res.status_code)
     except HTTPError as http_err:
-        print('HTTP error occurred: ' + str(http_err))
+        #print('HTTP error occurred: ' + str(http_err))
+        log.error('url_request module: HTTP error occurred: ' + str(http_err))
         #raise SaltInvocationError(str('http_err'))
-        return False
+        return {}
     except Exception as err:
-        print('Other error occurred: ' + str(err))
+        #print('Other error occurred: ' + str(err))
+        log.error('url_request module: Other error occurred: ' + str(err))
         #raise SaltInvocationError(str(err))
-        return False
+        return {}
     else: # everything is fine, proceed
         if res.status_code == 200:
-            #log.info("JSON response: " + json.dumps(res.json()['json'], indent=4))
+            log.info('url_request module: 200 query OK')
             print("JSON response: " + json.dumps(res.json()['json'], indent=4))
+            return res.json()['json']
         else:
-            #log.error("Invalid return - not 200 code")
-            print("ERROR NOT 200")
-            return False
+            log.error('url_request module: Invalid response - not 200 code')
+            #print("ERROR NOT 200")
+            return {}
 
-        return res.json()['json']
 
 # post
 #print(json.dumps(request_post(), indent=4, sort_keys=True))
