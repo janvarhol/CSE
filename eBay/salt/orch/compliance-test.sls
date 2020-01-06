@@ -1,6 +1,7 @@
 {% set minion_data = salt['url_request.request_get']() %}
 
-{% if minion_data|is_iter and minion_data|length %}
+{% {% if minion_data|is_iter and minion_data|length %} %}
+{% if type(minion_data) is dict %}
 show_info:
   test.configurable_test_state:
     - name: show info
