@@ -68,9 +68,9 @@ def request_get():
             #print("ERROR NOT 200")
             return {}
 
-def request_put():
+def request_put(minion_id, include_scan=True):
     try:
-        res = requests.put(url_put, json=payload_put, verify=False)
+        res = requests.put(url_put, json={'include_scan': include_scan}, verify=False)
         log.info("url_post call status code: " + str(res.status_code))
 
         # REQUEST note:
