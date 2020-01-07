@@ -21,7 +21,7 @@ payload_post = {'key1': 'value1', 'key2': 'value2'}
 url_get = 'https://httpbin.org/get'
 
 # PUT DATA
-url_put = 'https://httpbin.org/put'
+url_put = 'https://httpbin.org123/put'
 payload_put = {'include_scan': True }
 
 
