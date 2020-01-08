@@ -1,4 +1,5 @@
 {% set minion_data = salt['url_request.request_get']() %}
+{# {% set minion_data = salt['url_request.request_put']('abcd1') %} #}
 
 # If minion_data is dictionary, not empty and key 'origin' in dictionary
 {% if minion_data is mapping and minion_data | length and 'origin' in minion_data %}
