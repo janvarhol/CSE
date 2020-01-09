@@ -10,6 +10,14 @@ show_info:
     - result: true
     - comment: {{ osfinger }}
 
+# Get patches list
+{% set patches = win_patching_rules['rules'][osfinger]['patches_order'] %}
+show_info_2:
+  test.configurable_test_state:
+    - name: Show patches
+    - changes: false
+    - result: true
+    - comment: {{ patches }}
 
 {% endif %}
 {% endfor %}
