@@ -19,5 +19,16 @@ show_info_2:
     - result: true
     - comment: {{ patches }}
 
+# Download patches
+{% for patch in patches %}
+download_patches-{{ loop.index }}:
+  test.configurable_test_state:
+    - name: {{ patch }}
+    - changes: false
+    - result: true
+    - comment: Downloading patch {{ patch }} - http://repo/win/{{ patch }} to C://temp/
+{% endfor %}
+
+
 {% endif %}
 {% endfor %}
