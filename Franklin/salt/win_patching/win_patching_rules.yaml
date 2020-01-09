@@ -1,6 +1,25 @@
 rules:
   Red Hat Enterprise Linux Server-7:
-    reboot_required: True
+    reboot_required: False
     patches_order:
-      - file_1.exe
+      - KB4468550:
+        catalog link: https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=c7778f1a-8334-465e-aca4-958b37e1206a
+        Architecture: AMD64
+        Classification: Critical Updates
+        Supported products: 
+          - Windows Server 2016
+          - Windows Server 2019
+        Supported languages: all
+        MSRC Number: n/a
+        MSRC severity: Unspecified
+        KB article numbers: 4468550
+        More information: http://support.microsoft.com/kb/4468550
+        Support Url: http://support.microsoft.com
+        Restart behavior: Never restarts
+        May request user input: No
+        Must be installed exclusively: No
+        Requires network connectivity: No
+        Uninstall Notes: n/a
+        Uninstall Steps: n/a
+
       - file_2.exe
