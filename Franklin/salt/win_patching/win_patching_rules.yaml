@@ -1,0 +1,6 @@
+rules:
+  Red Hat Enterprise Linux Server-7:
+    reboot_required: True
+    patches_order:
+      - file_1.exe
+      - file_2.exe
