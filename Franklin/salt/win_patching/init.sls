@@ -29,6 +29,15 @@ download_patches-{{ loop.index }}:
     - comment: Downloading patch {{ patch }} - http://repo/win/{{ patch }} to C://temp/
 {% endfor %}
 
+# Install patches
+{% for patch in patches %}
+install_patches-{{ loop.index }}:
+  test.configurable_test_state:
+    - name: {{ patch }}
+    - changes: false
+    - result: true
+    - comment: Running patch install C://temp/{{ patch }}
+{% endfor %}
 
 {% endif %}
 {% endfor %}
