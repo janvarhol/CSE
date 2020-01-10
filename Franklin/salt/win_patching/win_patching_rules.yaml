@@ -6,7 +6,8 @@ rules:
           repo_link: salt://win_patching/updates/intcaudiobusremove_8f5bdb01d8f5ee64e038a6d31422ff98e9f692d4.exe
           filename: intcaudiobusremove_8f5bdb01d8f5ee64e038a6d31422ff98e9f692d4.exe
           catalog link: https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=c7778f1a-8334-465e-aca4-958b37e1206a
-          Architecture: AMD64
+          Architecture:
+            - AMD64
           Classification: Critical Updates
           Supported products:
             - Windows Server 2016
@@ -23,27 +24,30 @@ rules:
           Requires network connectivity: No
           Uninstall Notes: n/a
           Uninstall Steps: n/a
-          exec_cmd: intcaudiobusremove_8f5bdb01d8f5ee64e038a6d31422ff98e9f692d4.exe
+          exec_cmd: 'C://intcaudiobusremove_8f5bdb01d8f5ee64e038a6d31422ff98e9f692d4.exe'
 
-      - KB111111:
-          repo_link: http://111111.exe
-          filename: 111111.exe
-          catalog link: https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=c7778f1a-8334-465e-aca4-958b37e1206a
-          Architecture: AMD64
-          Classification: Critical Updates
+      - KB4520724:
+          repo_link: salt://win_patching/updates/windows10.0-kb4520724-x64_97604f0b532d6da814b4120fc43b2d9f6fd0b356.msu
+          filename: windows10.0-kb4520724-x64_97604f0b532d6da814b4120fc43b2d9f6fd0b356.msu
+          catalog link: https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=6d4809e8-7172-4b7d-a916-4c1c62d11e91
+          Architecture:
+            - AMD64
+            - MORE
+          Classification: Security Updates
           Supported products:
             - Windows Server 2016
             - Windows Server 2019
+            - MORE
           Supported languages: all
           MSRC Number: n/a
-          MSRC severity: Unspecified
-          KB article numbers: 111111
-          More information: http://support.microsoft.com/kb/111111
-          Support Url: http://support.microsoft.com
+          MSRC severity: Critical
+          KB article numbers: 4520724
+          More information: https://support.microsoft.com/help/4520724
+          Support Url: https://support.microsoft.com/help/4520724
           Restart behavior: Never restarts
           May request user input: No
-          Must be installed exclusively: No
+          Must be installed exclusively: Yes
           Requires network connectivity: No
-          Uninstall Notes: n/a
+          Uninstall Notes: Not Uninstallable
           Uninstall Steps: n/a
-          exec_cmd: 111111.exe
+          exec_cmd: 'wusa C://windows10.0-kb4520724-x64_97604f0b532d6da814b4120fc43b2d9f6fd0b356.msu /quiet'
