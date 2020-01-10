@@ -21,14 +21,6 @@ download_patches-{{ patches_index }}-{{ patch }}:
     - name: 'C://{{ patches[patch]['filename'] }}'
     - source: {{ patches[patch]['repo_link'] }}
     #- skip_verify: true
-{#
-  test.configurable_test_state:
-    - name: download {{ patch }}
-    - changes: false
-    - result: true
-    - comment: |
-        {{ patches[patch]['repo_link'] }}
-#}
 {% endfor %}
 {% endfor %}
 
@@ -40,14 +32,19 @@ download_patches-{{ patches_index }}-{{ patch }}:
 install_patches-{{ patches_index }}-{{ patch }}:
   cmd.run:
     - name: {{ patches[patch]['exec_cmd'] }}
-{#
-  test.configurable_test_state:
-    - name: install {{ patch }}
-    - changes: false
-    - result: true
-    - comment: |
-        {{ patches[patch]['exec_cmd'] }}
+
+{# Using module.run instead of state cmd.run
+update:
+  module.run:
+    - name: cmd.run_bg
+    - cmd: {{ patches[patch]['exec_cmd'] }}
+    - output_loglevel: quiet
+    - ignore_retcode: True
+    - python_shell: True
+    - timeout: 180
 #}
+
+
 {% endfor %}
 {% endfor %}
 
