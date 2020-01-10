@@ -1,4 +1,4 @@
-{% import_yaml "win_patching/test2.yaml" as win_patching_rules %}
+{% import_yaml "win_patching/test.yaml" as win_patching_rules %}
 
 {% for osfinger in win_patching_rules['rules'] %}
 {% if osfinger.lower() == grains['osfinger'].lower() %}
