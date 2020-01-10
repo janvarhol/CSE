@@ -4,6 +4,7 @@ rules:
     patches_order:
       - KB4468550:
           repo_link: salt://win_patching/updates/intcaudiobusremove_8f5bdb01d8f5ee64e038a6d31422ff98e9f692d4.exe
+          filename: intcaudiobusremove_8f5bdb01d8f5ee64e038a6d31422ff98e9f692d4.exe
           catalog link: https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=c7778f1a-8334-465e-aca4-958b37e1206a
           Architecture: AMD64
           Classification: Critical Updates
@@ -25,7 +26,8 @@ rules:
           exec_cmd: intcaudiobusremove_8f5bdb01d8f5ee64e038a6d31422ff98e9f692d4.exe
 
       - KB111111:
-          repo_link: http://111111
+          repo_link: http://111111.exe
+          filename: 111111.exe
           catalog link: https://www.catalog.update.microsoft.com/ScopedViewInline.aspx?updateid=c7778f1a-8334-465e-aca4-958b37e1206a
           Architecture: AMD64
           Classification: Critical Updates
