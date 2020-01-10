@@ -1,4 +1,4 @@
-{% import_yaml "win_patching/test.yaml" as win_patching_rules %}
+{% import_yaml "win_patching/win_patching_rules.yaml" as win_patching_rules %}
 
 {% for osfinger in win_patching_rules['rules'] %}
 {% if osfinger.lower() == grains['osfinger'].lower() %}
@@ -17,12 +17,18 @@ show_info:
 {% set patches_index = loop.index %}
 {% for patch in patches %}
 download_patches-{{ patches_index }}-{{ patch }}:
+  file.managed:
+    - name: 'C://{{ patches[patch]['filename'] }}'
+    - source: {{ patches[patch]['repo_link'] }}
+    #- skip_verify: true
+{#
   test.configurable_test_state:
     - name: download {{ patch }}
     - changes: false
     - result: true
     - comment: |
         {{ patches[patch]['repo_link'] }}
+#}
 {% endfor %}
 {% endfor %}
 
@@ -32,15 +38,18 @@ download_patches-{{ patches_index }}-{{ patch }}:
 {% set patches_index = loop.index %}
 {% for patch in patches %}
 install_patches-{{ patches_index }}-{{ patch }}:
+  cmd.run:
+    - name: {{ patches[patch]['exec_cmd'] }}
+{#
   test.configurable_test_state:
     - name: install {{ patch }}
     - changes: false
     - result: true
     - comment: |
         {{ patches[patch]['exec_cmd'] }}
+#}
 {% endfor %}
 {% endfor %}
-
 
 {% else %}
 show_not_applicable:
