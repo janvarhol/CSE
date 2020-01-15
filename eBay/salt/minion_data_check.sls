@@ -1,4 +1,3 @@
-# cat test.sls
 # Set some minion datastore
 {% do salt['data.update']('a_string', 'SaltStack') %}
 {% do salt['data.update']('a_list',  ['cse', 'consulting', 'support']) %}
