@@ -20,6 +20,7 @@ SHOW_DATA:
         lenght: {{ minion_data|length }}
         data: {{ minion_data|tojson }}
 
+# Check if minion_data is a dictionary, not empty (lenth > 0) and a key 'a_list' is present
 {% if minion_data is mapping and minion_data | length and 'a_list' in minion_data %} #}
 ALL_GOOD:
   test.configurable_test_state:
