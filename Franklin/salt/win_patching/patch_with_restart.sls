@@ -14,5 +14,11 @@ restart_minion:
   module.run:
     - name: cmd.run_bg
     - cmd: 'c:\\salt\\salt-call.bat --local system.reboot 0'
+    
+# OR
+reboot_windows:
+ system.reboot:
+  - timeout: 5
+  - only_on_pending_reboot: True
 
 {% endif %}
