@@ -32,6 +32,7 @@ download_patches-{{ patches_index }}-{{ patch }}:
 install_patches-{{ patches_index }}-{{ patch }}:
   cmd.run:
     - name: {{ patches[patch]['exec_cmd'] }}
+    - success_retcodes: [3010]
 
 {# Using module.run instead of state cmd.run
 update:
