@@ -11,7 +11,7 @@ import json
 
 log = logging.getLogger(__name__)
 
-def is_disk_encrypted(block_device, block_devices):
+def is_disk_encrypted(block_device, block_devices, TYPE):
     '''
     Run cryptsetup isLuks /dev/<device>
     retcode 0 = Disk Encrypted
@@ -76,7 +76,7 @@ def is_disk_encrypted(block_device, block_devices):
     if block_devices[block_device][TYPE] == 'linux_raid_member':
         # assuming it is encrypted
         return 0
-        
+
     return 1
 
 def is_boot_partition(block_device, block_devices, mount_points, partitions):
@@ -396,7 +396,7 @@ def test_data():
                           log.warning(block_device + " is encrypted")
                           # Add device to luks_assessment_encrypted
                           luks_assessment_encrypted.append(block_device)
-                        elif is_disk_encrypted(block_device, block_devices) == 0:
+                        elif is_disk_encrypted(block_device, block_devices, TYPE) == 0:
                             print(block_device + " is encrypted")
                             log.warning(block_device + " is encrypted")
                             # Add device to luks_assessment_encrypted
