@@ -193,7 +193,7 @@ def get_disks_encrypted():
 
     luks_assessment_encrypted = []
     luks_assessment_NOT_encrypted = []
-
+    luks_assessment_skipped = []
 
     if __grains__['osfinger'] not in skip_osfinger_list:
         cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
@@ -248,6 +248,7 @@ def get_disks_encrypted():
                         print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
                         print("")
                         log.warning("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
+                        luks_assessment_skipped.append(block_device)
 
                 # IGNORE PARTITION TYPES in skip_partition_types
                 if block_devices[block_device][TYPE].lower() in skip_partition_types:
@@ -257,6 +258,7 @@ def get_disks_encrypted():
                     print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
                     print("")
                     log.warning("IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
+                    luks_assessment_skipped.append(block_device)
                 elif not block_device.startswith(tuple(skip_block_device_names)):
                     if not SKIP_DEVICE:
                         print("")
@@ -297,12 +299,14 @@ def get_disks_encrypted():
                 print("")
                 print("IGNORING swap partition in " + block_device)
                 log.warning("IGNORING swap partition in " + block_device)
+                luks_assessment_skipped.append(block_device)
             # SKIP NOT KNOWN TYPE PARTITIONS
             elif TYPE == 'NOT KNOWN':
                 SKIP_DEVICE = True
                 print("")
                 print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
                 log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
+                luks_assessment_skipped.append(block_device)
 
 
         #return disks_encrypted
@@ -312,7 +316,8 @@ def get_disks_encrypted():
         print("ENCRYPTED DEVICES: " + json.dumps(luks_assessment_encrypted, indent=4))
         print("")
         print("DEVICES NOT ENCRYPTED: " + json.dumps(luks_assessment_NOT_encrypted, indent=4))
-
+        print("")
+        print("SKIPPED: " + json.dumps(luks_assessment_skipped, indent=4))
 
 
         # If there are items in NOT encrypted device, return False
