@@ -231,11 +231,12 @@ def test_data():
 
         for block_device, value in block_devices.items():
             SKIP_DEVICE = False
-            print("TROUBLESHOOTING INFO_BLOCK_DEVICE: " + block_device)
+            #--print("TROUBLESHOOTING INFO_BLOCK_DEVICE: " + block_device)
+            print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
 
             # Checking for keys inside block_device
             # could be TYPE, PTTYPE
-            print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
+            #print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
 
             if 'TYPE' in block_devices[block_device].keys():
                 TYPE = 'TYPE'
