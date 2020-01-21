@@ -12,16 +12,16 @@ import json
 log = logging.getLogger(__name__)
 
 
-def is_disk_encrypted(device, block_devices, TYPE):
+def is_disk_encrypted(block_device, block_devices, TYPE):
     '''
     Run cryptsetup isLuks /dev/<device>
     retcode 0 = Disk Encrypted
     retcode 1 = Disk not encrypted
     '''
-    print("--->>> Checking disk encrypted on device: " + device)
-    log.info("--->>> Checking disk encrypted on device: " + device)
+    print("--->>> Checking disk encrypted on device: " + block_device)
+    log.info("--->>> Checking disk encrypted on device: " + block_device)
     # Check if device name ends with partition number, like /dev/sda5
-    if device[-1:].isdigit():
+    if block_device[-1:].isdigit():
         # BEING EXTRA CAREFUL, REDUNDANT, WIH STR AND UNICODE STRINGS
         # IF THIS FIXES THE ISSUE, LATER POLISH THE CODE
         cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
@@ -30,20 +30,20 @@ def is_disk_encrypted(device, block_devices, TYPE):
         log.info(type(cryptsetup_bin))
         if cryptsetup_bin != None and len(cryptsetup_bin) > 9:
             log.info("--->> cryptsetup_bin: " + str(cryptsetup_bin))
-            cryptsetup_isLuks_cmd = cryptsetup_bin + ' isLuks ' + str(device)
+            cryptsetup_isLuks_cmd = cryptsetup_bin + ' isLuks ' + str(block_device)
             log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
             cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
         else:
             log.warning("cryptsetup binary was not found in path!!!")
             return 1
 
-    elif device[-1:].isalpha():
+    elif block_device[-1:].isalpha():
     # if device name ends with alpha, meaning it's a disk, like /dev/sdb
         print("--->>> Scanning disk for LVM information")
         log.info("--->>> Scanning disk for LVM information")
         try:
-            lvm_pv_info = __salt__['lvm.pvdisplay'](device)
-            lvm_vol_group_name = lvm_pv_info[device]['Volume Group Name']
+            lvm_pv_info = __salt__['lvm.pvdisplay'](block_device)
+            lvm_vol_group_name = lvm_pv_info[block_device]['Volume Group Name']
             lvm_lv_info = __salt__['lvm.lvdisplay'](lvm_vol_group_name)
             for log_vol_name in lvm_lv_info:
               lvm_log_vol_name = lvm_lv_info[log_vol_name]['Logical Volume Name']
