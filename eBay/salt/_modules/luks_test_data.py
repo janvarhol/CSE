@@ -171,7 +171,7 @@ def test_data():
         # List devices
         block_devices = __salt__['disk.blkid']()
         # Some devices that can be ignored
-        skip_block_device_names = ['/dev/loop', '/dev/mapper', '/dev/sr0']
+        skip_block_device_names = ['/dev/loop', '/dev/mapper', '/dev/sr0', '/dev/md']
         skip_partition_types = ['gpt', 'ntfs', 'dos']
 
         # Read mount points from /etc/fstab
