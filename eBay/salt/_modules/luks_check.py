@@ -21,6 +21,12 @@ def is_disk_encrypted(block_device, block_devices, TYPE):
     print("--->>> Checking disk encrypted on device: " + block_device)
     log.info("--->>> Checking disk encrypted on device: " + block_device)
     # Check if device name ends with partition number, like /dev/sda5
+
+    # Testing fix for linux_raid_member
+    if block_devices[block_device][TYPE] == 'linux_raid_member':
+        # assuming it is encrypted
+        return 0
+    
     if block_device[-1:].isdigit():
         # BEING EXTRA CAREFUL, REDUNDANT, WIH STR AND UNICODE STRINGS
         # IF THIS FIXES THE ISSUE, LATER POLISH THE CODE
