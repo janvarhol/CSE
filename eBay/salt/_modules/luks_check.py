@@ -12,16 +12,25 @@ import json
 log = logging.getLogger(__name__)
 
 
-def is_disk_encrypted(device):
+def is_disk_encrypted(block_device, block_devices, TYPE):
     '''
     Run cryptsetup isLuks /dev/<device>
     retcode 0 = Disk Encrypted
     retcode 1 = Disk not encrypted
     '''
-    print("--->>> Checking disk encrypted on device: " + device)
-    log.info("--->>> Checking disk encrypted on device: " + device)
+    print("--->>> Checking disk encrypted on device: " + block_device)
+    log.info("--->>> Checking disk encrypted on device: " + block_device)
     # Check if device name ends with partition number, like /dev/sda5
-    if device[-1:].isdigit():
+
+    # Testing fix for linux_raid_member
+    if block_devices[block_device][TYPE] == 'linux_raid_member':
+        # assuming it is encrypted
+        print("--->>> linux_raid_member device: " + block_device)
+        log.info("--->>> linux_raid_member device: " + block_device)
+
+        return 0
+
+    if block_device[-1:].isdigit():
         # BEING EXTRA CAREFUL, REDUNDANT, WIH STR AND UNICODE STRINGS
         # IF THIS FIXES THE ISSUE, LATER POLISH THE CODE
         cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
@@ -30,20 +39,20 @@ def is_disk_encrypted(device):
         log.info(type(cryptsetup_bin))
         if cryptsetup_bin != None and len(cryptsetup_bin) > 9:
             log.info("--->> cryptsetup_bin: " + str(cryptsetup_bin))
-            cryptsetup_isLuks_cmd = cryptsetup_bin + ' isLuks ' + str(device)
+            cryptsetup_isLuks_cmd = cryptsetup_bin + ' isLuks ' + str(block_device)
             log.info("Running cryptsetup command: " + cryptsetup_isLuks_cmd)
             cryptsetup_isLuks = __salt__['cmd.retcode'](cryptsetup_isLuks_cmd, ignore_retcode=True)
         else:
             log.warning("cryptsetup binary was not found in path!!!")
             return 1
 
-    elif device[-1:].isalpha():
+    elif block_device[-1:].isalpha():
     # if device name ends with alpha, meaning it's a disk, like /dev/sdb
         print("--->>> Scanning disk for LVM information")
         log.info("--->>> Scanning disk for LVM information")
         try:
-            lvm_pv_info = __salt__['lvm.pvdisplay'](device)
-            lvm_vol_group_name = lvm_pv_info[device]['Volume Group Name']
+            lvm_pv_info = __salt__['lvm.pvdisplay'](block_device)
+            lvm_vol_group_name = lvm_pv_info[block_device]['Volume Group Name']
             lvm_lv_info = __salt__['lvm.lvdisplay'](lvm_vol_group_name)
             for log_vol_name in lvm_lv_info:
               lvm_log_vol_name = lvm_lv_info[log_vol_name]['Logical Volume Name']
@@ -195,7 +204,7 @@ def get_disks_encrypted():
         # List devices
         block_devices = __salt__['disk.blkid']()
         # Some devices that can be ignored
-        skip_block_device_names = ['/dev/loop', '/dev/mapper', '/dev/sr0']
+        skip_block_device_names = ['/dev/loop', '/dev/mapper', '/dev/sr', '/dev/md']
         skip_partition_types = ['gpt', 'ntfs', 'dos']
 
         # ADRIAN - INFO
@@ -265,7 +274,7 @@ def get_disks_encrypted():
                           log.warning(block_device + " is encrypted")
                           # Add device to luks_assessment_encrypted
                           luks_assessment_encrypted.append(block_device)
-                        elif is_disk_encrypted(block_device) == 0:
+                        elif is_disk_encrypted(block_device, block_devices, TYPE) == 0:
                             print(block_device + " is encrypted")
                             log.warning(block_device + " is encrypted")
                             # Add device to luks_assessment_encrypted
