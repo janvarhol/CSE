@@ -15,21 +15,24 @@ log = logging.getLogger(__name__)
 
 def test_data():
     skip_osfinger_list = ['Raspbian-9', 'Raspbian-10']
-    skip_partition_types = ['gpt', 'ntfs', 'dos']
+    #--skip_partition_types = ['gpt', 'ntfs', 'dos']
+
+    luks_assessment_encrypted = []
+    luks_assessment_NOT_encrypted = []
 
     if __grains__['osfinger'] not in skip_osfinger_list:
         # List devices
         block_devices = __salt__['disk.blkid']()
         # Some devices that can be ignored
         skip_block_device_names = ['/dev/loop', '/dev/mapper', '/dev/sr0']
-
+        skip_partition_types = ['gpt', 'ntfs', 'dos']
 
         # Read mount points from /etc/fstab
-        mount_points = __salt__['mount.fstab']()
-        partitions = mount_points.keys()
+        #--mount_points = __salt__['mount.fstab']()
+        #--partitions = mount_points.keys()
 
         # ADRIAN - INFO
-        print("BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
+        #--print("BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
 
         # TESTING DATA
         print("TESTING DATA ---- TEST BLOCK_DEVICES")
@@ -175,7 +178,7 @@ def test_data():
                 "PARTUUID": "966c356c-43cb-497e-ae85-aa205302f506"
             }
         }
-        
+
         mount_points = {
             "/": {
                 "device": "/dev/mapper/ubuntu--vg-root",
@@ -214,7 +217,7 @@ def test_data():
                 "pass": "0"
             }
         }
-        
+
         partitions = mount_points.keys()
         # END TESTING DATA
 
@@ -224,7 +227,9 @@ def test_data():
         print("TROUBLESHOOTING INFO_BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
         # END TROUBLESHOOTING INFO
 
-        for block_device, value in block_devices.iteritems():
+
+
+        for block_device, value in block_devices.items():
             SKIP_DEVICE = False
             print("TROUBLESHOOTING INFO_BLOCK_DEVICE: " + block_device)
 
@@ -238,8 +243,8 @@ def test_data():
                 TYPE = 'PTTYPE'
             else:
                 TYPE = 'NOT KNOWN'
- 
-            if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':        
+
+            if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
                 print("Device is not swap, moving forward...")
                 print("Device keys: " + str(block_devices[block_device].keys()))
 
@@ -249,7 +254,7 @@ def test_data():
                     print("Checking if device is vfat and EFI System Partition")
                     print(block_devices[block_device][TYPE].lower())
                     print(block_devices[block_device]['PARTLABEL'])
-                    
+
                     if block_devices[block_device][TYPE].lower() == 'vfat' and block_devices[block_device]['PARTLABEL'].lower() == "efi system partition":
                         SKIP_DEVICE = True
                         print("")
