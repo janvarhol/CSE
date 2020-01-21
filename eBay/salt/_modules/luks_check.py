@@ -12,7 +12,7 @@ import json
 log = logging.getLogger(__name__)
 
 
-def is_disk_encrypted(device):
+def is_disk_encrypted(device, block_devices, TYPE):
     '''
     Run cryptsetup isLuks /dev/<device>
     retcode 0 = Disk Encrypted
@@ -195,7 +195,7 @@ def get_disks_encrypted():
         # List devices
         block_devices = __salt__['disk.blkid']()
         # Some devices that can be ignored
-        skip_block_device_names = ['/dev/loop', '/dev/mapper', '/dev/sr0']
+        skip_block_device_names = ['/dev/loop', '/dev/mapper', '/dev/sr', '/dev/md']
         skip_partition_types = ['gpt', 'ntfs', 'dos']
 
         # ADRIAN - INFO
@@ -265,7 +265,7 @@ def get_disks_encrypted():
                           log.warning(block_device + " is encrypted")
                           # Add device to luks_assessment_encrypted
                           luks_assessment_encrypted.append(block_device)
-                        elif is_disk_encrypted(block_device) == 0:
+                        elif is_disk_encrypted(block_device, block_devices, TYPE) == 0:
                             print(block_device + " is encrypted")
                             log.warning(block_device + " is encrypted")
                             # Add device to luks_assessment_encrypted
