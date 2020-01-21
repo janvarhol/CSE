@@ -11,13 +11,16 @@ import json
 
 log = logging.getLogger(__name__)
 
-def is_disk_encrypted(device, block_devices):
+def is_disk_encrypted(block_device, block_devices):
     '''
     Run cryptsetup isLuks /dev/<device>
     retcode 0 = Disk Encrypted
     retcode 1 = Disk not encrypted
     '''
     '''
+
+    # IMPORTANT: REPLACE device by block_device !!!
+
     print("--->>> Checking disk encrypted on device: " + device)
     log.info("--->>> Checking disk encrypted on device: " + device)
     # Check if device name ends with partition number, like /dev/sda5
