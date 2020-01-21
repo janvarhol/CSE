@@ -125,186 +125,136 @@ def test_data():
 
         # TESTING DATA
         print("TESTING DATA ---- TEST BLOCK_DEVICES")
-        block_devices = {
-            "/dev/mapper/sda3_crypt": {
-                "UUID": "iqx2uU-zvtb-thBP-Cj5W-cm7f-TYuY-gzC4PA",
-                "TYPE": "LVM2_member"
-            },
-            "/dev/mapper/ubuntu--vg-root": {
-                "UUID": "9f2aa3e3-5cf2-43bc-8ec4-449b48d669bf",
-                "TYPE": "ext4"
-            },
-            "/dev/loop1": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop4": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop6": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop7": {
-                "TYPE": "squashfs"
-            },
-            "/dev/sda1": {
-                "UUID": "35A5-46F3",
-                "TYPE": "vfat",
-                "PARTLABEL": "EFI System Partition",
-                "PARTUUID": "6361cd04-bca4-4b90-b52d-edf96e032233"
-            },
-            "/dev/sda2": {
-                "UUID": "17db5c7a-f330-4a1d-85a6-b658bdf2a9fc",
-                "TYPE": "ext4",
-                "PARTUUID": "f50f1bff-4e4d-44dd-b037-f55cf340e1f8"
-            },
-            "/dev/sda3": {
-                "UUID": "829793e4-70d6-4577-864c-352e6461f40b",
-                "TYPE": "crypto_LUKS",
-                "PARTUUID": "662e6850-17a7-4d07-87dc-85f31d2995d6"
-            },
-            "/dev/sdb1": {
-                "LABEL": "Windows RE Tools",
-                "UUID": "1EA62A93A62A6B89",
-                "TYPE": "ntfs",
-                "PARTLABEL": "Basic data partition",
-                "PARTUUID": "ced5ee38-10a3-4007-81b6-d8dc4fd1f2eb"
-            },
-            "/dev/sdb2": {
-                "UUID": "FE2D-3BAD",
-                "TYPE": "vfat",
-                "PARTLABEL": "EFI system partition",
-                "PARTUUID": "ad74bfd0-aa74-40ef-8c15-b943b444cc3e"
-            },
-            "/dev/sdc1": {
-                "LABEL": "SSD",
-                "UUID": "C89C3E479C3E2FF4",
-                "TYPE": "ntfs",
-                "PARTUUID": "149fdb39-01"
-            },
-            "/dev/sdc5": {
-                "UUID": "6b86f871-bcb4-4f27-a663-c2b1ab6936f8",
-                "TYPE": "ext4",
-                "PARTUUID": "149fdb39-05"
-            },
-            "/dev/sdc6": {
-                "UUID": "1aa62b05-80ae-4021-b63b-f50486d6d5e1",
-                "TYPE": "swap",
-                "PARTUUID": "149fdb39-06"
-            },
-            "/dev/mapper/ubuntu--vg-swap_1": {
-                "UUID": "50f8d4e4-fc97-4333-8baa-18a4a7e75429",
-                "TYPE": "swap"
-            },
-            "/dev/loop9": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop11": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop13": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop14": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop15": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop18": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop20": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop21": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop22": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop24": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop25": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop26": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop0": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop19": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop12": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop23": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop27": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop3": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop5": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop10": {
-                "TYPE": "squashfs"
-            },
-            "/dev/loop2": {
-                "TYPE": "squashfs"
-            },
-            "/dev/sdb3": {
-                "PARTLABEL": "Microsoft reserved partition",
-                "PARTUUID": "f7522d02-5960-4a24-a870-fb73baa4112c"
-            },
-            "/dev/sdb4": {
-                "PARTLABEL": "Basic data partition",
-                "PARTUUID": "966c356c-43cb-497e-ae85-aa205302f506"
-            }
+        block_devices =  {
+        "/dev/mapper/encsharedev": {
+            "TYPE": "ext4",
+            "UUID": "decbfbd0-9944-442b-a181-d694f97bb775"
+        },
+        "/dev/sde1": {
+            "UUID_SUB": "00e8834b-4a82-1882-a19c-54696eaef06a",
+            "TYPE": "linux_raid_member",
+            "UUID": "ea373f54-b3eb-8233-5e79-c747a10008b9",
+            "PARTUUID": "c436f82b-09e7-834a-b2df-79b5301c087a",
+            "LABEL": "marco-server:0"
+        },
+        "/dev/sdb1": {
+            "UUID_SUB": "9afd71ca-080a-fc41-31ea-e0b46ebc6f93",
+            "TYPE": "linux_raid_member",
+            "UUID": "ea373f54-b3eb-8233-5e79-c747a10008b9",
+            "PARTUUID": "4600c73f-bcdf-ec46-abb6-b362c4d97013",
+            "LABEL": "marco-server:0"
+        },
+        "/dev/loop0": {
+            "TYPE": "squashfs"
+        },
+        "/dev/loop3": {
+            "TYPE": "squashfs"
+        },
+        "/dev/sdc1": {
+            "TYPE": "swap",
+            "UUID": "c647ea3a-9696-470e-a452-bfea5e9a61cf",
+            "PARTUUID": "b360dd74-0223-4737-91be-24e430f70a97"
+        },
+        "/dev/mapper/encdatadev": {
+            "TYPE": "ext4",
+            "UUID": "1724982e-0d65-46ab-ba82-b1bbf5c10175"
+        },
+        "/dev/loop2": {
+            "TYPE": "squashfs"
+        },
+        "/dev/sdd3": {
+            "TYPE": "crypto_LUKS",
+            "UUID": "b107b832-3842-4b76-9002-b77b34b7f5f1",
+            "PARTUUID": "a8594341-d6d2-4076-8f8a-5ef19ecb4064"
+        },
+        "/dev/sdd2": {
+            "TYPE": "ext4",
+            "UUID": "baeda7fe-535c-4153-b438-986b2e150743",
+            "PARTUUID": "585a1df1-ee90-49c0-8a2d-6e5395488ed3"
+        },
+        "/dev/sdd1": {
+            "TYPE": "vfat",
+            "UUID": "6DA1-1CE0",
+            "PARTUUID": "1cbc6691-1c46-4ebb-a947-b2057f3449f3"
+        },
+        "/dev/sdc2": {
+            "TYPE": "crypto_LUKS",
+            "UUID": "fa90abde-0028-423e-9ec1-bdd1eb07c328",
+            "PARTUUID": "87545be6-98ec-40e5-b1b3-b7b5781664e8"
+        },
+        "/dev/mapper/ubuntu--vg-lv--0": {
+            "TYPE": "ext4",
+            "UUID": "44003342-49b1-469e-8d4e-fcd064584644"
+        },
+        "/dev/mapper/rawlargevg-rawdatalv": {
+            "TYPE": "crypto_LUKS",
+            "UUID": "2f221e57-8dbf-4947-b5d0-f838e1b67c76"
+        },
+        "/dev/md0": {
+            "TYPE": "LVM2_member",
+            "UUID": "DuQzfS-fCu2-H0FZ-Sdt4-oVth-YLgF-25Q3En"
+        },
+        "/dev/loop1": {
+            "TYPE": "squashfs"
+        },
+        "/dev/mapper/dm_crypt-0": {
+            "TYPE": "LVM2_member",
+            "UUID": "kx6qTc-egzq-iJHg-f8QZ-OHXS-1Ysc-xJMSdi"
+        },
+        "/dev/sda1": {
+            "UUID_SUB": "59cef624-36f1-8ef1-8cca-cbeefef259ab",
+            "TYPE": "linux_raid_member",
+            "UUID": "ea373f54-b3eb-8233-5e79-c747a10008b9",
+            "PARTUUID": "26ed1305-f3c6-4346-89bd-a055ff1b6d61",
+            "LABEL": "marco-server:0"
+        },
+        "/dev/mapper/rawlargevg-rawsharelv": {
+            "TYPE": "crypto_LUKS",
+            "UUID": "63911a11-be3a-4db3-abd3-978acea768fc"
+        },
+        "/dev/mapper/homefs": {
+            "TYPE": "LVM2_member",
+            "UUID": "gmErcT-lAFn-2Ved-ynoO-kk3m-EfRN-t1Wd3O"
+        }
         }
 
         mount_points = {
-            "/": {
-                "device": "/dev/mapper/ubuntu--vg-root",
-                "fstype": "ext4",
-                "opts": [
-                    "errors=remount-ro"
-                ],
-                "dump": "0",
-                "pass": "1"
-            },
-            "/boot": {
-                "device": "UUID=17db5c7a-f330-4a1d-85a6-b658bdf2a9fc",
-                "fstype": "ext4",
-                "opts": [
-                    "defaults"
-                ],
-                "dump": "0",
-                "pass": "2"
-            },
-            "/boot/efi": {
-                "device": "UUID=35A5-46F3",
-                "fstype": "vfat",
-                "opts": [
-                    "umask=0077"
-                ],
-                "dump": "0",
-                "pass": "1"
-            },
-            "none": {
-                "device": "/dev/mapper/ubuntu--vg-swap_1",
-                "fstype": "swap",
-                "opts": [
-                    "sw"
-                ],
-                "dump": "0",
-                "pass": "0"
-            }
+        "none": {
+            "device": "UUID=c647ea3a-9696-470e-a452-bfea5e9a61cf",
+            "pass": "0",
+            "dump": "0",
+            "opts": [
+                "sw"
+            ],
+            "fstype": "swap"
+        },
+        "/boot": {
+            "device": "UUID=baeda7fe-535c-4153-b438-986b2e150743",
+            "pass": "0",
+            "dump": "0",
+            "opts": [
+                "defaults"
+            ],
+            "fstype": "ext4"
+        },
+        "/": {
+            "device": "UUID=44003342-49b1-469e-8d4e-fcd064584644",
+            "pass": "0",
+            "dump": "0",
+            "opts": [
+                "defaults"
+            ],
+            "fstype": "ext4"
+        },
+        "/boot/efi": {
+            "device": "UUID=6DA1-1CE0",
+            "pass": "0",
+            "dump": "0",
+            "opts": [
+                "defaults"
+            ],
+            "fstype": "vfat"
+        }
         }
 
         partitions = mount_points.keys()
