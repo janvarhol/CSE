@@ -280,7 +280,12 @@ def test_data():
                         print("")
                         print("Device not skipped")
                         print("Checking encryption on device: " + block_device)
+                        log.warning("Checking encryption on device: " + block_device)
+
+                        # INFO
                         print("BLOCK DEVICE: " + block_device)
+
+
 
                         IS_BOOT = False
                         UUID = 'UUID'
