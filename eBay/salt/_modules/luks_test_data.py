@@ -285,83 +285,8 @@ def test_data():
                         # INFO
                         print("BLOCK DEVICE: " + block_device)
 
-
-
-                        IS_BOOT = False
-                        UUID = 'UUID'
-
-                        if "UUID" in block_devices[block_device].keys():
-                            UUID = 'UUID'
-                            print("Using UUID")
-                            block_device_UUID = block_devices[block_device][UUID]
-                            print("block_device_UUID: " + block_device_UUID)
-                        elif "PTUUID" in block_devices[block_device].keys():
-                            UUID = 'PTUUID'
-                            print("Using PTUUID")
-                            block_device_UUID = block_devices[block_device][UUID]
-                            print("block_device_UUID: " + block_device_UUID)
-                        elif "PARTUUID" in block_devices[block_device].keys():
-                            UUID = 'PARTUUID'
-                            print("Using PARTUUID")
-                            block_device_UUID = block_devices[block_device][UUID]
-                            print("block_device_UUID: " + block_device_UUID)
-
-                        #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
-
-                        print("--- BLOCK DEVICE UUID --- : " + block_device_UUID)
-                        print("")
-                        print("")
-
-                        # /boot partition UUID match check (boot partitions can be not encrypted)
-                        if '/boot' in partitions:
-                            print("Checking /boot partition")
-                            log.info("Checking /boot partition")
-
-                            # Get and compare UUIDs from block partition and block device
-                            try:
-                                #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
-                                block_device_UUID = block_devices[block_device][UUID]
-                                boot_UUID = mount_points['/boot']['device'].replace('UUID=', '')
-                                print("Block device " + block_device + " UUID: " + block_device_UUID)
-                                log.info("Block device " + block_device + " UUID: " + block_device_UUID)
-                                print("Boot /boot partition UUID: " + boot_UUID)
-                                log.info("Boot /boot partition UUID: " + boot_UUID)
-
-                                if boot_UUID == block_device_UUID:
-                                    print("UUID MATCH for /boot partition and " + block_device + " device")
-                                    log.info("UUID MATCH for /boot partition and " + block_device + " device")
-                                    #return True
-                                    IS_BOOT = True
-                            except:
-                                print("EXCEPTION for /boot - NOT RUNNING CHECK ON TEST DATA")
-
-                        # /boot/efi partition UUID match check
-                        if '/boot/efi' in partitions:
-                            print("Checking /boot/efi partition")
-                            log.info("Checking /boot/efi partition")
-
-                            # Get and compare UUIDs from block partition and block device
-                            try:
-                                #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
-                                block_device_UUID = block_devices[block_device][UUID]
-                                boot_UUID = mount_points['/boot/efi']['device'].replace('UUID=', '')
-                                print("Block device " + block_device + " UUID: " + block_device_UUID)
-                                log.info("Block device " + block_device + " UUID: " + block_device_UUID)
-                                print("Boot /boot/efi partition UUID: " + boot_UUID)
-                                log.info("Boot /boot/efi partition UUID: " + boot_UUID)
-
-                                if boot_UUID == block_device_UUID:
-                                    print("UUID MATCH for /boot/efi partition and " + block_device + " device")
-                                    log.info("UUID MATCH for /boot/efi partition and " + block_device + " device")
-                                    #return True
-                                    IS_BOOT = True
-                            except:
-                                print("EXCEPTION for /boot/efi - NOT RUNNING CHECK ON TEST DATA")
-
-                        #if IS_BOOT:
-                        #    return True
-                        #else:
-                        #    return False
+############
+                        
             elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
                 SKIP_DEVICE = True
                 print("")
