@@ -75,6 +75,9 @@ def is_disk_encrypted(block_device, block_devices, TYPE):
     # Testing fix for linux_raid_member
     if block_devices[block_device][TYPE] == 'linux_raid_member':
         # assuming it is encrypted
+        print("--->>> linux_raid_member device: " + block_device)
+        log.info("--->>> linux_raid_member device: " + block_device)
+
         return 0
 
     return 1
