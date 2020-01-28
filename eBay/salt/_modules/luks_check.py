@@ -352,4 +352,9 @@ def luks_key_mgmt():
     # Save luks_status dictionary from position [1]
     # Note: position[0] is boolean True/False
     luks_status = get_disks_encrypted()[1]
+    
+    for device in luks_status['status']['not encrypted devices']:
+        log.info('--->> Luks key management for: ' + device)
+        __salt__['test.ping']()
+    
     return luks_status
