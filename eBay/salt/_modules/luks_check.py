@@ -333,14 +333,14 @@ def get_disks_encrypted():
             __salt__['grains.set']('luks_check', grains, force=True)
             luks_assessment['luks_encrypted_status'] = False
             luks_status['status'] = luks_assessment
-            luks_status['status']['check time'] = datetime.now().strftime(%a %b %d %H:%M:%S %Z %Y)
+            luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y")
             return False, luks_status
         else:
             grains = {'luks_encrypted_status': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
             __salt__['grains.set']('luks_check', grains, force=True)
             luks_assessment['luks_encrypted_status'] = True
             luks_status['status'] = luks_assessment
-            luks_status['status']['check time'] = datetime.now().strftime(%a %b %d %H:%M:%S %Z %Y)
+            luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y")
             return True, luks_status
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
