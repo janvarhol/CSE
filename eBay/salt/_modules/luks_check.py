@@ -331,12 +331,12 @@ def get_disks_encrypted():
             grains = {'luks_encrypted_status': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
             __salt__['grains.set']('luks_check', grains, force=True)
             luks_assessment['luks_encrypted_status'] = False
-            return False, 
+            return False, luks_assessment
         else:
             grains = {'luks_encrypted_status': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
             __salt__['grains.set']('luks_check', grains, force=True)
             luks_assessment['luks_encrypted_status'] = True
-            return True
+            return True, luks_assessment
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
