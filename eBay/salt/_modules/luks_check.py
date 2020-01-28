@@ -351,5 +351,5 @@ def luks_key_mgmt():
     # Call get_disks_encrypted function
     # Save luks_status dictionary from position [1]
     # Note: position[0] is boolean True/False
-    luks_status = get_disks_encrypted[1]
+    luks_status = get_disks_encrypted()[1]
     return luks_status
