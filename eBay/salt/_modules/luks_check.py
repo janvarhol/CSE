@@ -321,11 +321,10 @@ def get_disks_encrypted():
         print("")
         print("SKIPPED: " + json.dumps(luks_assessment_skipped, indent=4))
 
+        
         # Create return dictionary
         luks_assessment['encrypted devices'] = luks_assessment_encrypted
         luks_assessment['not encrypted devices'] = luks_assessment_NOT_encrypted
-        
-
     
         # If there are items in NOT encrypted device, return False
         if len(luks_assessment_NOT_encrypted) > 0:
@@ -346,3 +345,11 @@ def get_disks_encrypted():
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         return True
+    
+    
+def luks_key_mgmt():
+    # Call get_disks_encrypted function
+    # Save luks_status dictionary from position [1]
+    # Note: position[0] is boolean True/False
+    luks_status = get_disks_encrypted[1]
+    return luks_status
