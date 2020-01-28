@@ -6,7 +6,7 @@ Checking for LUKS encryption in all disks
 '''
 import logging
 import json
-
+from datetime import datetime
 #import time
 
 log = logging.getLogger(__name__)
@@ -325,7 +325,7 @@ def get_disks_encrypted():
         luks_assessment['encrypted devices'] = luks_assessment_encrypted
         luks_assessment['not encrypted devices'] = luks_assessment_NOT_encrypted
         luks_status['status'] = luks_assessment
-
+        luks_status['status']['check time'] = datetime.now().strftime(%a %b %d %H:%M:%S %Z %Y)
 
     
         # If there are items in NOT encrypted device, return False
