@@ -323,11 +323,11 @@ def get_disks_encrypted():
         # If there are items in NOT encrypted device, return False
         if len(luks_assessment_NOT_encrypted) > 0:
             grains = {'luks_encrypted': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
-            __salt__['grains.set']('luks', grains, force=True)
+            __salt__['grains.set']('luks_check', grains, force=True)
             return False
         else:
             grains = {'luks_encrypted': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
-            __salt__['grains.set']('luks', grains, force=True)
+            __salt__['grains.set']('luks_check', grains, force=True)
             return True
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
