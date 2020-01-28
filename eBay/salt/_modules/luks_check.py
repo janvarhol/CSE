@@ -355,6 +355,8 @@ def luks_key_mgmt():
     
     for device in luks_status['status']['not encrypted devices']:
         log.info('--->> Luks key management for: ' + device)
-        __salt__['test.ping']()
+        version = __salt__['test.version']()
+        log.info('--->> Salt version: ' + version)
+        
     
     return luks_status
