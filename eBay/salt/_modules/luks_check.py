@@ -353,11 +353,12 @@ def luks_key_mgmt():
     # Note: position[0] is boolean True/False
     luks_status = get_disks_encrypted()[1]
     
-    #if luks_status['status']['luks_encrypted_status'] == True:
-    for device in luks_status['status']['encrypted devices']:
-        log.info('--->> Luks key management for: ' + device)
-        version = __salt__['test.version']()
-        log.info('--->> Salt version: ' + version)
+    # Do something on encrypted devices
+    if luks_status['status']['luks_encrypted_status'] == True:
+        for device in luks_status['status']['encrypted devices']:
+            log.info('--->> Luks key management for: ' + device)
+            version = __salt__['test.version']()
+            log.info('--->> Salt version: ' + version)
         
     
     return luks_status
