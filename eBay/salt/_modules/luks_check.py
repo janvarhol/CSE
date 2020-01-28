@@ -324,7 +324,7 @@ def get_disks_encrypted():
         # Create return dictionary
         luks_assessment['encrypted devices'] = luks_assessment_encrypted
         luks_assessment['not encrypted devices'] = luks_assessment_NOT_encrypted
-        luks_status.update(luks_assessment)
+        luks_status['status'] = luks_assessment
 
 
     
