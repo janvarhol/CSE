@@ -8,9 +8,8 @@ import logging
 import json
 from datetime import datetime
 
-#import time
-
 log = logging.getLogger(__name__)
+
 
 def is_disk_encrypted(block_device, block_devices, TYPE):
     '''
@@ -172,14 +171,14 @@ def is_boot_partition(block_device, block_devices, mount_points, partitions):
     else:
         return False
 
-
+        
 def test_data():
     skip_osfinger_list = ['Raspbian-9', 'Raspbian-10']
-    #--skip_partition_types = ['gpt', 'ntfs', 'dos']
 
     luks_assessment_encrypted = []
     luks_assessment_NOT_encrypted = []
     luks_assessment_skipped = []
+    luks_assessment_linux_raid_member = []
     luks_assessment = {}
     luks_status = {}
 
@@ -405,11 +404,21 @@ def test_data():
                           log.warning(block_device + " is encrypted")
                           # Add device to luks_assessment_encrypted
                           luks_assessment_encrypted.append(block_device)
+
+                        # Testing fix for linux_raid_member
+                        elif block_devices[block_device][TYPE] == 'linux_raid_member':
+                            # assuming it is encrypted
+                            print("--->>> linux_raid_member device, assuming it is encrypted: " + block_device)
+                            log.info("--->>> linux_raid_member device, assuming it is encrypted: " + block_device)
+                            luks_assessment_linux_raid_member.append(block_device)  
+
+                        # Check if device is encrypted 
                         elif is_disk_encrypted(block_device, block_devices, TYPE) == 0:
                             print(block_device + " is encrypted")
                             log.warning(block_device + " is encrypted")
                             # Add device to luks_assessment_encrypted
                             luks_assessment_encrypted.append(block_device)
+                            
                         else:
                             # NEW - CHECKING BOOT PARTITION
                             # for testing, mount_points and partitions
@@ -450,22 +459,25 @@ def test_data():
         print("DEVICES NOT ENCRYPTED: " + json.dumps(luks_assessment_NOT_encrypted, indent=4))
         print("")
         print("SKIPPED: " + json.dumps(luks_assessment_skipped, indent=4))
+        print("")
+        print("linux_raid_member: " + json.dumps(luks_assessment_linux_raid_member, indent=4))
         
 
         # Create return dictionary
         luks_assessment['encrypted devices'] = luks_assessment_encrypted
         luks_assessment['not encrypted devices'] = luks_assessment_NOT_encrypted
+        luks_assessment['linux raid member'] = luks_assessment_linux_raid_member
         
         # If there are items in NOT encrypted device, return False
         if len(luks_assessment_NOT_encrypted) > 0:
-            grains = {'luks_encrypted_status': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
+            grains = {'luks_encrypted_status': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted, 'linux_raid_member': luks_assessment_linux_raid_member}
             __salt__['grains.set']('luks_check', grains, force=True)
             luks_assessment['luks_encrypted_status'] = False
             luks_status['status'] = luks_assessment
             luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y")
             return False, luks_status
         else:
-            grains = {'luks_encrypted_status': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
+            grains = {'luks_encrypted_status': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted,'linux_raid_member': luks_assessment_linux_raid_member}
             __salt__['grains.set']('luks_check', grains, force=True)
             luks_assessment['luks_encrypted_status'] = True
             luks_status['status'] = luks_assessment
@@ -474,4 +486,4 @@ def test_data():
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
-        return True
+        return True, luks_status
