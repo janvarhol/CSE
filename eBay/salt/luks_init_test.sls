@@ -14,6 +14,8 @@ show-{{ encrypted_device }}:
     - result: True
     - comment: |
         {{ encrypted_device }}
+{% .replace....
+salt['luks.check_keys'](encrypted_device)
 {% endfor %}
 {% endif%}
 {% endif %}
