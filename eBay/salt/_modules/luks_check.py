@@ -344,7 +344,7 @@ def get_disks_encrypted():
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
-        return True
+        return True, luks_status
     
     
 def luks_key_mgmt():
