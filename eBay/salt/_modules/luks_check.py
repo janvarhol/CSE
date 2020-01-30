@@ -201,7 +201,7 @@ def get_disks_encrypted():
         cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
         if not cryptsetup_bin:
             log.warning("cryptsetup binary not found")
-            return False
+            return False, luks_status
 
         # List devices
         block_devices = __salt__['disk.blkid']()
