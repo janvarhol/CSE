@@ -6,7 +6,7 @@ Checking for LUKS encryption in all disks
 '''
 import logging
 import json
-
+from datetime import datetime
 #import time
 
 log = logging.getLogger(__name__)
@@ -194,12 +194,14 @@ def get_disks_encrypted():
     luks_assessment_encrypted = []
     luks_assessment_NOT_encrypted = []
     luks_assessment_skipped = []
+    luks_assessment = {}
+    luks_status = {}
 
     if __grains__['osfinger'] not in skip_osfinger_list:
         cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
         if not cryptsetup_bin:
             log.warning("cryptsetup binary not found")
-            return False
+            return False, luks_status
 
         # List devices
         block_devices = __salt__['disk.blkid']()
@@ -319,17 +321,44 @@ def get_disks_encrypted():
         print("")
         print("SKIPPED: " + json.dumps(luks_assessment_skipped, indent=4))
 
-
+        
+        # Create return dictionary
+        luks_assessment['encrypted devices'] = luks_assessment_encrypted
+        luks_assessment['not encrypted devices'] = luks_assessment_NOT_encrypted
+    
         # If there are items in NOT encrypted device, return False
         if len(luks_assessment_NOT_encrypted) > 0:
-            grains = {'luks_encrypted': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
-            __salt__['grains.set']('luks', grains, force=True)
-            return False
+            grains = {'luks_encrypted_status': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
+            __salt__['grains.set']('luks_check', grains, force=True)
+            luks_assessment['luks_encrypted_status'] = False
+            luks_status['status'] = luks_assessment
+            luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Y")
+            return False, luks_status
         else:
-            grains = {'luks_encrypted': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
-            __salt__['grains.set']('luks', grains, force=True)
-            return True
+            grains = {'luks_encrypted_status': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
+            __salt__['grains.set']('luks_check', grains, force=True)
+            luks_assessment['luks_encrypted_status'] = True
+            luks_status['status'] = luks_assessment
+            luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Y")
+            return True, luks_status
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
-        return True
+        return True, luks_status
+    
+    
+def luks_key_mgmt():
+    # Call get_disks_encrypted function
+    # Save luks_status dictionary from position [1]
+    # Note: position[0] is boolean True/False
+    luks_status = get_disks_encrypted()[1]
+    
+    # Do something on encrypted devices
+    if luks_status['status']['luks_encrypted_status'] == True:
+        for device in luks_status['status']['encrypted devices']:
+            log.info('--->> Luks key management for: ' + device)
+            version = __salt__['test.version']()
+            log.info('--->> Salt version: ' + version)
+        
+    
+    return luks_status

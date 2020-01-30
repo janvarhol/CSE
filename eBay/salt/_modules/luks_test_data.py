@@ -6,6 +6,7 @@ Checking for LUKS encryption in all disks
 '''
 import logging
 import json
+from datetime import datetime
 
 #import time
 
@@ -179,6 +180,8 @@ def test_data():
     luks_assessment_encrypted = []
     luks_assessment_NOT_encrypted = []
     luks_assessment_skipped = []
+    luks_assessment = {}
+    luks_status = {}
 
     if __grains__['osfinger'] not in skip_osfinger_list:
         # List devices
@@ -449,15 +452,25 @@ def test_data():
         print("SKIPPED: " + json.dumps(luks_assessment_skipped, indent=4))
         
 
+        # Create return dictionary
+        luks_assessment['encrypted devices'] = luks_assessment_encrypted
+        luks_assessment['not encrypted devices'] = luks_assessment_NOT_encrypted
+        
         # If there are items in NOT encrypted device, return False
         if len(luks_assessment_NOT_encrypted) > 0:
-            grains = {'luks_encrypted': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
-            __salt__['grains.set']('luks', grains, force=True)
-            return False
+            grains = {'luks_encrypted_status': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
+            __salt__['grains.set']('luks_check', grains, force=True)
+            luks_assessment['luks_encrypted_status'] = False
+            luks_status['status'] = luks_assessment
+            luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y")
+            return False, luks_status
         else:
-            grains = {'luks_encrypted': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
-            __salt__['grains.set']('luks', grains, force=True)
-            return True
+            grains = {'luks_encrypted_status': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
+            __salt__['grains.set']('luks_check', grains, force=True)
+            luks_assessment['luks_encrypted_status'] = True
+            luks_status['status'] = luks_assessment
+            luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y")
+            return True, luks_status
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
