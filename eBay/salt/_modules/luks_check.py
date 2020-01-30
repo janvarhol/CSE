@@ -6,7 +6,7 @@ Checking for LUKS encryption in all disks
 '''
 import logging
 import json
-
+from datetime import datetime
 #import time
 
 log = logging.getLogger(__name__)
@@ -23,12 +23,11 @@ def is_disk_encrypted(block_device, block_devices, TYPE):
     # Check if device name ends with partition number, like /dev/sda5
 
     # Testing fix for linux_raid_member
-    if block_devices[block_device][TYPE] == 'linux_raid_member':
-        # assuming it is encrypted
-        print("--->>> linux_raid_member device: " + block_device)
-        log.info("--->>> linux_raid_member device: " + block_device)
-
-        return 0
+    #if block_devices[block_device][TYPE] == 'linux_raid_member':
+    #    # assuming it is encrypted
+    #    print("--->>> linux_raid_member device: " + block_device)
+    #    log.info("--->>> linux_raid_member device: " + block_device)
+    #    return 0
 
     if block_device[-1:].isdigit():
         # BEING EXTRA CAREFUL, REDUNDANT, WIH STR AND UNICODE STRINGS
@@ -194,12 +193,15 @@ def get_disks_encrypted():
     luks_assessment_encrypted = []
     luks_assessment_NOT_encrypted = []
     luks_assessment_skipped = []
+    luks_assessment_linux_raid_member = []
+    luks_assessment = {}
+    luks_status = {}
 
     if __grains__['osfinger'] not in skip_osfinger_list:
         cryptsetup_bin = __salt__['cmd.which']('cryptsetup')
         if not cryptsetup_bin:
             log.warning("cryptsetup binary not found")
-            return False
+            return False, luks_status
 
         # List devices
         block_devices = __salt__['disk.blkid']()
@@ -229,6 +231,7 @@ def get_disks_encrypted():
             else:
                 TYPE = 'NOT KNOWN'
 
+     
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
                 print("Device is not swap, moving forward...")
                 print("Device keys: " + str(block_devices[block_device].keys()))
@@ -276,11 +279,21 @@ def get_disks_encrypted():
                           log.warning(block_device + " is encrypted")
                           # Add device to luks_assessment_encrypted
                           luks_assessment_encrypted.append(block_device)
+
+                        # Testing fix for linux_raid_member
+                        elif block_devices[block_device][TYPE] == 'linux_raid_member':
+                            # assuming it is encrypted
+                            print("--->>> linux_raid_member device, assuming it is encrypted: " + block_device)
+                            log.info("--->>> linux_raid_member device, assuming it is encrypted: " + block_device)
+                            luks_assessment_linux_raid_member.append(block_device)
+
+                        # Check if device is encrypted    
                         elif is_disk_encrypted(block_device, block_devices, TYPE) == 0:
                             print(block_device + " is encrypted")
                             log.warning(block_device + " is encrypted")
                             # Add device to luks_assessment_encrypted
                             luks_assessment_encrypted.append(block_device)
+                            
                         else:
                             # NEW - CHECKING BOOT PARTITION
                             if not is_boot_partition(block_device, block_devices):
@@ -318,18 +331,49 @@ def get_disks_encrypted():
         print("DEVICES NOT ENCRYPTED: " + json.dumps(luks_assessment_NOT_encrypted, indent=4))
         print("")
         print("SKIPPED: " + json.dumps(luks_assessment_skipped, indent=4))
+        print("")
+        print("linux_raid_member: " + json.dumps(luks_assessment_linux_raid_member, indent=4))
 
 
+        
+        # Create return dictionary
+        luks_assessment['encrypted devices'] = luks_assessment_encrypted
+        luks_assessment['not encrypted devices'] = luks_assessment_NOT_encrypted
+        luks_assessment['linux raid member'] = luks_assessment_linux_raid_member
+        
         # If there are items in NOT encrypted device, return False
         if len(luks_assessment_NOT_encrypted) > 0:
-            grains = {'luks_encrypted': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
-            __salt__['grains.set']('luks', grains, force=True)
-            return False
+            grains = {'luks_encrypted_status': False, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted, 'linux_raid_member': luks_assessment_linux_raid_member}
+            __salt__['grains.set']('luks_check', grains, force=True)
+            luks_assessment['luks_encrypted_status'] = False
+            luks_status['status'] = luks_assessment
+            luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Y")
+            return False, luks_status
         else:
-            grains = {'luks_encrypted': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted}
-            __salt__['grains.set']('luks', grains, force=True)
-            return True
+            grains = {'luks_encrypted_status': True, 'encrypted_devices': luks_assessment_encrypted, 'NOT_encrypted_devices': luks_assessment_NOT_encrypted,'linux_raid_member': luks_assessment_linux_raid_member}
+            __salt__['grains.set']('luks_check', grains, force=True)
+            luks_assessment['luks_encrypted_status'] = True
+            luks_status['status'] = luks_assessment
+            luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Y")
+            return True, luks_status
     else:
         print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
-        return True
+        return True, luks_status
+    
+    
+def luks_key_mgmt():
+    # Call get_disks_encrypted function
+    # Save luks_status dictionary from position [1]
+    # Note: position[0] is boolean True/False
+    luks_status = get_disks_encrypted()[1]
+    
+    # Do something on encrypted devices
+    if luks_status['status']['luks_encrypted_status'] == True:
+        for device in luks_status['status']['encrypted devices']:
+            log.info('--->> Luks key management for: ' + device)
+            version = __salt__['test.version']()
+            log.info('--->> Salt version: ' + version)
+        
+    
+    return luks_status
