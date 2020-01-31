@@ -27,7 +27,7 @@ resource "aws_instance" "tf-insta1" {
   provisioner "remote-exec" {
     inline = [
       "curl -L https://bootstrap.saltstack.com -o install_salt.sh",
-      "sh install_salt.sh -P -A 172.31.45.90 ",
+      "sh install_salt.sh -P -X -A 172.31.45.90 ",
       "cat <<EOF > /etc/salt/minion.d/autosign_grains.conf",
       "autosign_grains:",
       "  - terraform_id",
