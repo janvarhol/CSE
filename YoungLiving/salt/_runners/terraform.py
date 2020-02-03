@@ -29,5 +29,6 @@ def create_run(instance_name=None):
         ret = create_plan(instance_name)
         if ret[0] == True:
             run_plan()
+            return True
     else:
         return False, "NO INSTANCE NAME"
