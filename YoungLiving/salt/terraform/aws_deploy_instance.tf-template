@@ -1,0 +1,47 @@
+# /srv/salt/terraform/aws_deploy_instance.tf-template
+# Sample Terraform template
+/* This terraform template deploys:
+     - Single instance
+     - aws provider
+*/
+
+{%- set aws_access_key = salt['pillar.get']('aws_access_key', None) -%}
+{%- set aws_secret_key = salt['pillar.get']('aws_secret_key', None) -%}
+{%- set instance_name = salt['pillar.get']('instance_name', 'tf_minion-0') -%}
+{%- set connection_password = salt['pillar.get']('conn_password', '') %}
+provider "aws" {
+  access_key = "{{ aws_access_key }}"
+  secret_key = "{{ aws_secret_key }}"
+  region     = "us-east-2"
+}
+
+resource "aws_instance" "{{ instance_name }}" {
+  ami           = "ami-021ff6ebace6553ba"
+  instance_type = "t2.micro"
+  #key_name = "cse"
+  security_groups = ["default"]
+
+
+  connection {
+      type = "ssh"
+      user = "root"
+      password = "{{ connection_password }}"
+      timeout = "2m"
+      host = self.private_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "curl -L https://bootstrap.saltstack.com -o install_salt.sh",
+      "sh install_salt.sh -P -X -A 172.31.45.90 ",
+      "cat <<EOF > /etc/salt/minion.d/autosign_grains.conf",
+      "autosign_grains:",
+      "  - terraform_id",
+      "EOF",
+      "salt-call --local grains.set terraform_id 'tf_12345'",
+      "systemctl stop salt-minion",
+      "sleep 10; systemctl start salt-minion",
+      "systemctl enable salt-minion"
+     ]
+   }
+}
