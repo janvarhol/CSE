@@ -33,11 +33,17 @@ resource "aws_instance" "{{ instance_name }}" {
   provisioner "remote-exec" {
     inline = [
       "curl -L https://bootstrap.saltstack.com -o install_salt.sh",
-      "sh install_salt.sh -P -X -A 172.31.45.90 ",
+      "mkdir /etc/salt/",
+      "mkdir /etc/salt/minion.d/",
       "cat <<EOF > /etc/salt/minion.d/autosign_grains.conf",
       "autosign_grains:",
       "  - terraform_id",
       "EOF",
+      "cat <<EOF > /etc/salt/minion.d/id.conf",
+      "id: {{ instance_name }}",
+      "EOF",
+      "sh install_salt.sh -P -X -A 172.31.45.90 ",
+      "sleep 20",
       "salt-call --local grains.set terraform_id 'tf_12345'",
       "systemctl stop salt-minion",
       "sleep 10; systemctl start salt-minion",
