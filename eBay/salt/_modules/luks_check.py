@@ -18,7 +18,7 @@ def is_disk_encrypted(block_device, block_devices, TYPE):
     retcode 0 = Disk Encrypted
     retcode 1 = Disk not encrypted
     '''
-    print("--->>> Checking disk encrypted on device: " + block_device)
+    #print("--->>> Checking disk encrypted on device: " + block_device)
     log.info("--->>> Checking disk encrypted on device: " + block_device)
     # Check if device name ends with partition number, like /dev/sda5
 
@@ -47,7 +47,7 @@ def is_disk_encrypted(block_device, block_devices, TYPE):
 
     elif block_device[-1:].isalpha():
     # if device name ends with alpha, meaning it's a disk, like /dev/sdb
-        print("--->>> Scanning disk for LVM information")
+        #print("--->>> Scanning disk for LVM information")
         log.info("--->>> Scanning disk for LVM information")
         try:
             lvm_pv_info = __salt__['lvm.pvdisplay'](block_device)
@@ -55,7 +55,7 @@ def is_disk_encrypted(block_device, block_devices, TYPE):
             lvm_lv_info = __salt__['lvm.lvdisplay'](lvm_vol_group_name)
             for log_vol_name in lvm_lv_info:
               lvm_log_vol_name = lvm_lv_info[log_vol_name]['Logical Volume Name']
-              print("--->>> Scanned Logical Volume Name: " + lvm_log_vol_name)
+              #print("--->>> Scanned Logical Volume Name: " + lvm_log_vol_name)
               log.info("--->>> Scanned Logical Volume Name: " + lvm_log_vol_name)
 
               # Run crypsetup using LVM Logical Volume Name instead of device name
@@ -63,14 +63,15 @@ def is_disk_encrypted(block_device, block_devices, TYPE):
               cryptsetup_isLuks = __salt__['cmd.retcode']('cryptsetup isLuks ' + lvm_log_vol_name, ignore_retcode=True)
               # if cryptsetup is not 0, return failure, disk not encrypted
               if cryptsetup_isLuks >= 1:
-                print("--->>> cryptsetup on scanned Logical Volume Name FAILED: " + lvm_log_vol_name)
+                #print("--->>> cryptsetup on scanned Logical Volume Name FAILED: " + lvm_log_vol_name)
                 log.warning("--->>> cryptsetup on scanned Logical Volume Name FAILED: " + lvm_log_vol_name)
                 return cryptsetup_isLuks
         except:
             # If something goes wrong, return 1 (False / Disk not encrypted, must be fixed)
             return 1
     else:
-        print("--->>> Un-handled case, returning Disk not encrypted")
+        #print("--->>> Un-handled case, returning Disk not encrypted")
+        log.info("--->>> Un-handled case, returning Disk not encrypted")
         return 1
 #    print(cryptsetup_isLuks)
 
@@ -89,10 +90,10 @@ def is_boot_partition(block_device, block_devices):
     partitions = mount_points.keys()
 
     # TROUBLESHOOTING INFO
-    print("__is_boot_partition_MOUNT_POINTS: " + json.dumps(mount_points, indent=4))
-    print("__is_boot_partition_PARTITIONS: " + str(partitions))
-    print("__is_boot_partition_BLOCK_DEVICE: " + block_device)
-    print("__is_boot_partition_BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
+    #print("__is_boot_partition_MOUNT_POINTS: " + json.dumps(mount_points, indent=4))
+    #print("__is_boot_partition_PARTITIONS: " + str(partitions))
+    #print("__is_boot_partition_BLOCK_DEVICE: " + block_device)
+    #print("__is_boot_partition_BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
     # END TROUBLESHOOTING INFO
 
     IS_BOOT = False
@@ -121,59 +122,66 @@ def is_boot_partition(block_device, block_devices):
 
     if "UUID" in block_devices[block_device].keys():
         UUID = 'UUID'
-        print("Using UUID")
+        #print("Using UUID")
+        log.info("Using UUID")
         block_device_UUID = block_devices[block_device][UUID]
-        print("block_device_UUID: " + block_device_UUID)
+        #print("block_device_UUID: " + block_device_UUID)
+        log.info("block_device_UUID: " + block_device_UUID)
     elif "PTUUID" in block_devices[block_device].keys():
         UUID = 'PTUUID'
-        print("Using PTUUID")
+        #print("Using PTUUID")
+        log.info("Using PTUUID")
         block_device_UUID = block_devices[block_device][UUID]
-        print("block_device_UUID: " + block_device_UUID)
+        #print("block_device_UUID: " + block_device_UUID)
+        log.info("block_device_UUID: " + block_device_UUID)
     elif "PARTUUID" in block_devices[block_device].keys():
         UUID = 'PARTUUID'
-        print("Using PARTUUID")
+        #print("Using PARTUUID")
+        log.info("Using PARTUUID")
         block_device_UUID = block_devices[block_device][UUID]
-        print("block_device_UUID: " + block_device_UUID)
+        #print("block_device_UUID: " + block_device_UUID)
+        log.info("block_device_UUID: " + block_device_UUID)
 
     #block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
-    print("--- BLOCK DEVICE UUID --- : " + block_device_UUID)
-    print("")
-    print("")
+    #print("--- BLOCK DEVICE UUID --- : " + block_device_UUID)
+    log.info("--- BLOCK DEVICE UUID --- : " + block_device_UUID)
+    #print("")
+    #print("")
 
     # /boot partition UUID match check (boot partitions can be not encrypted)
     if '/boot' in partitions:
-        print("Checking /boot partition")
+        #print("Checking /boot partition")
         log.info("Checking /boot partition")
 
         # Get and compare UUIDs from block partition and block device
         block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
         boot_UUID = mount_points['/boot']['device'].replace('UUID=', '')
-        print("Block device " + block_device + " UUID: " + block_device_UUID)
+        #print("Block device " + block_device + " UUID: " + block_device_UUID)
         log.info("Block device " + block_device + " UUID: " + block_device_UUID)
-        print("Boot /boot partition UUID: " + boot_UUID)
+        #print("Boot /boot partition UUID: " + boot_UUID)
         log.info("Boot /boot partition UUID: " + boot_UUID)
 
         if boot_UUID == block_device_UUID:
-            print("UUID MATCH for /boot partition and " + block_device + " device")
+            #print("UUID MATCH for /boot partition and " + block_device + " device")
             log.info("UUID MATCH for /boot partition and " + block_device + " device")
             #return True
             IS_BOOT = True
 
     # /boot/efi partition UUID match check (boot partitions can be not encrypted)
     if '/boot/efi' in partitions:
-        print("Checking /boot/efi partition")
+        #print("Checking /boot/efi partition")
         log.info("Checking /boot/efi partition")
 
         # Get and compare UUIDs from block partition and block device
         block_device_UUID = __salt__['disk.blkid'](block_device)[block_device][UUID]
         boot_UUID = mount_points['/boot/efi']['device'].replace('UUID=', '')
-        print("Block device " + block_device + " UUID: " + block_device_UUID)
+        #print("Block device " + block_device + " UUID: " + block_device_UUID)
         log.info("Block device " + block_device + " UUID: " + block_device_UUID)
-        print("Boot /boot/efi partition UUID: " + boot_UUID)
+        #print("Boot /boot/efi partition UUID: " + boot_UUID)
         log.info("Boot /boot/efi partition UUID: " + boot_UUID)
 
         if boot_UUID == block_device_UUID:
-            print("UUID MATCH for /boot/efi partition and " + block_device + " device")
+            #print("UUID MATCH for /boot/efi partition and " + block_device + " device")
             log.info("UUID MATCH for /boot/efi partition and " + block_device + " device")
             #return True
             IS_BOOT = True
@@ -210,7 +218,7 @@ def get_disks_encrypted():
         skip_partition_types = ['gpt', 'ntfs', 'dos']
 
         # ADRIAN - INFO
-        print("BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
+        #print("BLOCK_DEVICES: " + json.dumps(block_devices, indent=4))
 
         # Verify if each disk is encrypted
         disks_encrypted = True
@@ -221,7 +229,7 @@ def get_disks_encrypted():
 
             # Checking for keys inside block_device
             # could be TYPE, PTTYPE
-            print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
+            #print("--------------->>>>>>>> block device: " + str(block_devices[block_device]))
             #time.sleep(1)
 
             if 'TYPE' in block_devices[block_device].keys():
@@ -233,49 +241,49 @@ def get_disks_encrypted():
 
      
             if TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() != 'swap':
-                print("Device is not swap, moving forward...")
-                print("Device keys: " + str(block_devices[block_device].keys()))
+                #print("Device is not swap, moving forward...")
+                #print("Device keys: " + str(block_devices[block_device].keys()))
 
                 #IGNORE "vfat" "EFI System Partition"
                 if 'PARTLABEL' in block_devices[block_device].keys():
-                    print("PARTLABEL found in keys")
-                    print("Checking if device is vfat and EFI System Partition")
-                    print(block_devices[block_device][TYPE].lower())
-                    print(block_devices[block_device]['PARTLABEL'])
+                    #print("PARTLABEL found in keys")
+                    #print("Checking if device is vfat and EFI System Partition")
+                    #print(block_devices[block_device][TYPE].lower())
+                    #print(block_devices[block_device]['PARTLABEL'])
 
                     if block_devices[block_device][TYPE].lower() == 'vfat' and block_devices[block_device]['PARTLABEL'].lower() == "efi system partition":
                         SKIP_DEVICE = True
-                        print("")
-                        print("")
-                        print("")
-                        print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
-                        print("")
+                        #print("")
+                        #print("")
+                        #print("")
+                        #print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
+                        #print("")
                         log.warning("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " " + block_devices[block_device]['PARTLABEL'] + " in " + block_device)
                         luks_assessment_skipped.append(block_device)
 
                 # IGNORE PARTITION TYPES in skip_partition_types
                 if block_devices[block_device][TYPE].lower() in skip_partition_types:
                     SKIP_DEVICE = True
-                    print("")
-                    print("")
-                    print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
-                    print("")
+                    #print("")
+                    #print("")
+                    #print("++++++----->>>>>>>> IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
+                    #print("")
                     log.warning("IGNORING partition type " + block_devices[block_device][TYPE].lower() + " in " + block_device)
                     luks_assessment_skipped.append(block_device)
                 elif not block_device.startswith(tuple(skip_block_device_names)):
                     if not SKIP_DEVICE:
-                        print("")
-                        print("")
-                        print("")
-                        print("Device not skipped")
-                        print("Checking encryption on device: " + block_device)
+                        #print("")
+                        #print("")
+                        #print("")
+                        #print("Device not skipped")
+                        #print("Checking encryption on device: " + block_device)
                         log.warning("Checking encryption on device: " + block_device)
 
                         # INFO
-                        print("BLOCK DEVICE: " + block_device)
+                        #print("BLOCK DEVICE: " + block_device)
 
                         if block_devices[block_device][TYPE] == 'crypto_LUKS':
-                          print(block_device + " is encrypted")
+                          #print(block_device + " is encrypted")
                           log.warning(block_device + " is encrypted")
                           # Add device to luks_assessment_encrypted
                           luks_assessment_encrypted.append(block_device)
@@ -283,13 +291,13 @@ def get_disks_encrypted():
                         # Testing fix for linux_raid_member
                         elif block_devices[block_device][TYPE] == 'linux_raid_member':
                             # assuming it is encrypted
-                            print("--->>> linux_raid_member device, assuming it is encrypted: " + block_device)
+                            #print("--->>> linux_raid_member device, assuming it is encrypted: " + block_device)
                             log.info("--->>> linux_raid_member device, assuming it is encrypted: " + block_device)
                             luks_assessment_linux_raid_member.append(block_device)
 
                         # Check if device is encrypted    
                         elif is_disk_encrypted(block_device, block_devices, TYPE) == 0:
-                            print(block_device + " is encrypted")
+                            #print(block_device + " is encrypted")
                             log.warning(block_device + " is encrypted")
                             # Add device to luks_assessment_encrypted
                             luks_assessment_encrypted.append(block_device)
@@ -297,27 +305,27 @@ def get_disks_encrypted():
                         else:
                             # NEW - CHECKING BOOT PARTITION
                             if not is_boot_partition(block_device, block_devices):
-                                print(block_device + " IS NOT encrypted!!")
+                                #print(block_device + " IS NOT encrypted!!")
                                 log.warning(block_device + " IS NOT encrypted!!")
                                 disks_encrypted = False
                                 # Add device to luks_assessment_NOT_encrypted
                                 luks_assessment_NOT_encrypted.append(block_device)
                                 #return disks_encrypted
                             else:
-                                print("IGNORING boot or similar partition in " + block_device)
+                                #print("IGNORING boot or similar partition in " + block_device)
                                 log.warning("IGNORING boot or similar partition in " + block_device)
             # IGNORE SWAP PARTITIONS
             elif TYPE != 'NOT KNOWN' and block_devices[block_device][TYPE].lower() == 'swap':
                 SKIP_DEVICE = True
-                print("")
-                print("IGNORING swap partition in " + block_device)
+                #print("")
+                #print("IGNORING swap partition in " + block_device)
                 log.warning("IGNORING swap partition in " + block_device)
                 luks_assessment_skipped.append(block_device)
             # SKIP NOT KNOWN TYPE PARTITIONS
             elif TYPE == 'NOT KNOWN':
                 SKIP_DEVICE = True
-                print("")
-                print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
+                #print("")
+                #print("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
                 log.warning("->->->->->-> SKIPPING NOT KNOWN TYPE PARTITION !!!!: " + block_device)
                 luks_assessment_skipped.append(block_device)
 
@@ -357,7 +365,7 @@ def get_disks_encrypted():
             luks_status['status']['check time'] = datetime.now().strftime("%a %b %d %H:%M:%S %Y")
             return True, luks_status
     else:
-        print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
+        #print("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         log.warning("********* SYSTEM IN LIST OF SKIP BY OSFINGER")
         return True, luks_status
     
