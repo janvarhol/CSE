@@ -9,8 +9,8 @@ sdc (2GB)
 /dev/nvme0n2 (2GB)
 
 sda
-|-sda1 /boot (not encrypted)
-`-sda5       (encrypted)    part
+|-sda1 /boot (LVM not encrypted)
+`-sda5       (LVM encrypted)    part
   `-sda5_crypt              crypt
     |-ubuntu--vg-root       lvm   /
     `-ubuntu--vg-swap_1     lvm   [SWAP]
@@ -20,13 +20,13 @@ sdb           (not encrypted)
 sdc           (not encrypted)
 `-sdc1                      ext4  /media/adrian/DOCS
 
-nvme0n1       (encrypted)
+nvme0n1       (encrypted NOT LVM)
 |-nvme0n1p2   (not encrypted)      /media/adrian/CALCS2
 `-nvme0n1p1                                     259:3    0     1G  0 part
   `-luks-7d123948-6614-4cea-a54c-25f5b16ba2c6   253:3    0     1G  0 crypt
     `-luks-df327163-c36c-4cbe-950e-b917ede5829e 253:4    0     1G  0 crypt /media/adrian/CALCS
 
-nvme0n2       (not encrypted)
+nvme0n2       (not encrypted/not partitioned)
 
 
 My Module:  IT DOES GOOD JOB REPORTING ALL VOLUMES
