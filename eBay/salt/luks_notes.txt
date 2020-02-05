@@ -1,0 +1,235 @@
+1. Make this work: /srv/salt/luks/render_keyfile.sls
+
+Test instance:
+SCSI:
+sda (16GB)
+sdb (4GB)
+sdc (2GB)
+/dev/nvme0n1 (4GB)
+/dev/nvme0n2 (2GB)
+
+sda
+|-sda1 /boot (not encrypted)
+`-sda5       (encrypted)    part
+  `-sda5_crypt              crypt
+    |-ubuntu--vg-root       lvm   /
+    `-ubuntu--vg-swap_1     lvm   [SWAP]
+
+sdb           (not encrypted)
+
+sdc           (not encrypted)
+`-sdc1                      ext4  /media/adrian/DOCS
+
+nvme0n1       (encrypted)
+|-nvme0n1p2   (not encrypted)      /media/adrian/CALCS2
+`-nvme0n1p1                                     259:3    0     1G  0 part
+  `-luks-7d123948-6614-4cea-a54c-25f5b16ba2c6   253:3    0     1G  0 crypt
+    `-luks-df327163-c36c-4cbe-950e-b917ede5829e 253:4    0     1G  0 crypt /media/adrian/CALCS
+
+nvme0n2       (not encrypted)
+
+
+My Module:  IT DOES GOOD JOB REPORTING ALL VOLUMES
+salt eb-\* luks_check.get_disks_encrypted
+eb-enc-ub18:
+    - False
+    |_
+      ----------
+      status:
+          ----------
+          check time:
+              Tue Feb 04 18:25:03 2020
+          encrypted devices:
+              - /dev/sda5
+              - /dev/nvme0n1p1
+          linux raid member:
+          luks_encrypted_status:
+              False
+          not encrypted devices:
+              - /dev/sdc1
+              - /dev/nvme0n1p2
+
+# salt-call state.sls luks_init_test
+[WARNING ] Checking encryption on device: /dev/sda5
+[WARNING ] /dev/sda5 is encrypted
+[WARNING ] Checking encryption on device: /dev/sda1
+[WARNING ] IGNORING boot or similar partition in /dev/sda1
+[WARNING ] Checking encryption on device: /dev/sdc1
+[WARNING ] /dev/sdc1 IS NOT encrypted!!
+[WARNING ] IGNORING partition type gpt in /dev/nvme0n1
+[WARNING ] IGNORING partition type gpt in /dev/nvme0n2
+[WARNING ] IGNORING swap partition in /dev/mapper/ubuntu--vg-swap_1
+[WARNING ] Checking encryption on device: /dev/nvme0n1p2
+[WARNING ] /dev/nvme0n1p2 IS NOT encrypted!!
+[WARNING ] Checking encryption on device: /dev/nvme0n1p1
+[WARNING ] /dev/nvme0n1p1 is encrypted
+[WARNING ] IGNORING partition type gpt in /dev/sdb
+
+-------- LUKS ENCRYPTION RESULT --------
+ENCRYPTED DEVICES: [
+    "/dev/sda5",
+    "/dev/nvme0n1p1"
+]
+
+DEVICES NOT ENCRYPTED: [
+    "/dev/sdc1",
+    "/dev/nvme0n1p2"
+]
+
+SKIPPED: [
+    "/dev/nvme0n1",
+    "/dev/nvme0n2",
+    "/dev/mapper/ubuntu--vg-swap_1",
+    "/dev/sdb"
+]
+
+
+
+
+
+OLD MODULE:  FAILS TO REPORT ALL VOLUMES, ONLY root
+# salt eb-\* luks.get_mounted_volumes
+eb-enc-ub18:
+    |_
+      ----------
+      alt_device:
+          /dev/mapper/ubuntu--vg-root
+      device:
+          /dev/mapper/ubuntu--vg-root
+      fstype:
+          ext4
+      mount_point:
+          /
+      opts:
+          - rw
+          - relatime
+          - errors=remount-ro
+
+
+# Checking output with cryptsetup
+salt eb-\* luks_check.get_disks_encrypted
+encrypted devices:
+    - /dev/sda5
+    # cryptsetup isLuks /dev/sda5 -v
+    Command successful.
+
+    - /dev/nvme0n1p1
+    # cryptsetup isLuks /dev/nvme0n1p1 -v
+    Command successful.
+
+not encrypted devices:
+    - /dev/sdc1
+    cryptsetup isLuks /dev/sdc1 -v
+    Command failed with code -1 (wrong or missing parameters).
+
+    - /dev/nvme0n1p2
+    cryptsetup isLuks /dev/nvme0n1p2 -v
+    Command failed with code -1 (wrong or missing parameters).
+
+
+# Additional Test, checking with /dev/mapper/ volume and logical device names
+cryptsetup isLuks /dev/mapper/ubuntu--vg-root -v
+Command failed with code -1 (wrong or missing parameters).
+
+cryptsetup isLuks /dev/mapper/sda5_crypt -v
+Command failed with code -1 (wrong or missing parameters).
+
+
+# luks.get_info retrieves real device name
+# salt eb-\* luks.get_info /dev/mapper/ubuntu--vg-root
+eb-enc-ub18:
+    ----------
+    device:
+        /dev/sda5
+    device_label:
+        sda5
+    is_logical_device:
+        True
+    label:
+        sda5_crypt
+    logical_device:
+        /dev/mapper/sda5_crypt
+    volume:
+        /dev/mapper/ubuntu--vg-root
+    volume_label:
+        ubuntu--vg-root
+
+
+# So the actual device /dev/sda5 is used by /srv/salt/luks/init.sls
+
+
+Next steps:
+Make this work, convert device to real_device and set the encryption key in pillar
+{%    set real_device = luks_info.get('device').replace('/','_') -%}
+{%    set encryption_key = salt['pillar.get']("luks:"+real_device+":encryption_key") %}
+
+{%    if encryption_key %}
+
+test_luks_encryption_on_{{ mount_point['device'] }}:
+  luks.encrypted_with_key:   ---> Modify _states/luks.py
+    - name: {{ mount_point['device'] }}
+    - key: {{ encryption_key }}
+
+
+Doing chances to:
+  -1. /srv/salt/luks_init_test.sls  (github)
+  -2. /srv/salt/_states/luks.py  (using _modules/luks_new.py)
+  -3. /srv/salt/_modules/luks.py --> /srv/salt/_modules/luks_new.py
+
+
+Test State
+salt eb-\* state.sls luks_init_test
+eb-enc-ub18:
+----------
+          ID: show-/dev/sda5
+    Function: test.configurable_test_state
+        Name: Show info - /dev/sda5
+      Result: True
+     Comment: /dev/sda5
+     Started: 19:01:12.808087
+    Duration: 0.4 ms
+     Changes:
+----------
+          ID: show-/dev/nvme0n1p1
+    Function: test.configurable_test_state
+        Name: Show info - /dev/nvme0n1p1
+      Result: True
+     Comment: /dev/nvme0n1p1
+     Started: 19:01:12.808603
+    Duration: 0.257 ms
+     Changes:
+
+
+salt-call luks_new.check_key /dev/nvme0n1p1 ee2953ac-f696-478f-83bd-7ba71715ba68
+
+
+NOTE: dmsetup seemts to be useless for non lvm devices.
+~# dmsetup table --showkeys
+sda5_crypt: 0 29949952 crypt aes-xts-plain64 095bfcb7de7b5f9b3060f14b2fc745605cb2ef2da9b7e000e4661dc6b80dfe846751e03615d3dacf461407a1f57c1882555c268a9d6a5de738a10e3afe313fed 0 8:5 4096 1 allow_discards
+ubuntu--vg-swap_1: 0 1998848 linear 253:0 27879424
+ubuntu--vg-root: 0 27877376 linear 253:0 2048
+Observe the /dev/nvme0n1p1 is not listed (it's not lvm device)
+
+For instance, use crypsetup instead
+https://unix.stackexchange.com/questions/318382/detemine-which-luks-slot-a-passphrase-is-in
+
+cryptsetup luksOpen --test-passphrase --key-slot 0 /dev/sda5 && echo correct
+echo "123456789" | cryptsetup luksOpen --test-passphrase /dev/sda5 && echo "There is a key available with this passphrase."
+There is a key available with this passphrase.
+
+# echo "123456789" | cryptsetup luksOpen --test-passphrase --key-slot 1 /dev/sda5 && echo "There is a key available with this passphrase."
+root@adrian-VirtualBox:~#
+root@adrian-VirtualBox:~# echo "123456789" | cryptsetup luksOpen --test-passphrase --key-slot 0 /dev/sda5 && echo "There is a key available with this passphrase."
+There is a key available with this passphrase.
+root@adrian-VirtualBox:~# echo "123456789" | cryptsetup luksOpen --test-passphrase --key-slot 0 /dev/sda5
+root@adrian-VirtualBox:~# echo $?
+0
+root@adrian-VirtualBox:~# echo "123456789" | cryptsetup luksOpen --test-passphrase --key-slot 1 /dev/sda5
+root@adrian-VirtualBox:~# echo $?
+1
+
+echo "123456789" | cryptsetup luksOpen --test-passphrase --key-slot 0 /dev/nvme0n1p1 && echo "There is a key available with this passphrase."
+There is a key available with this passphrase.
+root@adrian-VirtualBox:~# echo "123456789" | cryptsetup luksOpen --test-passphrase --key-slot 0 /dev/nvme0n1p2 && echo "There is a key available with this passphrase."
+root@adrian-VirtualBox:~# echo $?
+1
