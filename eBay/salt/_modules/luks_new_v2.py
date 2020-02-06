@@ -174,6 +174,9 @@ def get_keys(volume):
         salt <minion_id> luks.get_keys /dev/sda5
         salt <minion_id> luks.get_keys /dev/mapper/something--vg-root
     """
+    log.info('--->>> 6. Running get_keys for volume: ' + volume)
+    volume = '/dev/sda5'
+    log.info('--->>> 6B TROUBLESHOOTING. Running get_keys for volume: ' + volume)
     luks_device = LuksDevice(volume)
 
     if not luks_device.on_encrypted():
@@ -345,6 +348,7 @@ class LuksDevice(object):
         /dev/mapper/... version is an LVM volume.
 
         """
+        log.info('--->>> LuksDevice init volume: ' + volume)
         self.volume = volume
         self.volume_label = self.volume.split('/')[-1]
 
@@ -361,7 +365,7 @@ class LuksDevice(object):
         # AM: removing functions get_physical_device, repplaced by volume (device from my module)
         #self.device = self.get_physical_device()
         self.device = volume
-
+        log.info('--->>> LuksDevice init device: ' + self.device)
         self.label = self.volume_label
 
         #if self.is_logical_device:
@@ -420,12 +424,14 @@ class LuksDevice(object):
         if tmp_cmd[-1] != '-':
             tmp_cmd += ' -'
 
+        log.info('---> 7.c add_luks_key tmp_cmd: '+ tmp_cmd)
+
         return self.cmd(cmd=tmp_cmd, **kwargs)
 
     def cmd(self, cmd, run_all=True, **kwargs):
 
         cmd_here = cmd.format(self=self, **kwargs)
-
+        log.info('--->>> running key_cmd: ' + str(cmd_here))
         if run_all:
             ret_value = __salt__['cmd.run_all'](cmd_here, python_shell=True)
         else:
@@ -541,7 +547,7 @@ class LuksDevice(object):
 
         """
         # cryptsetup luksChangeKey /dev/<device> -S 6 (</path/to/keyfile>)
-        _l('slots %s', slot, level='INFO')
+        _l('slots %s', slot, level='info')
         slot_status = self.get_enc_slots().get(str(slot))
 
         _l('slot %s status: ', slot_status)
@@ -631,7 +637,7 @@ class LuksDevice(object):
                 return slots
         return None
 
-  
+
     def get_crypt_label(self, device=None):
         #lsblk -o NAME,TYPE /dev/sda5 | awk '$2 == "crypt" {print $1}'
         cmd = 'lsblk -o NAME,TYPE ' + device + ' | awk \'$2 == "crypt" {print $1}\''
@@ -667,6 +673,7 @@ class LuksDevice(object):
 
         log.info('--->>> running cmd: ' + cmd)
         data = __salt__['cmd.run_all'](cmd, python_shell=True)
+        log.info('--->>> dmsetup ran')
 
         keys = {}
 
@@ -685,10 +692,15 @@ class LuksDevice(object):
 
         :returns: boolean
         """
+        log.info('--->>> 7. add_luks_key: keyfile : +' + str(keyfile))
 
-        cmd = ("cryptsetup luksAddKey {self.device} -S {slot} "
-               "--master-key-file {self.master_key_file_bin.name} -v")
+        # AM: modifed to hardcoded data to make it work
+        #cmd = ("cryptsetup luksAddKey {self.device} -S {slot} "
+        #       "--master-key-file {self.master_key_file_bin.name} -v")
+        cmd = ("echo c23456789 | cryptsetup luksAddKey " + '/dev/sda5' + " -S 7 "
+               "--master-key-file " + '/tmp/master-key' + " -v")
 
+        log.info('--->>> 7.b add_luks_key cmd: ' + cmd)
         return self.key_cmd(cmd, slot=slot, keyfile=keyfile)
 
     def kill_key_in_slot(self, slot, key):
