@@ -84,7 +84,7 @@ def check_key(volume, key=None, slot=None):
     log.info('--->>> 1. luks_new.check_key ')
     return luks_device.is_encrypted_with_key(key, slot)
 
-
+'''
 def change_luks_key(volume, key, slot='7'):
     """
     Change the LUKS key phrase in the slot
@@ -98,16 +98,13 @@ def change_luks_key(volume, key, slot='7'):
 
     .. code-block:: bash
 
-        salt <minion_id> luks.change_luks_key /dev/sda5 "some-secret-key"
-        salt <minion_id> luks.change_luks_key /dev/sda5 "some-secret-key" slot=7
-        salt <minion_id> luks.change_luks_key /dev/mapper/something--vg-root "some-secret"
     """
 
     luks_device = LuksDevice(volume)
     if not luks_device.on_encrypted():
         return None
     return luks_device.change_luks_key(key, slot)
-
+'''
 
 def get_info(volume=None):
     """
@@ -247,9 +244,6 @@ def gen_hdr_backup(volume, **kwargs):
 
     .. code-block:: bash
 
-        salt <minion_id> luks.change_luks_key /dev/sda5 "some-secret-key"
-        salt <minion_id> luks.change_luks_key /dev/sda5 "some-secret-key" slot=7
-        salt <minion_id> luks.change_luks_key /dev/mapper/something--vg-root "some-secret"
     """
     luks_device = LuksDevice(volume)
     if not luks_device.on_encrypted():
@@ -424,12 +418,12 @@ class LuksDevice(object):
         if tmp_cmd[-1] != '-':
             tmp_cmd += ' -'
 
-        log.info('---> 7.c add_luks_key tmp_cmd: '+ tmp_cmd)
+        log.info('---> 7.c add_luks_key-->key_cmd: tmp_cmd: '+ tmp_cmd)
 
         return self.cmd(cmd=tmp_cmd, **kwargs)
 
     # AM: troubleshooting add new key
-    def key_cmd(self, cmd, keyfile, **kwargs):
+    def key_cmd_new(self, cmd, keyfile, **kwargs):
 
         #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
 
@@ -437,8 +431,8 @@ class LuksDevice(object):
         #if tmp_cmd[-1] != '-':
         #    tmp_cmd += ' -'
 
-        tmp_cmd = 'echo "x1234789" | cryptsetup luksAddKey /dev/sda5 -S 7 --master-key-file /tmp/master-key -'
-        log.info('---> 7.c add_luks_key tmp_cmd: '+ tmp_cmd)
+        tmp_cmd = 'printf "XXXXXXXX8" | cryptsetup luksAddKey /dev/sda5 -S 7 --master-key-file /tmp/master-key -'
+        log.info('---> 7.Cnew   add_luks_key-->key_cmd_new: tmp_cmd: '+ tmp_cmd)
 
         return self.cmd(cmd=tmp_cmd, **kwargs)
 
@@ -543,7 +537,8 @@ class LuksDevice(object):
 
         # AM: logging
         log.info('--->>> 2. is_encrypted_with_key: cmd: %s, slot_arg: %s , keyfile: %s' % (cmd, slot_arg, str(keyfile)))
-        res = self.key_cmd(cmd, slot_arg=slot_arg, keyfile=keyfile)
+        #res = self.key_cmd(cmd, slot_arg=slot_arg, keyfile=keyfile)
+        res = self.key_cmd_new(cmd, slot_arg=slot_arg, keyfile=keyfile)
 
         if res['retcode'] != 0:
             _l('key incorrect, or problem setting key')
@@ -551,6 +546,7 @@ class LuksDevice(object):
 
         return True
 
+    '''
     def change_luks_key(self, key, slot='7'):
         """
         Change the LUKS key phrase in the slot
@@ -628,6 +624,9 @@ class LuksDevice(object):
                 'key': open(key.name, 'rb').read()
                 }
         return res_data
+
+    '''
+
 
     def get_open_slot(self, list_all=False):
         """
@@ -711,7 +710,7 @@ class LuksDevice(object):
         # AM: modifed to hardcoded data to make it work
         #cmd = ("cryptsetup luksAddKey {self.device} -S {slot} "
         #       "--master-key-file {self.master_key_file_bin.name} -v")
-        cmd = ("echo c23456789 | cryptsetup luksAddKey " + '/dev/sda5' + " -S 7 "
+        cmd = ("printf \"XXXXXXX8\" | cryptsetup luksAddKey " + '/dev/sda5' + " -S 7 "
                "--master-key-file " + '/tmp/master-key' + " -v")
 
         log.info('--->>> 7.b add_luks_key cmd: ' + cmd)
@@ -836,7 +835,7 @@ def _generate_new_key(key=None, destroy=False, return_keyfile=False):
 
     if return_keyfile:
         key_file = _self_dest_temp_file()
-        log.info('--->>> 4. _generate_new_key: key: %s, key_file: %s' % (key, key_file)
+        log.info('--->>> 4. _generate_new_key: key: %s, key_file: %s' % (key, key_file))
         log.info('--->>> 4b. _generate_new_key: key type: ' + str(type(key)))
         key_file.write(key.encode('utf-8'))
         key_file.flush()
