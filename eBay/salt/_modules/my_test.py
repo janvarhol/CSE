@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 log = logging.getLogger(__name__)
 
-def get_keys(self, device=None):
+def get_keys(device=None):
     """
     Returns the decryption keys for this
 
