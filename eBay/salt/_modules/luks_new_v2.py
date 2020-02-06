@@ -631,40 +631,7 @@ class LuksDevice(object):
                 return slots
         return None
 
-    def get_keys_v2(self, device=None):
-        """
-        Returns the decryption keys for this
-
-        :volume: the volume to get the key for. This will be something like
-                 /dev/sda5 or /dev/mapper/sda5_crypt if using LVM
-        :returns: dictionary of slot => key
-        """
-        _l('keyfile_cmd: label %s', self.label)
-
-        if self.label and device is not None:
-            # format(volume=self.label) #, "]
-            # AM: add function to replace label
-            # lsblk -o NAME,TYPE,MOUNTPOINT /dev/sda5 | grep crypt --> parse string
-            #cmd = 'dmsetup table {self.label} --showkeys'
-
-            # AM: CHANGE THE sda5_crypt by label variable
-            cmd = 'dmsetup table sda5_crypt --showkeys'
-        else:
-            cmd = "dmsetup table --showkeys "
-
-        data = self.cmd(cmd)
-
-        keys = {}
-
-        if data['retcode'] == 0:
-            # iterate over keys
-            for key in data['stdout'].split('\n'):
-                if key:
-                    cols = key.strip().split()
-                    key, slot = [cols[x] for x in [4, 5]]
-                    keys[slot] = key
-        return keys
-
+  
     def get_crypt_label(self, device=None):
         #lsblk -o NAME,TYPE /dev/sda5 | awk '$2 == "crypt" {print $1}'
         cmd = 'lsblk -o NAME,TYPE ' + device + ' | awk \'$2 == "crypt" {print $1}\''
@@ -684,7 +651,7 @@ class LuksDevice(object):
                  /dev/sda5 or /dev/mapper/sda5_crypt if using LVM
         :returns: dictionary of slot => key
         """
-
+        log.info('--->>> Running get_keys_v2 on device: ' + str(device))
         if device is not None:
             # AM: get crypt label
             device_crypt_label = get_crypt_label(device)
