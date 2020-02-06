@@ -84,7 +84,7 @@ def check_key(volume, key=None, slot=None):
     log.info('--->>> 1. luks_new.check_key ')
     return luks_device.is_encrypted_with_key(key, slot)
 
-'''
+
 def change_luks_key(volume, key, slot='7'):
     """
     Change the LUKS key phrase in the slot
@@ -104,7 +104,7 @@ def change_luks_key(volume, key, slot='7'):
     if not luks_device.on_encrypted():
         return None
     return luks_device.change_luks_key(key, slot)
-'''
+
 
 def get_info(volume=None):
     """
@@ -546,7 +546,8 @@ class LuksDevice(object):
 
         return True
 
-    '''
+
+
     def change_luks_key(self, key, slot='7'):
         """
         Change the LUKS key phrase in the slot
@@ -625,7 +626,7 @@ class LuksDevice(object):
                 }
         return res_data
 
-    '''
+
 
 
     def get_open_slot(self, list_all=False):
