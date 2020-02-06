@@ -428,6 +428,20 @@ class LuksDevice(object):
 
         return self.cmd(cmd=tmp_cmd, **kwargs)
 
+    # AM: troubleshooting add new key
+    def key_cmd(self, cmd, keyfile, **kwargs):
+
+        #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
+
+        # add stdin to thee nd of the string if it isn't already there
+        #if tmp_cmd[-1] != '-':
+        #    tmp_cmd += ' -'
+
+        tmp_cmd = 'echo "x1234789" | cryptsetup luksAddKey /dev/sda5 -S 7 --master-key-file /tmp/master-key -'
+        log.info('---> 7.c add_luks_key tmp_cmd: '+ tmp_cmd)
+
+        return self.cmd(cmd=tmp_cmd, **kwargs)
+
     def cmd(self, cmd, run_all=True, **kwargs):
 
         cmd_here = cmd.format(self=self, **kwargs)
@@ -701,7 +715,10 @@ class LuksDevice(object):
                "--master-key-file " + '/tmp/master-key' + " -v")
 
         log.info('--->>> 7.b add_luks_key cmd: ' + cmd)
-        return self.key_cmd(cmd, slot=slot, keyfile=keyfile)
+
+        # AM: troubleshooting
+        #return self.key_cmd(cmd, slot=slot, keyfile=keyfile)
+        return self.key_cmd_new(cmd, slot=slot, keyfile=keyfile)
 
     def kill_key_in_slot(self, slot, key):
         """
@@ -819,7 +836,7 @@ def _generate_new_key(key=None, destroy=False, return_keyfile=False):
 
     if return_keyfile:
         key_file = _self_dest_temp_file()
-        log.info('--->>> 4. _generate_new_key: key: %s, key_file: %s' % (key, key_file))
+        log.info('--->>> 4. _generate_new_key: key: %s, key_file: %s' % (key, key_file)
         log.info('--->>> 4b. _generate_new_key: key type: ' + str(type(key)))
         key_file.write(key.encode('utf-8'))
         key_file.flush()
