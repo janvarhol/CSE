@@ -56,10 +56,15 @@ def encrypted_with_key(name, key=None, slot=7, **kwargs):
     # /srv/salt/_modules/luks_new.py
     log.info('--->>> STATE MOD 1. check key: ' + str(name) + ' ' + str(key))
     encrypted_with_key = __salt__['luks_new.check_key'](name, key)
-    log.info('--->>> STATE MOD 1. encrypted_with_key: ' + str(encrypted_with_key))
+    log.info('--->>> STATE MOD 1. check key: encrypted_with_key: ' + str(encrypted_with_key))
 
     # NOTE: WORKING FINE UP TO THIS LINE
+    # luks_new.check_key is adding the key
+    if not encrypted_with_key:
+        ret['result'] = False
+        ret['comment'] = 'Key not applied'
 
+    '''
     if not encrypted_with_key:
         # Encrypt the volume with the key
         key_change_results = __salt__['luks_new.change_luks_key'](name,
@@ -77,5 +82,5 @@ def encrypted_with_key(name, key=None, slot=7, **kwargs):
     else:
         ret['comment'] += '\n' + ALREADY_WITH_KEY.format(name, '')
         ret['result'] = True
-
+    '''
     return ret
