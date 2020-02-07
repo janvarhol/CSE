@@ -78,10 +78,11 @@ def check_key(volume, key=None, slot=None):
         salt <minion_id> luks.check_key /dev/mapper/something--vg-root "some-secret"
 
     """
+    # AM: logging
+    device = volume
+    log.info('--->>> 1. luks_new.check_key, device: ' + device)
     luks_device = LuksDevice(volume)
 
-    # AM: logging
-    log.info('--->>> 1. luks_new.check_key ')
     return luks_device.is_encrypted_with_key(key, slot)
 
 
@@ -342,7 +343,7 @@ class LuksDevice(object):
         /dev/mapper/... version is an LVM volume.
 
         """
-        log.info('--->>> LuksDevice init volume: ' + volume)
+        log.info('--->>> LuksDevice initialization, volume: ' + volume)
         self.volume = volume
         self.volume_label = self.volume.split('/')[-1]
 
@@ -359,7 +360,7 @@ class LuksDevice(object):
         # AM: removing functions get_physical_device, repplaced by volume (device from my module)
         #self.device = self.get_physical_device()
         self.device = volume
-        log.info('--->>> LuksDevice init device: ' + self.device)
+        log.info('--->>> LuksDevice initialization, device: ' + self.device)
         self.label = self.volume_label
 
         #if self.is_logical_device:
@@ -375,6 +376,9 @@ class LuksDevice(object):
 
         self.header_backup_file = _self_dest_temp_file(destroy=False,
                                                        prefix='luks_hdr_bak')
+
+        log.info('--->>> LuksDevice initialization, header_backup_file: ' + str(self.header_backup_file))
+        log.info('--->>> LuksDevice initialization, starting header backup')
         self.backup_luks_header()
 
     def backup_luks_header(self):
@@ -423,14 +427,14 @@ class LuksDevice(object):
         return self.cmd(cmd=tmp_cmd, **kwargs)
 
     # AM: troubleshooting add new key
-    def key_cmd_new(self, cmd, keyfile, **kwargs):
+    def key_cmd_new(self, cmd, keyfile, device=None, **kwargs):
 
         #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
 
         # add stdin to thee nd of the string if it isn't already there
         #if tmp_cmd[-1] != '-':
         #    tmp_cmd += ' -'
-
+        log.info('---> 7.Cnew   add_luks_key-->key_cmd_new: device: '+ str(device))
         tmp_cmd = 'printf "XXXXXXXX8" | cryptsetup luksAddKey /dev/sda5 -S 7 --master-key-file /tmp/master-key -'
         log.info('---> 7.Cnew   add_luks_key-->key_cmd_new: tmp_cmd: '+ tmp_cmd)
 
@@ -506,7 +510,7 @@ class LuksDevice(object):
             return False
         return self.volume_label in lv_info
 
-    def is_encrypted_with_key(self, key=None, slot=None, keyfile=None):
+    def is_encrypted_with_key(self, key=None, slot=None, keyfile=None, device=None):
         """
         Is `device` encrypted with `key` in slot `slot`
 
@@ -516,7 +520,8 @@ class LuksDevice(object):
 
         """
         # AM: logging
-        log.info('--->>> 1. is_encrypted_with_key: key: %s slot: %s keyfile: %s' % (key, slot, str(keyfile)))
+        log.info('--->>> 2a. is_encrypted_with_key: key: %s slot: %s keyfile: %s device: %s' % (key, slot, str(keyfile), str(self.device)))
+        # AM: keyfile is wrong here, keyfile is showing device
 
         if not any((key, keyfile)):
             raise Exception('key or keyfile must be provided')
@@ -536,7 +541,8 @@ class LuksDevice(object):
             keyfile = _generate_new_key(key, return_keyfile=True)
 
         # AM: logging
-        log.info('--->>> 2. is_encrypted_with_key: cmd: %s, slot_arg: %s , keyfile: %s' % (cmd, slot_arg, str(keyfile)))
+        log.info('--->>> 2b. is_encrypted_with_key: cmd: %s, slot_arg: %s , keyfile: %s' % (cmd, slot_arg, str(keyfile)))
+        # AM: using new function key_cmd_new
         #res = self.key_cmd(cmd, slot_arg=slot_arg, keyfile=keyfile)
         res = self.key_cmd_new(cmd, slot_arg=slot_arg, keyfile=keyfile)
 
@@ -545,7 +551,6 @@ class LuksDevice(object):
             return False
 
         return True
-
 
 
     def change_luks_key(self, key, slot='7'):
