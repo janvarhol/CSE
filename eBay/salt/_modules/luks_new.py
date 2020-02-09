@@ -78,11 +78,22 @@ def check_key(volume, key=None, slot=None):
         salt <minion_id> luks.check_key /dev/mapper/something--vg-root "some-secret"
 
     """
-    luks_device = LuksDevice(volume)
-
     # AM: logging
-    log.info('--->>> 1. luks_new.check_key ')
+    device = volume
+    log.info('--->>> 1. luks_new.check_key, device: ' + device)
+    log.info('--->>> 1b.luks_new.check_key, initiating LuksDevice')
+    #luks_device = LuksDevice(volume)
+    luks_device = LuksDevice(device)
+
+    log.info('--->>> 1c. check_key calling is_encrypted_with_key: key: %s, slot: %s' % (key, slot))
+
+    # AM: original return
     return luks_device.is_encrypted_with_key(key, slot)
+    #is_encrypted_with_key = {}
+    #is_encrypted_with_key_status = luks_device.is_encrypted_with_key(key, slot)
+
+    #log.info('--->>> 1d. returning is_encrypted_with_key_status: %s' % (is_encrypted_with_key_status))
+    #return is_encrypted_with_key_status
 
 
 def change_luks_key(volume, key, slot='7'):
@@ -98,9 +109,6 @@ def change_luks_key(volume, key, slot='7'):
 
     .. code-block:: bash
 
-        salt <minion_id> luks.change_luks_key /dev/sda5 "some-secret-key"
-        salt <minion_id> luks.change_luks_key /dev/sda5 "some-secret-key" slot=7
-        salt <minion_id> luks.change_luks_key /dev/mapper/something--vg-root "some-secret"
     """
 
     luks_device = LuksDevice(volume)
@@ -148,7 +156,7 @@ def get_all_debugging():
         dev = _info[volume['device']]['device']
         _info[volume['device']].update({
                     'open_slots': luks_device.get_open_slot(list_all=True),
-                    'keys': luks_device.get_keys(),
+                    'keys': luks_device.get_keys_v2(),
                     'on_encrypted': luks_device.on_encrypted(),
                     'is_logical_device': luks_device.is_logical_device,
                     'get_enc_slots': luks_device.get_enc_slots(),
@@ -174,11 +182,14 @@ def get_keys(volume):
         salt <minion_id> luks.get_keys /dev/sda5
         salt <minion_id> luks.get_keys /dev/mapper/something--vg-root
     """
+    log.info('--->>> 6. Running get_keys for volume: ' + volume)
+    volume = '/dev/sda5'
+    log.info('--->>> 6B TROUBLESHOOTING. Running get_keys for volume: ' + volume)
     luks_device = LuksDevice(volume)
 
     if not luks_device.on_encrypted():
         return None
-    return luks_device.get_keys()
+    return luks_device.get_keys_v2()
 
 
 def open_slot(volume, **kwargs):
@@ -244,9 +255,6 @@ def gen_hdr_backup(volume, **kwargs):
 
     .. code-block:: bash
 
-        salt <minion_id> luks.change_luks_key /dev/sda5 "some-secret-key"
-        salt <minion_id> luks.change_luks_key /dev/sda5 "some-secret-key" slot=7
-        salt <minion_id> luks.change_luks_key /dev/mapper/something--vg-root "some-secret"
     """
     luks_device = LuksDevice(volume)
     if not luks_device.on_encrypted():
@@ -345,6 +353,7 @@ class LuksDevice(object):
         /dev/mapper/... version is an LVM volume.
 
         """
+        log.info('--->>> LuksDevice initialization, volume: ' + volume)
         self.volume = volume
         self.volume_label = self.volume.split('/')[-1]
 
@@ -361,7 +370,7 @@ class LuksDevice(object):
         # AM: removing functions get_physical_device, repplaced by volume (device from my module)
         #self.device = self.get_physical_device()
         self.device = volume
-
+        log.info('--->>> LuksDevice initialization, device: ' + self.device)
         self.label = self.volume_label
 
         #if self.is_logical_device:
@@ -377,6 +386,9 @@ class LuksDevice(object):
 
         self.header_backup_file = _self_dest_temp_file(destroy=False,
                                                        prefix='luks_hdr_bak')
+
+        log.info('--->>> LuksDevice initialization, header_backup_file: ' + str(self.header_backup_file))
+        log.info('--->>> LuksDevice initialization, starting header backup')
         self.backup_luks_header()
 
     def backup_luks_header(self):
@@ -416,16 +428,33 @@ class LuksDevice(object):
 
         tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
 
-        # add stdin to thee nd of the string if it isn't already there
+        # add stdin to the end of the string if it isn't already there
         if tmp_cmd[-1] != '-':
             tmp_cmd += ' -'
+
+        log.info('---> 2d. key_cmd: tmp_cmd: '+ tmp_cmd)
+
+        return self.cmd(cmd=tmp_cmd, **kwargs)
+
+    # AM: troubleshooting add new key
+    def key_cmd_new(self, cmd, keyfile, slot, device, **kwargs):
+
+        #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
+        tmp_cmd = cmd
+
+        # add stdin to thee nd of the string if it isn't already there
+        #if tmp_cmd[-1] != '-':
+        #    tmp_cmd += ' -'
+        #log.info('---> key_cmd_new: device: '+ str(device))
+        #tmp_cmd = 'printf "XXXXXXXX8" | cryptsetup luksAddKey /dev/sda5 -S 7 --master-key-file /tmp/master-key -v -'
+        log.info('---> 4d. key_cmd_new: tmp_cmd: '+ tmp_cmd)
 
         return self.cmd(cmd=tmp_cmd, **kwargs)
 
     def cmd(self, cmd, run_all=True, **kwargs):
 
         cmd_here = cmd.format(self=self, **kwargs)
-
+        log.info('--->>> running key_cmd: ' + str(cmd_here))
         if run_all:
             ret_value = __salt__['cmd.run_all'](cmd_here, python_shell=True)
         else:
@@ -461,7 +490,7 @@ class LuksDevice(object):
         :returns: the path to the master keyfile in binary and text format
 
         """
-        key = self.get_keys().get('0')
+        key = self.get_keys_v2().get('0')
         if not key:
             return False
 
@@ -492,7 +521,7 @@ class LuksDevice(object):
             return False
         return self.volume_label in lv_info
 
-    def is_encrypted_with_key(self, key=None, slot=None, keyfile=None):
+    def is_encrypted_with_key(self, key=None, slot=None, keyfile=None, device=None):
         """
         Is `device` encrypted with `key` in slot `slot`
 
@@ -502,7 +531,8 @@ class LuksDevice(object):
 
         """
         # AM: logging
-        log.info('--->>> 1. is_encrypted_with_key: key: %s slot: %s keyfile: %s' % (key, slot, str(keyfile)))
+        log.info('--->>> 2a. is_encrypted_with_key: key: %s slot: %s keyfile: %s device: %s' % (key, slot, str(keyfile), str(self.device)))
+        # AM: keyfile is wrong here, keyfile is showing device
 
         if not any((key, keyfile)):
             raise Exception('key or keyfile must be provided')
@@ -514,22 +544,64 @@ class LuksDevice(object):
         slot_arg = ''
 
         if slot is not None:
+            log.info('--->>> using slot argument: ' + str(slot))
             slot_arg = '--key-slot {slot}'.format(slot)
+            log.info('--->>> using slot variable: ' + slot_arg)
+        # AM: hard coding slot 7
+        else:
+            slot = 7
+            slot_arg = '--key-slot 7'
+            log.info('--->>> hard coding slot 7: ' + slot_arg)
 
-        cmd = ('cryptsetup luksOpen --test-passphrase '
-               '{self.device} {slot_arg} -v')
+        # AM: checking key in all available slots, removing --key-slot argument
+        #cmd = ('cryptsetup luksOpen --test-passphrase {self.device} {slot_arg} -v')
+        cmd = ('cryptsetup luksOpen --test-passphrase {self.device} -v')
+
         if not keyfile:
+            log.info('--->>> 2b. not keyfile!! calling function _generate_new_key)')
             keyfile = _generate_new_key(key, return_keyfile=True)
 
         # AM: logging
-        log.info('--->>> 2. is_encrypted_with_key: cmd: %s, slot_arg: %s , keyfile: %s' % (cmd, slot_arg, str(keyfile)))
+        log.info('--->>> 2c. is_encrypted_with_key: cmd: %s, slot_arg: %s , keyfile: %s' % (cmd, slot_arg, str(keyfile)))
+        log.info('--->>> 2c. calling self.key_cmd')
+        # AM: using new function key_cmd_new
         res = self.key_cmd(cmd, slot_arg=slot_arg, keyfile=keyfile)
+        #res = self.key_cmd_new(cmd, slot_arg=slot_arg, keyfile=keyfile)
+        log.info('--->>> 2e. showing res: ' + str(res))
 
-        if res['retcode'] != 0:
-            _l('key incorrect, or problem setting key')
-            return False
 
-        return True
+        # AM: adding return dictionary, status + changes
+        #_status = {}
+
+        if res['retcode'] == 0:
+            log.info('--->>> 2f. encryption key exists: retcode: %s, stdout: %s, stderr: %s' % (res['retcode'], res['stdout'],res['stderr']))
+            log.info('--->>> 2f. ALL DONE, system is encrypted and key is  available')
+            #_status['status'] = True
+            #_status['changes'] = False
+            return True
+        else:
+            log.info('--->>> 2f. KEY IS NOT AVAILABLE: retcode: %s, stdout: %s, stderr: %s' % (res['retcode'], res['stdout'],res['stderr']))
+            log.info('--->>> 2f. KEY MUST BE ADDED')
+
+            # AM: add new key
+            # Using add_luks_key directly
+            # Would it be better to use change_luks_key ?
+            log.info('--->>> 2g. Running add_luks_key: %s slot %s, device: %s' % (str(keyfile), slot, self.device))
+            add_key_status = self.add_luks_key(keyfile, slot, self.device)
+            log.info('--->>> 2h. Return add_luks_key: add_key_status: %s' % (add_key_status))
+            #_l('key incorrect, or problem setting key')
+
+            # AM: checking return of add_luks_key
+            if add_key_status['retcode'] == 0:
+                log.info('--->>> 2i. add_luks_key SUCCESSFUL!! returning True, retcode: %s, stdout: %s, stderr: %s' % (add_key_status['retcode'], add_key_status['stdout'], add_key_status['stderr']))
+                return True
+            else:
+                log.info('--->>> 2i. add_luks_key FAILED!! returning False, retcode: %s, stdout: %s, stderr: %s' % (add_key_status['retcode'],add_key_status['stdout'], add_key_status['stderr']))
+                return False
+
+        #    return False
+        #return True
+
 
     def change_luks_key(self, key, slot='7'):
         """
@@ -541,7 +613,7 @@ class LuksDevice(object):
 
         """
         # cryptsetup luksChangeKey /dev/<device> -S 6 (</path/to/keyfile>)
-        _l('slots %s', slot, level='INFO')
+        _l('slots %s', slot, level='info')
         slot_status = self.get_enc_slots().get(str(slot))
 
         _l('slot %s status: ', slot_status)
@@ -609,6 +681,9 @@ class LuksDevice(object):
                 }
         return res_data
 
+
+
+
     def get_open_slot(self, list_all=False):
         """
         Get the first available encryption slot.
@@ -631,28 +706,43 @@ class LuksDevice(object):
                 return slots
         return None
 
-    def get_keys(self, device=None):
+
+    def get_crypt_label(self, device=None):
+        #lsblk -o NAME,TYPE /dev/sda5 | awk '$2 == "crypt" {print $1}'
+        cmd = 'lsblk -o NAME,TYPE ' + device + ' | awk \'$2 == "crypt" {print $1}\''
+        crypt_label = __salt__['cmd.run_all'](cmd, python_shell=True)
+
+        # Removing first two characters from  `-sda5_crypt
+        crypt_label = crypt_label['stdout'][2:]
+        log.info('--->>> get_crypt_label: ' + crypt_label)
+
+        return crypt_label
+
+
+    def get_keys_v2(self, device=None):
         """
         Returns the decryption keys for this
-
         :volume: the volume to get the key for. This will be something like
                  /dev/sda5 or /dev/mapper/sda5_crypt if using LVM
         :returns: dictionary of slot => key
         """
-        _l('keyfile_cmd: label %s', self.label)
-
-        if self.label and device is not None:
+        log.info('--->>> Running get_keys_v2 on device: ' + str(device))
+        if device is not None:
+            # AM: get crypt label
+            device_crypt_label = get_crypt_label(device)
             # format(volume=self.label) #, "]
             # AM: add function to replace label
             # lsblk -o NAME,TYPE,MOUNTPOINT /dev/sda5 | grep crypt --> parse string
-            #cmd = 'dmsetup table {self.label} --showkeys'
+            # it has to be like:
 
-            # AM: CHANGE THE sda5_crypt by label variable
-            cmd = 'dmsetup table sda5_crypt --showkeys'
+            #cmd = 'dmsetup table {self.label} --showkeys'
+            cmd = 'dmsetup table ' + device_crypt_label + ' --showkeys'
         else:
             cmd = "dmsetup table --showkeys "
 
-        data = self.cmd(cmd)
+        log.info('--->>> running cmd: ' + cmd)
+        data = __salt__['cmd.run_all'](cmd, python_shell=True)
+        log.info('--->>> dmsetup ran')
 
         keys = {}
 
@@ -665,17 +755,30 @@ class LuksDevice(object):
                     keys[slot] = key
         return keys
 
-    def add_luks_key(self, keyfile, slot=7):  # not implemented
+    def add_luks_key(self, keyfile, slot=7, device=None):  # not implemented
         """
         Add a key to the device in a slot
 
         :returns: boolean
         """
+        log.info('--->>> 4. add_luks_key: keyfile: %s, slot: %s , device: %s' % (str(keyfile), slot, device))
 
-        cmd = ("cryptsetup luksAddKey {self.device} -S {slot} "
-               "--master-key-file {self.master_key_file_bin.name} -v")
+        # AM: modifed to hardcoded data to make it work
+        #cmd = ("cryptsetup luksAddKey {self.device} -S {slot} "
+        #       "--master-key-file {self.master_key_file_bin.name} -v")
+        # command should end with '-' to read from stdin, it's added in key_cmd/key_cmd_new functions
 
-        return self.key_cmd(cmd, slot=slot, keyfile=keyfile)
+        # AM: testing, works OK!
+        #cmd = ("printf \"XXXXXXX8\" | cryptsetup luksAddKey " + '/dev/sda5' + " -S 7 "
+        #       "--master-key-file " + '/tmp/master-key' + " -v")
+
+        cmd = ("cat %s | cryptsetup luksAddKey %s -S %s --master-key-file %s -v -" % (keyfile.name, device, slot, '/tmp/master-key'))
+        log.info('--->>> 4.b add_luks_key cmd: ' + cmd)
+
+        # AM: troubleshooting
+        #return self.key_cmd(cmd, slot=slot, keyfile=keyfile)
+        log.info('--->>> 4.c calling key_cmd_new')
+        return self.key_cmd_new(cmd, keyfile, slot, device)
 
     def kill_key_in_slot(self, slot, key):
         """
@@ -783,25 +886,25 @@ def _generate_new_key(key=None, destroy=False, return_keyfile=False):
     """
     if not key:
         # AM: logging
-        log.info('--->>> 3. _generate_new_key: key: ' + key)
+        log.info('--->>> 3a. _generate_new_key: key: ' + key)
         key = generate_key()
-        log.info('--->>> 3.b. _generate_new_key: key: ' + key)
-        log.info('--->>> 3.c. _generate_new_key: key type: ' + str(type(key)))
+        log.info('--->>> 3a. _generate_new_key: key: ' + key)
+        log.info('--->>> 3a. _generate_new_key: key type: ' + str(type(key)))
 
     # AM: forcing key to be string
     key = str(key)
 
     if return_keyfile:
         key_file = _self_dest_temp_file()
-        log.info('--->>> 4. _generate_new_key: key: %s, key_file: %s' % (key, key_file))
-        log.info('--->>> 4b. _generate_new_key: key type: ' + str(type(key)))
+        log.info('--->>> 3b. _generate_new_key: key: %s, key_file: %s' % (key, key_file))
+        log.info('--->>> 3b. _generate_new_key: key type: ' + str(type(key)))
         key_file.write(key.encode('utf-8'))
         key_file.flush()
 
-        log.info('--->>> 5. _generate_new_key: ' +str(key_file))
+        log.info('--->>> 3c.1. _generate_new_key: returning keyfile ' +str(key_file))
         return key_file
     else:
-        log.info('--->>> 5b._generate_new_key: ' +str(key))
+        log.info('--->>> 3c.2. _generate_new_key: returning key' +str(key))
         return key
 
 
