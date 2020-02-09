@@ -440,13 +440,14 @@ class LuksDevice(object):
     def key_cmd_new(self, cmd, keyfile, slot, device, **kwargs):
 
         #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
+        tmp_cmd = cmd
 
         # add stdin to thee nd of the string if it isn't already there
         #if tmp_cmd[-1] != '-':
         #    tmp_cmd += ' -'
-        log.info('---> key_cmd_new: device: '+ str(device))
-        tmp_cmd = 'printf "XXXXXXXX8" | cryptsetup luksAddKey /dev/sda5 -S 7 --master-key-file /tmp/master-key -v -'
-        log.info('---> key_cmd_new: tmp_cmd: '+ tmp_cmd)
+        #log.info('---> key_cmd_new: device: '+ str(device))
+        #tmp_cmd = 'printf "XXXXXXXX8" | cryptsetup luksAddKey /dev/sda5 -S 7 --master-key-file /tmp/master-key -v -'
+        log.info('---> 4d. key_cmd_new: tmp_cmd: '+ tmp_cmd)
 
         return self.cmd(cmd=tmp_cmd, **kwargs)
 
@@ -760,24 +761,24 @@ class LuksDevice(object):
 
         :returns: boolean
         """
-        log.info('--->>> 5. add_luks_key: keyfile: %s, slot: %s , device: %s' % (str(keyfile), slot, device))
+        log.info('--->>> 4. add_luks_key: keyfile: %s, slot: %s , device: %s' % (str(keyfile), slot, device))
 
         # AM: modifed to hardcoded data to make it work
         #cmd = ("cryptsetup luksAddKey {self.device} -S {slot} "
         #       "--master-key-file {self.master_key_file_bin.name} -v")
         # command should end with '-' to read from stdin, it's added in key_cmd/key_cmd_new functions
-        cmd = ("printf \"XXXXXXX8\" | cryptsetup luksAddKey " + '/dev/sda5' + " -S 7 "
-               "--master-key-file " + '/tmp/master-key' + " -v")
 
-        log.info('--->>> 5.b add_luks_key cmd: ' + cmd)
+        # AM: testing, works OK!
+        #cmd = ("printf \"XXXXXXX8\" | cryptsetup luksAddKey " + '/dev/sda5' + " -S 7 "
+        #       "--master-key-file " + '/tmp/master-key' + " -v")
+
+        cmd = ("cat %s | cryptsetup luksAddKey %s -S %s --master-key-file %s -v -" % (keyfile.name, device, slot, '/tmp/master-key'))
+        log.info('--->>> 4.b add_luks_key cmd: ' + cmd)
 
         # AM: troubleshooting
         #return self.key_cmd(cmd, slot=slot, keyfile=keyfile)
-        #try:
-        log.info('--->>> 5.c calling key_cmd_new')
+        log.info('--->>> 4.c calling key_cmd_new')
         return self.key_cmd_new(cmd, keyfile, slot, device)
-        #else:
-        #return self.key_cmd_new(cmd, slot=8, keyfile=keyfile)
 
     def kill_key_in_slot(self, slot, key):
         """
@@ -885,25 +886,25 @@ def _generate_new_key(key=None, destroy=False, return_keyfile=False):
     """
     if not key:
         # AM: logging
-        log.info('--->>> 3. _generate_new_key: key: ' + key)
+        log.info('--->>> 3a. _generate_new_key: key: ' + key)
         key = generate_key()
-        log.info('--->>> 3.b. _generate_new_key: key: ' + key)
-        log.info('--->>> 3.c. _generate_new_key: key type: ' + str(type(key)))
+        log.info('--->>> 3a. _generate_new_key: key: ' + key)
+        log.info('--->>> 3a. _generate_new_key: key type: ' + str(type(key)))
 
     # AM: forcing key to be string
     key = str(key)
 
     if return_keyfile:
         key_file = _self_dest_temp_file()
-        log.info('--->>> 4. _generate_new_key: key: %s, key_file: %s' % (key, key_file))
-        log.info('--->>> 4b. _generate_new_key: key type: ' + str(type(key)))
+        log.info('--->>> 3b. _generate_new_key: key: %s, key_file: %s' % (key, key_file))
+        log.info('--->>> 3b. _generate_new_key: key type: ' + str(type(key)))
         key_file.write(key.encode('utf-8'))
         key_file.flush()
 
-        log.info('--->>> 4c. _generate_new_key: returning keyfile ' +str(key_file))
+        log.info('--->>> 3c.1. _generate_new_key: returning keyfile ' +str(key_file))
         return key_file
     else:
-        log.info('--->>> 5c._generate_new_key: returning key' +str(key))
+        log.info('--->>> 3c.2. _generate_new_key: returning key' +str(key))
         return key
 
 
