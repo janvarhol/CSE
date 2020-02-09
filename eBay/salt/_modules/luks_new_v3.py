@@ -86,7 +86,14 @@ def check_key(volume, key=None, slot=None):
     luks_device = LuksDevice(device)
 
     log.info('--->>> 1c. check_key calling is_encrypted_with_key: key: %s, slot: %s' % (key, slot))
+
+    # AM: original return
     return luks_device.is_encrypted_with_key(key, slot)
+    #is_encrypted_with_key = {}
+    #is_encrypted_with_key_status = luks_device.is_encrypted_with_key(key, slot)
+
+    #log.info('--->>> 1d. returning is_encrypted_with_key_status: %s' % (is_encrypted_with_key_status))
+    #return is_encrypted_with_key_status
 
 
 def change_luks_key(volume, key, slot='7'):
@@ -438,7 +445,7 @@ class LuksDevice(object):
         #if tmp_cmd[-1] != '-':
         #    tmp_cmd += ' -'
         log.info('---> key_cmd_new: device: '+ str(device))
-        tmp_cmd = 'printf "XXXXXXXX8" | cryptsetup luksAddKey /dev/sda5 -S 7 --master-key-file /tmp/master-key -'
+        tmp_cmd = 'printf "XXXXXXXX8" | cryptsetup luksAddKey /dev/sda5 -S 7 --master-key-file /tmp/master-key -v -'
         log.info('---> key_cmd_new: tmp_cmd: '+ tmp_cmd)
 
         return self.cmd(cmd=tmp_cmd, **kwargs)
@@ -562,9 +569,14 @@ class LuksDevice(object):
         log.info('--->>> 2e. showing res: ' + str(res))
 
 
+        # AM: adding return dictionary, status + changes
+        #_status = {}
+
         if res['retcode'] == 0:
             log.info('--->>> 2f. encryption key exists: retcode: %s, stdout: %s, stderr: %s' % (res['retcode'], res['stdout'],res['stderr']))
             log.info('--->>> 2f. ALL DONE, system is encrypted and key is  available')
+            #_status['status'] = True
+            #_status['changes'] = False
             return True
         else:
             log.info('--->>> 2f. KEY IS NOT AVAILABLE: retcode: %s, stdout: %s, stderr: %s' % (res['retcode'], res['stdout'],res['stderr']))
@@ -577,11 +589,17 @@ class LuksDevice(object):
             add_key_status = self.add_luks_key(keyfile, slot, self.device)
             log.info('--->>> 2h. Return add_luks_key: add_key_status: %s' % (add_key_status))
             #_l('key incorrect, or problem setting key')
-            return False
+
+            # AM: checking return of add_luks_key
+            if add_key_status['retcode'] == 0:
+                log.info('--->>> 2i. add_luks_key SUCCESSFUL!! returning True, retcode: %s, stdout: %s, stderr: %s' % (add_key_status['retcode'], add_key_status['stdout'], add_key_status['stderr']))
+                return True
+            else:
+                log.info('--->>> 2i. add_luks_key FAILED!! returning False, retcode: %s, stdout: %s, stderr: %s' % (add_key_status['retcode'],add_key_status['stdout'], add_key_status['stderr']))
+                return False
 
         #    return False
-
-        return True
+        #return True
 
 
     def change_luks_key(self, key, slot='7'):
@@ -747,6 +765,7 @@ class LuksDevice(object):
         # AM: modifed to hardcoded data to make it work
         #cmd = ("cryptsetup luksAddKey {self.device} -S {slot} "
         #       "--master-key-file {self.master_key_file_bin.name} -v")
+        # command should end with '-' to read from stdin, it's added in key_cmd/key_cmd_new functions
         cmd = ("printf \"XXXXXXX8\" | cryptsetup luksAddKey " + '/dev/sda5' + " -S 7 "
                "--master-key-file " + '/tmp/master-key' + " -v")
 
