@@ -18,11 +18,14 @@ show-{{ encrypted_device }}:
     - comment: |
         {{ encrypted_device }}  -- {{ real_device }}
 
-# WORK THIS PART
+{% endfor %} # Just to work with only one device
+
 {# {%    set encryption_key = salt['pillar.get']("luks:"+real_device+":encryption_key") %} #}
-{% set encryption_key = 'ee2953ac-f696-478f-83bd-7ba71715ba68' %}
+# hard coding encryption key
+{% set encryption_key = 'XXXXXXXX8' %}
 {# {%    if encryption_key %} #}
 
+{% set encrypted_device = '/dev/sda5' %}
 test_luks_encryption_on_{{ encrypted_device }}:
   luks.encrypted_with_key:
     - name: {{ encrypted_device }}
@@ -31,6 +34,6 @@ test_luks_encryption_on_{{ encrypted_device }}:
 #     - update_modules
 
 
-{% endfor %}
+{# {% endfor %} #}
 {% endif%}
 {% endif %}
