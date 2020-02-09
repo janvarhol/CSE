@@ -63,6 +63,9 @@ def encrypted_with_key(name, key=None, slot=7, **kwargs):
     if not encrypted_with_key:
         ret['result'] = False
         ret['comment'] = 'Key not applied'
+        return ret
+    else:
+        ret['comment'] = 'Encrypted with key'
 
     '''
     if not encrypted_with_key:
