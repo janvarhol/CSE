@@ -88,12 +88,14 @@ def check_key(volume, key=None, slot=None):
     log.info('--->>> 1c. check_key calling is_encrypted_with_key: key: %s, slot: %s' % (key, slot))
 
     # AM: original return
-    return luks_device.is_encrypted_with_key(key, slot)
-    #is_encrypted_with_key = {}
-    #is_encrypted_with_key_status = luks_device.is_encrypted_with_key(key, slot)
+    #return luks_device.is_encrypted_with_key(key, slot)
+    #_is_encrypted_with_key = {}
+    _is_encrypted_with_key = luks_device.is_encrypted_with_key(key, slot)
 
-    #log.info('--->>> 1d. returning is_encrypted_with_key_status: %s' % (is_encrypted_with_key_status))
-    #return is_encrypted_with_key_status
+    log.info('--->>> 1d. CHECK KEY COMPLETED: returning is_encrypted_with_key_status: ' + str(_is_encrypted_with_key))
+
+    return _is_encrypted_with_key
+    #return True
 
 
 def change_luks_key(volume, key, slot='7'):
@@ -534,12 +536,17 @@ class LuksDevice(object):
         log.info('--->>> 2a. is_encrypted_with_key: key: %s slot: %s keyfile: %s device: %s' % (key, slot, str(keyfile), str(self.device)))
         # AM: keyfile is wrong here, keyfile is showing device
 
+        # AM: adding return dictionary, status + changes
+        _status = {}
+
+
         if not any((key, keyfile)):
             raise Exception('key or keyfile must be provided')
 
         if slot is not None and str(slot) in self.get_open_slot(list_all=True):
             _l('no key in slot %s', slot)
             return False
+            #return False, _status
 
         slot_arg = ''
 
@@ -570,14 +577,12 @@ class LuksDevice(object):
         log.info('--->>> 2e. showing res: ' + str(res))
 
 
-        # AM: adding return dictionary, status + changes
-        #_status = {}
-
         if res['retcode'] == 0:
             log.info('--->>> 2f. encryption key exists: retcode: %s, stdout: %s, stderr: %s' % (res['retcode'], res['stdout'],res['stderr']))
             log.info('--->>> 2f. ALL DONE, system is encrypted and key is  available')
-            #_status['status'] = True
-            #_status['changes'] = False
+            _status['status'] = True
+            _status['changes'] = False
+            #return True, _status
             return True
         else:
             log.info('--->>> 2f. KEY IS NOT AVAILABLE: retcode: %s, stdout: %s, stderr: %s' % (res['retcode'], res['stdout'],res['stderr']))
@@ -594,9 +599,15 @@ class LuksDevice(object):
             # AM: checking return of add_luks_key
             if add_key_status['retcode'] == 0:
                 log.info('--->>> 2i. add_luks_key SUCCESSFUL!! returning True, retcode: %s, stdout: %s, stderr: %s' % (add_key_status['retcode'], add_key_status['stdout'], add_key_status['stderr']))
+                _status['status'] = True
+                _status['changes'] = True
+                #return True, _status
                 return True
             else:
                 log.info('--->>> 2i. add_luks_key FAILED!! returning False, retcode: %s, stdout: %s, stderr: %s' % (add_key_status['retcode'],add_key_status['stdout'], add_key_status['stderr']))
+                _status['status'] = False
+                _status['changes'] = False
+                #return False, _status
                 return False
 
         #    return False
