@@ -355,10 +355,13 @@ class LuksDevice(object):
         /dev/mapper/... version is an LVM volume.
 
         """
-        log.info('--->>> LuksDevice initialization, volume: ' + volume)
+        
         self.volume = volume
         self.volume_label = self.volume.split('/')[-1]
+        log.info('--->>> LuksDevice initialization, volume: ' + volume)
+        log.info('--->>> LuksDevice initialization, volume_label: ' + str(self.volume_label))
 
+        
         # AM: I think parents is not needed
         #self.parents = self.device_parents()
 
@@ -372,8 +375,10 @@ class LuksDevice(object):
         # AM: removing functions get_physical_device, repplaced by volume (device from my module)
         #self.device = self.get_physical_device()
         self.device = volume
-        log.info('--->>> LuksDevice initialization, device: ' + self.device)
+    
         self.label = self.volume_label
+        log.info('--->>> LuksDevice initialization, device: ' + self.device)
+        log.info('--->>> LuksDevice initialization, label: ' + str(self.label))
 
         #if self.is_logical_device:
         #    self.get_logical_info()
@@ -383,7 +388,7 @@ class LuksDevice(object):
         #       self.label = self.logical_device.split('/')[-1]
 
         self.device_label = self.device.split('/')[-1]
-
+        log.info('--->>> LuksDevice initialization, device_label: ' + str(self.device_label))
         self._master_key_file_bin = None
 
         self.header_backup_file = _self_dest_temp_file(destroy=False,
@@ -392,6 +397,23 @@ class LuksDevice(object):
         log.info('--->>> LuksDevice initialization, header_backup_file: ' + str(self.header_backup_file))
         log.info('--->>> LuksDevice initialization, starting header backup')
         self.backup_luks_header()
+
+        log.info('--->>> LuksDevice initialization, generating master keyfile ADRIAN')
+        self.generate_master_keyfile_adrian()
+        log.info('---> generate_master_keyfile_adrian: FINISHED')
+
+        
+    def generate_master_keyfile_adrian(self):
+        crypt_label = self.get_crypt_label(self.device)
+        log.info('---> generate_master_keyfile_adrian: crypt_label: ' + str(crypt_label))
+
+        cmd = 'dmsetup table --showkeys sda5_crypt | awk \'{{ print $5 }}\' | xxd -r -p > /tmp/master-key'
+        log.info('---> generate_master_keyfile_adrian:' + cmd)
+        #ret = __salt__['cmd.run_all'](cmd, python_shell=True)   
+        ret = self.cmd(cmd)
+        log.info('---> generate_master_keyfile_adrian: ret: ' + str(ret))   
+
+
 
     def backup_luks_header(self):
         """
@@ -424,7 +446,7 @@ class LuksDevice(object):
                "--header-backup-file {self.header_backup_file.name}")
         _l('recovering luks header from backup %s',
            self.header_backup_file.name)
-        return self.cmd(cmd)
+        return self.cmd(cmd, **kwargs)
 
     def key_cmd(self, cmd, keyfile, **kwargs):
 
@@ -456,7 +478,7 @@ class LuksDevice(object):
     def cmd(self, cmd, run_all=True, **kwargs):
 
         cmd_here = cmd.format(self=self, **kwargs)
-        log.info('--->>> running key_cmd: ' + str(cmd_here))
+        log.info('--->>> running cmd: ' + str(cmd_here))
         if run_all:
             ret_value = __salt__['cmd.run_all'](cmd_here, python_shell=True)
         else:
@@ -477,12 +499,15 @@ class LuksDevice(object):
 
     @property
     def master_key_file_bin(self):
-        if not self.on_encrypted():
-            return None
+        # AM: this checking is not needed
+        #if not self.on_encrypted():
+        #    return None
 
         if not self._master_key_file_bin:
+            log.info('---> MASTER KEY GENERATION: master_key_file_bin function, calling generate_master_keyfile')
             self.generate_master_keyfile()
 
+        log.info('---> MASTER KEY GENERATION: master_key_file_bin function, returning _master_key_file_bin')
         return self._master_key_file_bin
 
     def generate_master_keyfile(self):
@@ -493,7 +518,9 @@ class LuksDevice(object):
 
         """
         key = self.get_keys_v2().get('0')
+        log.info('---> MASTER KEY GENERATION: generate_master_keyfile: key:'+ str(key))
         if not key:
+            log.info('---> MASTER KEY GENERATION: generate_master_keyfile: not key, returning False')
             return False
 
         binary_string = binascii.unhexlify(key)
@@ -501,6 +528,7 @@ class LuksDevice(object):
         self._master_key_file_bin = _self_dest_temp_file()
         self._master_key_file_bin.write(binary_string)
         self._master_key_file_bin.flush()
+        log.info('---> MASTER KEY GENERATION: generate_master_keyfile FINISHED')
 
     def on_encrypted(self):
 
