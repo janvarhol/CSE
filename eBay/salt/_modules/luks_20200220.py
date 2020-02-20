@@ -399,9 +399,11 @@ class LuksDevice(object):
     def generate_master_keyfile_adrian(self):
         # HARD CODED VALUES FOR TESTING 
         #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
-        cmd = 'dmsetup table --showkeys sda5_crypt | awk \'{ print $5 }\' | xxd -r -p > /tmp/master-key'
+        cmd = 'dmsetup table --showkeys sda5_crypt | awk \'{{ print $5 }}\' | xxd -r -p > /tmp/master-key'
         log.info('---> generate_master_keyfile_adrian:' + cmd)
-        self.cmd(cmd=cmd)        
+        ret = __salt__['cmd.run_all'](cmd, python_shell=True)   
+        log.info('---> generate_master_keyfile_adrian: ret: ' + str(ret))   
+
 
     def backup_luks_header(self):
         """
@@ -466,7 +468,7 @@ class LuksDevice(object):
     def cmd(self, cmd, run_all=True, **kwargs):
 
         cmd_here = cmd.format(self=self, **kwargs)
-        log.info('--->>> running key_cmd: ' + str(cmd_here))
+        log.info('--->>> running cmd: ' + str(cmd_here))
         if run_all:
             ret_value = __salt__['cmd.run_all'](cmd_here, python_shell=True)
         else:
