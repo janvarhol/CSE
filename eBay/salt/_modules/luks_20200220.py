@@ -400,17 +400,19 @@ class LuksDevice(object):
 
         log.info('--->>> LuksDevice initialization, generating master keyfile ADRIAN')
         self.generate_master_keyfile_adrian()
+        log.info('---> generate_master_keyfile_adrian: FINISHED')
 
+        
     def generate_master_keyfile_adrian(self):
         crypt_label = self.get_crypt_label(self.device)
-        log.info('---> generate_master_keyfile_adrian: crypt_label' + str(crypt_label))
-        # HARD CODED VALUES FOR TESTING
-        #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
+        log.info('---> generate_master_keyfile_adrian: crypt_label: ' + str(crypt_label))
+
         cmd = 'dmsetup table --showkeys sda5_crypt | awk \'{{ print $5 }}\' | xxd -r -p > /tmp/master-key'
         log.info('---> generate_master_keyfile_adrian:' + cmd)
         #ret = __salt__['cmd.run_all'](cmd, python_shell=True)   
         ret = self.cmd(cmd)
         log.info('---> generate_master_keyfile_adrian: ret: ' + str(ret))   
+
 
 
     def backup_luks_header(self):
