@@ -402,7 +402,8 @@ class LuksDevice(object):
         self.generate_master_keyfile_adrian()
 
     def generate_master_keyfile_adrian(self):
-        #crypt_label = self.get_crypt_label(self, device=None):
+        crypt_label = self.get_crypt_label(self.device):
+        log.info('---> generate_master_keyfile_adrian: crypt_label' + str(crypt_label))
         # HARD CODED VALUES FOR TESTING
         #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
         cmd = 'dmsetup table --showkeys sda5_crypt | awk \'{{ print $5 }}\' | xxd -r -p > /tmp/master-key'
