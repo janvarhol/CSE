@@ -399,7 +399,7 @@ class LuksDevice(object):
     def generate_master_keyfile_adrian(self):
         # HARD CODED VALUES FOR TESTING 
         #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
-        cmd = 'dmsetup table --showkeys sda5_crypt | awk "{ print $5 }" | xxd -r -p > /tmp/master-key'
+        cmd = 'dmsetup table --showkeys sda5_crypt | awk \'{ print $5 }\' | xxd -r -p > /tmp/master-key'
         log.info('---> generate_master_keyfile_adrian:' + cmd)
         self.cmd(cmd=cmd)        
 
