@@ -355,10 +355,13 @@ class LuksDevice(object):
         /dev/mapper/... version is an LVM volume.
 
         """
-        log.info('--->>> LuksDevice initialization, volume: ' + volume)
+        
         self.volume = volume
         self.volume_label = self.volume.split('/')[-1]
+        log.info('--->>> LuksDevice initialization, volume: ' + volume)
+        log.info('--->>> LuksDevice initialization, volume_label: ' + str(volume_label))
 
+        
         # AM: I think parents is not needed
         #self.parents = self.device_parents()
 
@@ -372,8 +375,10 @@ class LuksDevice(object):
         # AM: removing functions get_physical_device, repplaced by volume (device from my module)
         #self.device = self.get_physical_device()
         self.device = volume
-        log.info('--->>> LuksDevice initialization, device: ' + self.device)
+    
         self.label = self.volume_label
+        log.info('--->>> LuksDevice initialization, device: ' + self.device)
+        log.info('--->>> LuksDevice initialization, label: ' + str(self.label))
 
         #if self.is_logical_device:
         #    self.get_logical_info()
@@ -383,7 +388,7 @@ class LuksDevice(object):
         #       self.label = self.logical_device.split('/')[-1]
 
         self.device_label = self.device.split('/')[-1]
-
+        log.info('--->>> LuksDevice initialization, device_label: ' + str(self.device_label))
         self._master_key_file_bin = None
 
         self.header_backup_file = _self_dest_temp_file(destroy=False,
@@ -397,7 +402,8 @@ class LuksDevice(object):
         self.generate_master_keyfile_adrian()
 
     def generate_master_keyfile_adrian(self):
-        # HARD CODED VALUES FOR TESTING 
+        #crypt_label = self.get_crypt_label(self, device=None):
+        # HARD CODED VALUES FOR TESTING
         #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
         cmd = 'dmsetup table --showkeys sda5_crypt | awk \'{{ print $5 }}\' | xxd -r -p > /tmp/master-key'
         log.info('---> generate_master_keyfile_adrian:' + cmd)
