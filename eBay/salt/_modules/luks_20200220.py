@@ -359,7 +359,7 @@ class LuksDevice(object):
         self.volume = volume
         self.volume_label = self.volume.split('/')[-1]
         log.info('--->>> LuksDevice initialization, volume: ' + volume)
-        log.info('--->>> LuksDevice initialization, volume_label: ' + str(volume_label))
+        log.info('--->>> LuksDevice initialization, volume_label: ' + str(self.volume_label))
 
         
         # AM: I think parents is not needed
