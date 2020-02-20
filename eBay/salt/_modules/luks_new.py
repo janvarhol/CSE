@@ -407,7 +407,7 @@ class LuksDevice(object):
         crypt_label = self.get_crypt_label(self.device)
         log.info('---> generate_master_keyfile_adrian: crypt_label: ' + str(crypt_label))
 
-        cmd = 'dmsetup table --showkeys sda5_crypt | awk \'{{ print $5 }}\' | xxd -r -p > /tmp/master-key'
+        cmd = 'dmsetup table --showkeys ' + crypt_label + ' | awk \'{{ print $5 }}\' | xxd -r -p > /tmp/master-key'
         log.info('---> generate_master_keyfile_adrian:' + cmd)
         #ret = __salt__['cmd.run_all'](cmd, python_shell=True)   
         ret = self.cmd(cmd)
