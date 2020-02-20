@@ -393,6 +393,16 @@ class LuksDevice(object):
         log.info('--->>> LuksDevice initialization, starting header backup')
         self.backup_luks_header()
 
+        log.info('--->>> LuksDevice initialization, generating master keyfile ADRIAN')
+        self.generate_master_keyfile_adrian()
+
+    def generate_master_keyfile_adrian(self):
+        # HARD CODED VALUES FOR TESTING 
+        #tmp_cmd = 'cat {} | {}'.format(keyfile.name, cmd).strip()
+        cmd = 'dmsetup table --showkeys sda5_crypt | awk "{ print $5 }" | xxd -r -p > /tmp/master-key'
+        log.info('---> generate_master_keyfile_adrian:' + cmd)
+        self.cmd(cmd=cmd)        
+
     def backup_luks_header(self):
         """
         Backup the luks header so it can be restored when something fails
@@ -424,7 +434,7 @@ class LuksDevice(object):
                "--header-backup-file {self.header_backup_file.name}")
         _l('recovering luks header from backup %s',
            self.header_backup_file.name)
-        return self.cmd(cmd)
+        return self.cmd(cmd, **kwargs)
 
     def key_cmd(self, cmd, keyfile, **kwargs):
 
