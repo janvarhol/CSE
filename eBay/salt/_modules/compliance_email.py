@@ -67,7 +67,7 @@ def send_email(payload):
 
     if notify:
         log.info("--->> SENDING EMAIL to: " + payload['email'])
-        __salt__['smtp.send_msg'](payload['email'], payload['email_subject'], username='AKIA3N7P2RQTAOD7GX6A', password='BKW1OVxK3M0J/2VjJHeq15xtsMUXk7cJbQ9q6kaIXENZ', sender='amalaguti78@gmail.com', server='email-smtp.us-east-1.amazonaws.com', payload=payload)
+        __salt__['smtp.send_msg'](payload['email'], payload['email_subject'], username='_', password='_', sender='_', server='email-smtp.us-east-1.amazonaws.com', payload=payload)
         return True
     else:
         log.info("--->> NOT SENDING EMAIL")
