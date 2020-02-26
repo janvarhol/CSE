@@ -616,6 +616,11 @@ class LuksDevice(object):
             log.info('--->>> 2f. KEY IS NOT AVAILABLE: retcode: %s, stdout: %s, stderr: %s' % (res['retcode'], res['stdout'],res['stderr']))
             log.info('--->>> 2f. KEY MUST BE ADDED')
 
+            # WARN USER TO DELETE KEY
+            log.info('--->>> 2f-2. WARNING USER TO DELETE KEY IN SLOT 7')
+            __salt__['event.send']('luks/clean_slot')
+            
+            
             # AM: add new key
             # Using add_luks_key directly
             # Would it be better to use change_luks_key ?
