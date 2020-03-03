@@ -2,5 +2,5 @@
 
 include:
   - .show_version
-  #- .get_installer
+  - .get_installer
   #- .install
