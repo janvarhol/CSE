@@ -8,6 +8,7 @@ Formula to install update Salt Minion to python3
     See the full `Salt Formulas installation and usage instructions
     <http://docs.saltstack.com/topics/development/conventions/formulas.html>`_.
 
+
 Available states
 ================
 
@@ -20,6 +21,8 @@ Available states
 ``updatesalt``
 ---------
 Default state will install Salt Minion for Python3
+
+
 
 ``Sample output``
 ---------
@@ -59,3 +62,20 @@ yl-minion1:
                   None
               stderr:
               stdout:
+              
+              
+Events
+================
+Few seconds after the return event, minion start event should be received
+salt/job/20200303203826585713/ret/yl-minion1
+...
+
+salt/auth { ... }
+salt/minion/yl-minion1/start	{
+    "_stamp": "2020-03-03T20:38:52.723534",
+    "cmd": "_minion_event",
+    "data": "Minion yl-minion1 started at Tue Mar  3 20:38:52 2020",
+    "id": "yl-minion1",
+    "pretag": null,
+    "tag": "salt/minion/yl-minion1/start"
+}
