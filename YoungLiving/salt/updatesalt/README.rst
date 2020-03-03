@@ -14,7 +14,7 @@ Available states
 - updatesalt
 - updatesalt.show_version
 - updatesalt.get_installer
-_ updatesalt.install
+- updatesalt.install
 
 
 ``updatesalt``
