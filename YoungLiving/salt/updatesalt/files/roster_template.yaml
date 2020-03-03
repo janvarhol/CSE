@@ -1,0 +1,7 @@
+# START roster block for {{ minion }}
+{{ minion }}:
+  host: {{ minion_ip }}
+  sudo: True
+  user: user
+  priv: /root/.ssh/id_rsa
+# END roster block for {{ minion }}
