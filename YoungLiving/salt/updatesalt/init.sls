@@ -3,4 +3,4 @@
 include:
   - .show_version
   - .get_installer
-  #- .install
+  - .install
