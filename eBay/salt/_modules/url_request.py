@@ -148,7 +148,8 @@ def request_post():
         
 def get_minion_data(minion_id=''):
     # GET DATA
-    url_get = 'http://172.31.26.239:8080/minion_data?minion_id=%s' % minion_id
+    log.info("url_request get minjion_id: " + minion_id)
+    url_get = 'http://172.31.26.239:8080/minion_data?minion_id=' + minion_id
     log.info("url_request get string: " + url_get)
     
     try:
