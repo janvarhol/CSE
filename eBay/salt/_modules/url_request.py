@@ -148,10 +148,12 @@ def request_post():
         
 def get_minion_data(minion_id=''):
     # GET DATA
-    url_get = 'http://172.31.26.239:8080/minion_data?minion_id=0000001'
+    url_get = 'http://172.31.26.239:8080/minion_data?minion_id=%s' % minion_id
+    log.info("url_request get string: " + url_get)
+    
     try:
         res = requests.get(url_get, verify=False)
-        log.info("url_post call status code: " + str(res.status_code))
+        log.info("url_request call status code: " + str(res.status_code))
 
         # REQUEST note:
         # if response: will return True for anything between 200 to 400, False otherwise
