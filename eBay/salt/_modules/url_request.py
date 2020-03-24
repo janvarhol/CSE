@@ -147,6 +147,8 @@ def request_post():
 
         
 def get_minion_data():
+    # GET DATA
+    url_get = 'http://172.31.26.239:8080/minion_data?minion_id=0000001'
     try:
         res = requests.get(url_get, verify=False)
         log.info("url_post call status code: " + str(res.status_code))
