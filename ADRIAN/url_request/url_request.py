@@ -49,10 +49,11 @@ def get_minion_data():
         if res.status_code == 200:
             log.info('url_request module: 200 query OK')
             #print("JSON response: " + json.dumps(res.json(), indent=4))
-            
+
             # Some checking before returning data
-            # Check data is dictionary and expected key 'origin' in data
-            if type(res.json()) is dict and 'origin' in res.json():
+            # Check data is dictionary and required key 'minion_id' in dictionary
+            if type(res.json()) is dict and 'minion_id' in res.json():
+                log.info('url_request module: response dictionary looks correct')
                 return res.json()
             else:
                 return {}
