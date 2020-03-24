@@ -146,7 +146,7 @@ def request_post():
 
 
         
-def get_minion_data():
+def get_minion_data(minion_id=''):
     # GET DATA
     url_get = 'http://172.31.26.239:8080/minion_data?minion_id=0000001'
     try:
