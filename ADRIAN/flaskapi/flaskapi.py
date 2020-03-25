@@ -5,7 +5,7 @@ test = [{"id": 1, "name": "SaltStack"}, {"id": 2, "name": "CSE"}]
 services  = { "provider": "SaltStack",
                 "Service": {
                     "CSE": "enabled",
-                    "contact": "adrian"}
+                    "year": "2020" }
             }
 
 minion_data = [ { "minion_id": "minion1",
