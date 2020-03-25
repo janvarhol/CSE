@@ -8,13 +8,13 @@ services  = { "provider": "SaltStack",
                     "contact": "adrian"}
             }
 
-minion_data = [ { "minion_id": "0000001",
+minion_data = [ { "minion_id": "minion1",
                   "info": {
                     "model": "X",
                     "brand": "Y",
                     "year": 2018 }
                 },
-                { "minion_id": "0000002",
+                { "minion_id": "minion2",
                   "info": {
                     "model": "A",
                     "brand": "Y",
