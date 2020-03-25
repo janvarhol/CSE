@@ -36,7 +36,7 @@ def get_services():
 # Endpoint to report minion_data
 # Expects argument minion_id
 # Example:
-#   curl -X GET http://172.31.26.239:8080/minion_data?minion_i1d=0000001
+#   curl -X GET http://172.31.26.239:8080/minion_data?minion_id=minion1
 @api.route('/minion_data', methods=['GET'])
 def get_minion_data():
   api.logger.info('/minion_data GET call arg minion_id: %s',  request.args.get('minion_id', ''))
