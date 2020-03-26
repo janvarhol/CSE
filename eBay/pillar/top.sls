@@ -1,3 +1,3 @@
 base:
-  'noone':
+  'ebay':
     - basic
