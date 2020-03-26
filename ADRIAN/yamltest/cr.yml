@@ -1,0 +1,12 @@
+Charlesriver:
+  - FIRST_TASK:
+    - STOP_MiddleTier_RCOLNX141361:
+      - NAME: RCOLNX141361
+      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.stop-crdmtier-RCOLNX141361-orch
+      - REBOOT_WAIT_FLAG: FALSE
+      - REBOOT_REQ_FLAG: FALSE
+    - RCOLNX141361_OS_PATCH:
+      - NAME: RCOLNX141361
+      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.rhel-patch-orch
+      - REBOOT_WAIT_FLAG: FALSE
+      - REBOOT_REQ_FLAG: TRUE
