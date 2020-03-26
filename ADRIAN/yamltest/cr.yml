@@ -1,106 +1,23 @@
 Charlesriver:
-  - FIRST_TASK:
+  FIRST_TASK:
     - STOP_MiddleTier_RCOLNX141361:
-      - NAME: RCOLNX141361
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.stop-crdmtier-RCOLNX141361-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
+        NAME: RCOLNX141361
+        FILE_PATH: CharlesRiver.CharlesRiver-Dev.stop-crdmtier-RCOLNX141361-orch
+        REBOOT_WAIT_FLAG: FALSE
+        REBOOT_REQ_FLAG: FALSE
     - RCOLNX141361_OS_PATCH:
-      - NAME: RCOLNX141361
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.rhel-patch-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: TRUE
-  - SECOND_TASK:
+        NAME: RCOLNX141361
+        FILE_PATH: CharlesRiver.CharlesRiver-Dev.rhel-patch-orch
+        REBOOT_WAIT_FLAG: FALSE
+        REBOOT_REQ_FLAG: TRUE
+  SECOND_TASK:
     - STOP_MiddleTier_RCOLNX141362:
-      - NAME: RCOLNX141362
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.stop-crdmtier-RCOLNX141361-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
+        NAME: RCOLNX141362
+        FILE_PATH: CharlesRiver.CharlesRiver-Dev.stop-crdmtier-RCOLNX141361-orch
+        REBOOT_WAIT_FLAG: FALSE
+        REBOOT_REQ_FLAG: FALSE
     - RCOLNX141362_OS_PATCH:
-      - NAME: RCOLNX141362
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.rhel-patch-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: TRUE 
-  - THIRD_TASK:
-    - STOP_MiddleTier_RCOLNX110797:
-      - NAME: RCOLNX110797
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.stop-crdmtier-RCOLNX110797-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-    - RCOLNX110797_OS_PATCH:
-      - NAME: RCOLNX110797
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.rhel-patch-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: TRUE
-  - FOURTH_TASK:
-    - STOP_MiddleTier_RCOLNX110798:
-      - NAME: RCOLNX110798
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.stop-crdmtier-RCOLNX110798-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-    - RCOLNX110798_OS_PATCH:
-      - NAME: RCOLNX110798
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.rhel-patch-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: TRUE 
- 
-  
-  - FIFTH_TASK:
-    - STOP_MiddleTier_RCOLNX110800:
-      - NAME: RCOLNX110800
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.stop-crdmtier-RCOLNX110800-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-    - RCOLNX110800_OS_PATCH:
-      - NAME: RCOLNX110800
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.rhel-patch-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: TRUE
-  - SIXTH_TASK:
-    - START_MiddleTier_RCOLNX141361:
-      - NAME: RCOLNX141361
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.start-crdmtier-RCOLNX141361-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-  - SEVENTH_TASK:
-    - START_MiddleTier_RCOLNX141362:
-      - NAME: RCOLNX141362
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.start-crdmtier-RCOLNX141362-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-  - EIGTH_TASK:
-    - START_MiddleTier_RCOLNX110797:
-      - NAME: RCOLNX110797
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.start-crdmtier-RCOLNX110797-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-  - NINTH_TASK:
-    - START_MiddleTier_RCOLNX110798:
-      - NAME: RCOLNX110798
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.start-crdmtier-RCOLNX110798-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-  - TENTH_TASK:
-    - START_MiddleTier_RCOLNX110800:
-      - NAME: RCOLNX110800
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.start-crdmtier-RCOLNX110800-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-  - ELEVENTH_TASK:
-    - START_ADAPTER_RCOLNX141361:
-      - NAME: RCOLNX141361
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.start-crdadapter-RCOLNX141361-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-  - TWELVETH_TASK:
-    - START_ADAPTER_RCOLNX141362:
-      - NAME: RCOLNX141362
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.start-crdadapter-RCOLNX141362-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
-  - THIRTEENTH_TASK:
-    - START_ADAPTER_RCOLNX110800:
-      - NAME: RCOLNX110800
-      - FILE_PATH: CharlesRiver.CharlesRiver-Dev.start-crdadapter-RCOLNX110800-orch
-      - REBOOT_WAIT_FLAG: FALSE
-      - REBOOT_REQ_FLAG: FALSE
+        NAME: RCOLNX141362
+        FILE_PATH: CharlesRiver.CharlesRiver-Dev.rhel-patch-orch
+        REBOOT_WAIT_FLAG: FALSE
+        REBOOT_REQ_FLAG: TRUE
