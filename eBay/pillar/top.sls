@@ -3,5 +3,5 @@ base:
     - basic
   '*_master':
     - lamp
-  'something:
+  'something':
     - lamp
