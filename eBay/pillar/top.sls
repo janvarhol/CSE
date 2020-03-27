@@ -1,5 +1,5 @@
 base:
   'ebay':
     - basic
-  '*_master':
-    - lamp
+  #'*_master':
+  #  - lamp
