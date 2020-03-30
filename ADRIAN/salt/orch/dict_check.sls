@@ -1,8 +1,9 @@
-{% set stale_minions = {} %}
+# cat dict_check.sls
+{% set stale_minions = {"ebay_id": "12345"} %}
 
 
 {# {% if stale_minions is not mapping or 'minion_id' not in stale_minions %} #}
-{% if stale_minions | string | length == 0 %}
+{% if stale_minions == '' or stale_minions | string == '{}' %}
 fail1:
   test.configurable_test_state:
     - name: fail1
@@ -10,18 +11,12 @@ fail1:
     - result: False
     - comment: |
         stale_minions is empty
+        {{ stale_minions }}
         {{ stale_minions | string | length }}
     - failhard: True
-  
-fail2:
-  test.configurable_test_state:
-    - name: fail1
-    - changes: False
-    - result: False
-    - comment: |
-        test
 
-{% elif 'minion_id' not in stale_minions %}
+
+{% elif stale_minions is mapping and 'minion_id' not in stale_minions %}
 fail2:
   test.configurable_test_state:
     - name: fail2
