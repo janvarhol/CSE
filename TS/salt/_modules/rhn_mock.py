@@ -13,6 +13,7 @@ def hammer_info(minion_id=None):
     if minion_id is not None:
 
         # Execute hammer command with Salt dunder
+        log.info("RHN MOCK: hammer_info: checking rhn registration info for %s" % minion_id)
         rhn_info = __salt__['cmd.run_all']('/srv/salt/RHN_Satellite_Hammer/hammer.sh ' + minion_id)
 
         # Check for return code
