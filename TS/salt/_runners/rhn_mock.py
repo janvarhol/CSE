@@ -22,6 +22,9 @@ def hammer_info(minion_id=None):
         if ret[satellite_server] == True:
             return True
         else:
+            # Set the salt.runner state 'success' to False
+            # This impact on orchestration and requisites like require
+            __context__['retcode'] = 1
             return False
     else:
         return False
