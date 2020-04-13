@@ -18,7 +18,6 @@ def hammer_info(minion_id=None):
     if minion_id is not None:
         ret = __salt__['salt.execute'](satellite_server, 'rhn_mock.hammer_info', arg=[minion_id])
         log.info("RHN MOCK: RUNNER hammer_info: %s" % ret)
-        return True
 
         if ret[satellite_server] == True:
             return True

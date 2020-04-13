@@ -32,9 +32,9 @@ def hammer_info(minion_id=None):
             # TODO: Verify the output when minion is not registered / not exist
             # EXAMPLE!!!!
             if 'Registered To' in rhn_info_tweaked['Subscription Information'].keys():
-                if rhn_info_tweaked['Subscription Information']['Registered To'] is not False and rhn_info_tweaked['Subscription Information']['Registered To'] != "":
+                if rhn_info_tweaked['Subscription Information']['Registered To'] is not False \
+                        and rhn_info_tweaked['Subscription Information']['Registered To'] != "":
                     return True
-
 
             return False
     else:
