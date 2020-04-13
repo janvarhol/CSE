@@ -12,15 +12,15 @@ check-pillar-minion-is-present:
 {% do salt.log.info('RHN MOCK: ORCHESTRATION: rhn_mock runner return check: %s' % rhn_mock_runner) %}
 
 {% if rhn_mock_runner == True %}
-minion_registered_true:
+minion_registered:
   test.succeed_without_changes
 {% else %}
-minion_registered_false:
+minion_registered:
   test.fail_without_changes
 {% endif %}
 
 
-# MOCK EXAMPLE, minion registragion if runner return is False
+# MOCK EXAMPLE, minion registration if runner return is False
 register_minion:
   test.configurable_test_state:
     - name: Registering {{ minion }} on RHN
@@ -28,4 +28,4 @@ register_minion:
     - changes: False
     - result: True
     - onfail:
-      - test: minion_registered_false
+      - test: minion_registered
