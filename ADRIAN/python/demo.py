@@ -7,6 +7,9 @@ def add_contact(name):
 def get_contact(name):
     return contact['person'][name]
 
+def get_persons():
+    return contact['person']
+
 def maintenance_check():
     return True
 
