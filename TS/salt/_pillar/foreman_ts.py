@@ -29,7 +29,7 @@ Set the following Salt config to setup Foreman as external pillar source:
   ext_pillar:
     - foreman_ts:
         key: foreman # Nest results within this key
-        only: ['hostgroup_name', 'parameters'] # Add only these keys to pillar
+        only: ['subscription_facet_attributes'] # Add only these keys to pillar
 
   foreman.url: https://example.com/foreman_api
   foreman.user: username # default is admin
