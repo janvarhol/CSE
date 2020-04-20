@@ -100,6 +100,8 @@ def __virtual__():
 
 
 def ext_pillar(minion_id, pillar, key=None, only=()):  # pylint: disable=W0613
+
+
     """
     Read pillar data from Foreman via its API.
     """
