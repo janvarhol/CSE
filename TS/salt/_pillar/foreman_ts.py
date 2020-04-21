@@ -98,10 +98,26 @@ def __virtual__():
         return False
     return __virtualname__
 
+def satellite_get(id, url):
+    resp = {}
+    try:
+        log.info("EXT PILLAR FOREMAN: Querying Foreman for %s" % (id))
+        resp = requests.get(url + id)
+        resp.raise_for_status()
+    except HTTPError as http_err:
+        connected = False
+        log.error("EXT PILLAR FOREMAN: HTTP error occurred: %s" % http_err)
+    except Exception as err:
+        connected = False
+        log.error("EXT PILLAR FOREMAN: EXCEPTION occurred: %s" % err)
+    except:
+        connected = False
+        log.error("EXT PILLAR FOREMAN: Unable to connect to foreman!!")
+
+    return resp
+
 
 def ext_pillar(minion_id, pillar, key=None, only=()):  # pylint: disable=W0613
-
-
     """
     Read pillar data from Foreman via its API.
     """
@@ -120,31 +136,26 @@ def ext_pillar(minion_id, pillar, key=None, only=()):  # pylint: disable=W0613
     minion_fqdn = __grains__['fqdn']
     result = None
     url = 'http://172.31.26.239:8080/minion_data?minion_id='
-    key_options = [{'minion_id': minion_id}, {'minion_FQDN': minion_fqdn}]
-    connected = True
 
-    # GET by minion_id or minion fqdn
-    for key_option in key_options:
-        for k in key_option.keys():
-            try:
-                log.info("EXT PILLAR FOREMAN: Querying Foreman at %s using %s as key for %s" % (url, k, key_option[k]))
-                resp = requests.get(url + key_option[k])
 
-                resp.raise_for_status()
-            except HTTPError as http_err:
-                connected = False
-                log.error("EXT PILLAR FOREMAN: HTTP error occurred: %s" % http_err)
-            except Exception as err:
-                connected = False
-                log.error("EXT PILLAR FOREMAN: EXCEPTION occurred: %s" % err)
-            except:
-                connected = False
-                log.error("EXT PILLAR FOREMAN: Unable to connect to foreman!!")
+    # GET by minion_fqdn or minion id
+    # by minion_fqdn first
+    log.info("EXT PILLAR FOREMAN: Querying Foreman - FQDN - at %s using %s as key for %s" % (url, minion_fqdn, minion_id))
+    resp = satellite_get(minion_fqdn, url)
+    # NOTE: #In my web service, when no record is found,
+    # it returns an empty dict {}
+    # but the HTTP response is valid, status code 200
+    # 172.31.0.4 - - [21/Apr/2020 16:26:44] "GET /minion_data?minion_id=tsystems HTTP/1.1" 200 -
+    if resp.status_code == 200 and resp.json() != {}:
+        result = resp.json()
+    else:
+        # try by minion id
+        resp = satellite_get(minion_id, url)
+        log.info("EXT PILLAR FOREMAN: Querying Foreman - MINION_ID - at %s using %s as key for %s" % (url, minion_id, minion_id))
+        if resp.status_code == 200 and resp.json() != {}:
+            result = resp.json()
 
-        if connected:
-            if resp.status_code == 200 and resp.json() != {}:
-                result = resp.json()
-                break
+    log.info("EXT PILLAR FOREMAN: Querying Foreman response: %s" % (result))
 
 
     # Filter in selected keys
