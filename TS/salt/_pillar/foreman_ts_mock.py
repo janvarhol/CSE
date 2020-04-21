@@ -195,48 +195,6 @@ def ext_pillar(minion_id, pillar, key=None, only=()):  # pylint: disable=W0613
     # ADRIAN CODE TESTING BLOCK END
 
 
-    '''
-    try:
-        # Foreman API version 1 is currently not supported
-        if api != 2:
-            log.error(
-                "Foreman API v2 is supported only, please specify"
-                "version 2 in your Salt master config"
-            )
-            raise Exception
-
-        headers = {"accept": "version=" + six.text_type(api) + ",application/json"}
-
-        if verify and cafile is not None:
-            verify = cafile
-
-        resp = requests.get(
-            url + "/hosts/" + minion_id,
-            auth=(user, password),
-            headers=headers,
-            verify=verify,
-            cert=(certfile, keyfile),
-        )
-        result = resp.json()
-
-        log.debug("Raw response of the Foreman request is %s", result)
-
-        if lookup_parameters:
-            parameters = dict()
-            for param in result["all_parameters"]:
-                parameters.update({param["name"]: param["value"]})
-
-            result["parameters"] = parameters
-
-        if only:
-            result = dict((k, result[k]) for k in only if k in result)
-
-    except Exception:  # pylint: disable=broad-except
-        log.exception("Could not fetch host data via Foreman API:")
-        return {}
-
-    '''
-
     if key:
         result = {key: result}
 

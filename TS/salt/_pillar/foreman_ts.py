@@ -30,6 +30,8 @@ Set the following Salt config to setup Foreman as external pillar source:
     - foreman_ts:
         key: foreman # Nest results within this key
         only: ['subscription_facet_attributes'] # Add only these keys to pillar
+        # IMPORTANT: Up to a maximum of 3 items in a key. Ex: 'A:B:C'
+        # only: ['subscription_facet_attributes:activation_keys', 'subscription_facet_attributes:installed_products:product']
 
   foreman.url: https://example.com/foreman_api
   foreman.user: username # default is admin
@@ -60,6 +62,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from salt.ext import six
+import salt.utils.dictupdate
+import json
 
 try:
     import requests
@@ -105,10 +109,8 @@ def satellite_get(id, url):
         resp = requests.get(url + id)
         resp.raise_for_status()
     except HTTPError as http_err:
-        connected = False
         log.error("EXT PILLAR FOREMAN: HTTP error occurred: %s" % http_err)
     except Exception as err:
-        connected = False
         log.error("EXT PILLAR FOREMAN: EXCEPTION occurred: %s" % err)
     except:
         connected = False
@@ -133,10 +135,11 @@ def ext_pillar(minion_id, pillar, key=None, only=()):  # pylint: disable=W0613
 
 
     # ADRIAN CODE TESTING BLOCK
-    minion_fqdn = __grains__['fqdn']
-    result = None
     url = 'http://172.31.26.239:8080/minion_data?minion_id='
 
+
+    minion_fqdn = __grains__['fqdn']
+    result = None
 
     # GET by minion_fqdn or minion id
     # by minion_fqdn first
@@ -146,21 +149,57 @@ def ext_pillar(minion_id, pillar, key=None, only=()):  # pylint: disable=W0613
     # it returns an empty dict {}
     # but the HTTP response is valid, status code 200
     # 172.31.0.4 - - [21/Apr/2020 16:26:44] "GET /minion_data?minion_id=tsystems HTTP/1.1" 200 -
-    if resp.status_code == 200 and resp.json() != {}:
-        result = resp.json()
-    else:
-        # try by minion id
-        resp = satellite_get(minion_id, url)
-        log.info("EXT PILLAR FOREMAN: Querying Foreman - MINION_ID - at %s using %s as key for %s" % (url, minion_id, minion_id))
+    try:
         if resp.status_code == 200 and resp.json() != {}:
             result = resp.json()
+        else:
+            # try by minion id
+            resp = satellite_get(minion_id, url)
+            log.info("EXT PILLAR FOREMAN: Querying Foreman - MINION_ID - at %s using %s as key for %s" % (url, minion_id, minion_id))
+            if resp.status_code == 200 and resp.json() != {}:
+                result = resp.json()
 
-    log.info("EXT PILLAR FOREMAN: Querying Foreman response: %s" % (result))
+        log.info("EXT PILLAR FOREMAN: Querying Foreman response: %s" % (result))
+    except:
+        #result = None  # Already set
+        log.error("EXT PILLAR FOREMAN: Querying Foreman response: NO RESPONSE!!")
 
 
-    # Filter in selected keys
+
+
+    # Filter in selected keys  (SEE NEW FILTERING SECTION BELOW
+    #if only and result is not None:
+    #    result = dict((k, result[k]) for k in only if k in result)
+
+    # New filtering
+    filtered_result = {}
+
     if only and result is not None:
-        result = dict((k, result[k]) for k in only if k in result)
+        item_result = {}
+        for item in only:
+            keys = item.split(':')  # List of each subkey in an item
+            keys_count = len(keys)  # How many keys on a given item
+
+            if keys_count == 1:
+                item_result[keys[0]] = result[keys[0]]
+
+            elif keys_count == 2:
+                item_result[keys[0]] = {}
+                item_result[keys[0]][keys[1]] = result[keys[0]][keys[1]]
+
+            elif keys_count == 3:
+                item_result[keys[0]] = {}
+                item_result[keys[0]][keys[1]] = {}
+                item_result[keys[0]][keys[1]][keys[2]] = result[keys[0]][keys[1]][keys[2]]
+
+            #log.debug("MANIPULATING DICT: key: %s, %s" % (item, json.dumps(item_result, indent=4)))
+            #log.debug("PRE-FILTERED RESULT: %s" % json.dumps(filtered_result, indent=4))
+            filtered_result = salt.utils.dictupdate.update(filtered_result, item_result)
+            #log.debug("POST-FILTERED RESULT: %s" % json.dumps(filtered_result, indent=4))
+
+        log.info("FINAL RESULT: %s" % json.dumps(filtered_result, indent=4))
+        # This assignment is done to keep original name
+        result = filtered_result
 
     # Add 'foreman' (specified in conf file) key to result
     if key:
