@@ -181,16 +181,25 @@ def ext_pillar(minion_id, pillar, key=None, only=()):  # pylint: disable=W0613
             keys_count = len(keys)  # How many keys on a given item
 
             if keys_count == 1:
-                item_result[keys[0]] = result[keys[0]]
+                try:
+                    item_result[keys[0]] = result[keys[0]]
+                except:
+                    item_result[keys[0]] = 'DATA NOT FOUND'
 
             elif keys_count == 2:
                 item_result[keys[0]] = {}
-                item_result[keys[0]][keys[1]] = result[keys[0]][keys[1]]
-
+                try:
+                    item_result[keys[0]][keys[1]] = result[keys[0]][keys[1]]
+                except:
+                    item_result[keys[0]][keys[1]] = 'DATA NOT FOUND'
             elif keys_count == 3:
                 item_result[keys[0]] = {}
                 item_result[keys[0]][keys[1]] = {}
-                item_result[keys[0]][keys[1]][keys[2]] = result[keys[0]][keys[1]][keys[2]]
+                try:
+                    item_result[keys[0]][keys[1]][keys[2]] = result[keys[0]][keys[1]][keys[2]]
+                except:
+                    item_result[keys[0]][keys[1]][keys[2]] = 'DATA NOT FOUND'
+
 
             #log.debug("MANIPULATING DICT: key: %s, %s" % (item, json.dumps(item_result, indent=4)))
             #log.debug("PRE-FILTERED RESULT: %s" % json.dumps(filtered_result, indent=4))
