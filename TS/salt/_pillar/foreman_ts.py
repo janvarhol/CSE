@@ -74,6 +74,7 @@ try:
 except ImportError:
     HAS_REQUESTS = False
 
+
 __opts__ = {
     "foreman.url": "http://foreman/api",
     "foreman.user": "admin",
@@ -102,6 +103,7 @@ def __virtual__():
         return False
     return __virtualname__
 
+
 def satellite_get(id, url):
     resp = {}
     try:
@@ -113,7 +115,6 @@ def satellite_get(id, url):
     except Exception as err:
         log.error("EXT PILLAR FOREMAN: EXCEPTION occurred: %s" % err)
     except:
-        connected = False
         log.error("EXT PILLAR FOREMAN: Unable to connect to foreman!!")
 
     return resp
@@ -176,6 +177,8 @@ def ext_pillar(minion_id, pillar, key=None, only=()):  # pylint: disable=W0613
 
     if only and result is not None:
         item_result = {}
+        # TODO: Clearly not the best coding here
+        # Elegant resolution: https://stackoverflow.com/questions/30135634/how-can-i-split-a-string-and-form-a-multi-level-nested-dictionary/30135649#30135649
         for item in only:
             keys = item.split(':')  # List of each subkey in an item
             keys_count = len(keys)  # How many keys on a given item
